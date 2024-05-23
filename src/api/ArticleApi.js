@@ -7,3 +7,5 @@ export const getList = async (articleCateNo) => {
 
     return response.data;
 };
+
+
