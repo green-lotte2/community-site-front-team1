@@ -8,30 +8,23 @@ import LoginPage from '../pages/member/LoginPage';
 import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
 
-const options = {
-    basename: '/zeropie.netlify.app',
-};
+const root = createBrowserRouter([
+    // Landing
+    { path: '/', element: <LandingPage /> },
 
-const root = createBrowserRouter(
-    [
-        // Landing
-        { path: '/', element: <LandingPage /> },
+    // member
+    { path: '/login', element: <LoginPage /> },
+    { path: '/signup', element: <SignupPage /> },
+    { path: '/terms', element: <TermsPage /> },
+    { path: '/register', element: <RegisterPage /> },
+    { path: '/complete', element: <CompletePage /> },
 
-        // member
-        { path: '/login', element: <LoginPage /> },
-        { path: '/signup', element: <SignupPage /> },
-        { path: '/terms', element: <TermsPage /> },
-        { path: '/register', element: <RegisterPage /> },
-        { path: '/complete', element: <CompletePage /> },
+    // main
+    { path: '/main', element: <MainPage /> },
 
-        // main
-        { path: '/main', element: <MainPage /> },
+    // article
+    { path: '/list', element: <ListPage /> },
 
-        // article
-        { path: '/list', element: <ListPage /> },
-
-        //
-    ],
-    options
-);
+    //
+]);
 export default root;
