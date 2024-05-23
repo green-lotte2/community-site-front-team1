@@ -13,14 +13,29 @@ const ListPage = () => {
 
     const [articleList, setArticleList] = useState(null);
 
+    let data = {
+      "pg" : 1,
+      "articleCateNo" : 1,
+      "type" : null,
+      "keyword" : null
+    }
     console.log(articleCateNo);
+
+    const [pgValue, setPgValue] = useState('');
+
+    const pgChangeHandler = (newValue) => {
+      setPgValue(newValue);
+      data.pg = newValue;
+      console.log("pg : " + pgValue);
+   };
+
 
     useEffect(() => {
       const fetchData = async () => {
         try {
             // 컴포넌트화된 axios 함수 사용해 서버 접근
-            const data = await getList(articleCateNo);
-            setArticleList(data);
+            const response = await getList(data);
+            setArticleList(response);
         } catch (error) {
             // 오류 처리
             console.log(error);
@@ -33,7 +48,7 @@ const ListPage = () => {
         // 정리 함수
         
       };
-    }, []);
+    }, [data.pg]);
 
   return (
     <MainLayout>
@@ -63,7 +78,7 @@ const ListPage = () => {
                 
             </div>
 
-            <PagingComponent></PagingComponent>
+            <PagingComponent articleList={articleList} onChange={pgChangeHandler}></PagingComponent>
         </div>     
     </MainLayout>
   )
