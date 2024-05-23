@@ -1,0 +1,708 @@
+/*공통*/
+* {
+  margin: 0;
+  padding: 0;
+  font: normal 12px 'Noto Sans KR', sans-serif;
+}
+ul, ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: #111;
+}
+input, textarea {
+  outline: none;
+}
+.searchIcon {
+  display: flex;
+  background-image: url(../public/images/searchIcon.png);
+  background-size: contain;
+  width: 22px;
+  height: 22px;
+}
+body {
+  background-color: #EEEEEE;
+}
+.font14 {
+  font-size: 14px!important;
+}
+.font16 {
+  font-size: 16px!important;
+}
+.font20 {
+  font-size: 20px!important;
+}
+.font30 {
+  font-size: 30px!important;
+}
+.alignL {
+  justify-content: left!important;
+}
+
+.paging {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.paging > a {
+  font-size: 16px;
+  min-width: 20px;
+  text-align: center;
+  padding: 4px;
+  margin: 0 4px;
+}
+.paging > a:hover {
+  background-color: #eeeeee;
+  border-radius: 4px;
+}
+.paging > .pageOn {
+  background-color: #eeeeee;
+  border-radius: 4px;
+}
+/* 기본 레이아웃 구분 */
+#container {
+  display: flex;
+  justify-content: center;
+  width: 1920px;
+  height: auto;
+  box-sizing: border-box;
+  background-color: #EEEEEE;
+  margin: 0 auto;
+}
+section {
+  display: flex;
+  height: 1000px;
+  box-sizing: border-box;
+}
+#sideBar {
+  flex-direction: column;
+  width: 297px;
+  padding: 10px;
+  background-color: #070F2B;
+  border-right: 2px solid #535C91;
+}
+#contentArea {
+  flex-direction: column;
+  width: 1620px;
+  background-color: #EEEEEE;
+  overflow: scroll;
+}
+#contentArea::-webkit-scrollbar {
+  display: none;
+}
+#footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  background-color: white;
+  border-top: 1px solid #C7C8CC;
+}
+.footerContent {
+  margin: 10px 40px;
+}
+.footerContent > a {
+  font-size: 14px;
+  margin: 0 5px;
+}
+.footerContent > p {
+  font-size: 14px;
+}
+
+/* 사이드 바 */
+.boxTitle {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-bottom: 1px solid #C7C8CC;
+}
+.boxTitle > img {
+  width: 80px;
+  height: 50px;
+}
+.boxTitle p {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  padding-left: 10px;
+}
+
+
+.sideBox {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.sideTitle {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  margin: 4px 0;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-bottom: 1px solid #C7C8CC;
+}
+.sideTitle > span {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+.sideTitle > div {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.sideTitle p {
+  font-size: 16px;
+  color: white;
+}
+.sideTitle span {
+  font-size: 14px;
+  font-weight: bold;
+  padding-right: 10px;
+  color: white;
+}
+.sideTab {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  margin: 4px 0;
+  padding-left: 20px;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.sideTab > img {
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+}
+.sideTab p {
+  font-size: 14px;
+  color: white;
+}
+
+.sideTabOn {
+  background-color: #7BC9FF;
+}
+
+/* 상단바 */
+#navbar {
+  display: flex;
+  height: 50px;
+  padding: 10px 0;
+  justify-content: space-between;
+  align-content: center;
+  background-color: white;
+  border-bottom: 1px solid #535C91;
+}
+.searchBar {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  width: 500px;
+  height: 30px;
+  border: 1px solid #111;
+  border-radius: 10px;
+  margin-left: 20px;
+}
+.searchBar > input {
+  font-size: 14px;
+  border: 0;
+  width: 450px;
+  margin-left: 10px;
+}
+.searchBar > span {
+  padding: 4px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  cursor: pointer;
+}
+#userBox {
+  display: flex;
+  margin: 0 10px;
+  align-items: center;
+}
+#userBox > div {
+  display: flex;
+  width: 80px;
+  height: 30px;
+  align-items: center;
+}
+#userBox > img {
+  width: 30px;
+  height: 30px;
+}
+
+/* 메인영역 */
+#mainBox {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 10px 10px 20px rgba(200, 200, 200, 0.5);
+}
+.contentBox > p {
+  font-size: 18px;
+  padding: 5px 0;
+}
+
+.boxStyle1 {
+  width: 380px;
+  height: 300px;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.boxStyle2 {
+  width: 780px;
+  height: 380px;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.boxStyle3 {
+  width: 380px;
+  height: 780px;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.boxStyle4 {
+  width: 780px;
+  height: 780px;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.boxStyle5 {
+  width: 1180px;
+  height: 780px;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.boxStyle6 {
+  width: 380px;
+  height: 780px;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.boxStyle7 {
+  width: 1580px;
+  height: auto;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.contentTitle {
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.contentColumn {
+  display: flex;
+  flex-direction: column;
+
+}
+.contentRow {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+  justify-content: space-between;
+  border-bottom: 1px solid #F1F1F1;
+}
+.contentRow > p {
+  display: flex;
+  font-size: 14px;
+}
+.contentWithCheck {
+  display: flex;
+}
+.contentWithCheck > input {
+  margin-right: 10px;
+}
+.contentWithCheck > p {
+  display: flex;
+  font-size: 14px;   
+}
+
+.profileRow {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.contentImg {
+  display: flex;
+  width: 100px;
+  height: 100px;
+}
+.profileContent {
+  padding: 10px 0 10px 10px ;
+}
+.profileContent > p {
+  font-size: 18px;
+  padding: 5px 0;
+}
+.hidden {
+  display: block!important;
+  width: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+
+/* 로그인 */
+#loginArea {
+  width: 1480px;
+  height: 900px;
+  justify-content: center;
+}
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+.loginImg {
+  display: flex;
+  width: 400px;
+}
+.socialLogin {
+  display: flex;
+  align-items: center;
+}
+.socialLogin > img {
+  width: 50px;
+}
+.socialLogin > span {
+  font-size: 18px;
+}
+.loginBox > div {
+  display: flex;
+
+}
+.loginBox > form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  margin: 20px 0;
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+.loginBox > form > input {
+  margin: 5px 0;
+  padding: 0 10px;
+  width: 400px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.loginBox > form > input[type="submit"] {
+  background-color: #ffde1d;
+  font-weight: bold;
+  border: 0;
+}
+.loginBox > p {
+  display: flex;
+  font-size: 40px;
+  margin: 20px 0;
+}
+.loginEtc {
+  margin-top: 20px;
+}
+.loginEtc > a {
+  font-size: 16px;
+  margin: 0 20px;
+}
+
+/* signup */
+#singupBox1 {background-image: url(../public/images/registerImage2.png);}
+#singupBox2 {background-image: url(../public/images/registerImage1.png);}
+.singupText {
+  width: 200px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 20px;
+  border: 1px solid #111;
+  border-radius: 10px;
+}
+.singupText:hover {
+  background-color: #ffde1d;
+  border: 1px solid #ffde1d;
+}
+
+/* register */
+.registerTitle {
+  font-size: 30px;
+  text-align: center;
+}
+.registerRow {
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 0;
+}
+.registerbox {
+  width: 100%;
+}
+.registerbox > div {
+  width: 350px;
+}
+.registerRow > div:nth-child(1) {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.registerRow > .imageBox {
+  display: flex;
+  align-items: center;
+}
+.registerRow > .imageBox > img {
+  width: 66px;
+  height: 100px;
+}
+.registerRow > .imageBox input[type="file"] {
+  width: 400px;
+}
+.registerRow > div > input {
+  width: 300px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 4px 10px;
+  font-size: 18px;
+  margin-bottom: 4px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+}
+.registerRow > span {
+  font-size: 14px;
+  color: red;
+}
+.registerRow select {
+  width: 300px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 4px 10px;
+  font-size: 18px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+}
+.registerRow option {
+  font-size: 18px;
+}
+.registerRow button {
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 4px 0;
+  line-height: 33px;
+  font-size: 14px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+}
+.registerRow > div > input[name="addr1"] {width: 650px;}
+.registerRow > div > input[name="addr2"] {width: 650px;}
+.loginBox > input[type="submit"] {
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* complete */
+#completeBox {
+  display: flex;
+  flex-direction: column;
+  width: 1480px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../public/images/registerImage3.png);
+}
+#completeBox > p {
+  font-size: 26px;
+  margin-bottom: 40px;
+}
+#completeBox span {
+  font-size: 26px;
+}
+
+/* 게시판 */
+.listType {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 20px;
+}
+.listType > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+}
+.listOn {
+  background-color: #eeeeee;
+  border-radius: 4px;
+}
+
+.searchRow {
+  display: flex;
+  padding: 20px 0;
+  font-size: 18px;
+}
+.searchBox {
+  border: 0;
+  margin-top: 20px;
+}
+.searchRow > input {
+  border: 1px solid #c9c9c9;
+}
+.searchRow > input[type="date"] {
+  width: 200px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  margin: 0 10px;
+  box-sizing: border-box;
+}
+.searchRow > select {
+  width: 150px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border: 1px solid #c9c9c9;
+}
+.searchRow > select > option {
+  font-size: 16px;
+  padding: 0 10px;
+  border: 1px solid #c9c9c9;
+}
+.searchRow > input[type="text"] {
+  width: 300px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  margin: 0 -1px;
+}
+.searchRow > input[type="submit"] {
+  width: 100px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.searchRow > label {
+  display: flex;
+  font-size: 16px;
+  margin: 0 10px;
+  align-items: center;
+  justify-content: center;
+}
+.searchRow input[type="checkbox"] {
+  width: 26px;
+  height: 26px;
+  margin: 0 10px 0 20px;
+  border: 1px solid #c9c9c9;
+}
+
+
+
+.articleRow {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #808080;
+  align-items: center;
+}
+.articleRow > div {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.articleRow > div > img {
+  width: 100px;
+  height: 100px;
+}
+.articleRow > div:nth-child(1) {width: 100px; justify-content: center;}
+.articleRow > div:nth-child(2) {width: 150px; justify-content: center;}
+.articleRow > div:nth-child(3) {width: 890px;}
+.articleRow > div:nth-child(4) {width: 100px; justify-content: center;}
+.articleRow > div:nth-child(5) {width: 150px; justify-content: center;}
+.articleRow > div:nth-child(6) {width: 150px; justify-content: center;}
+
+.contentCard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.articleCard {
+  display: flex;
+  flex-direction: column;
+  width: 370px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border: 1px solid #808080;
+  cursor: pointer;
+}
+.articleCard > div {
+  padding: 4px 10px;
+  font-size: 16px;
+  overflow: hidden;
+}
+.articleCard > div > img:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+.articleCard > div > img {
+  width: 300px;
+}
+.articleCard > div:nth-child(1) {display: none;}
+.articleCard > div:nth-child(2) {}
+.articleCard > div:nth-child(3) {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.articleCard > div:nth-child(4) {font-size: 14px;}
+.articleCard > div:nth-child(5) {font-size: 14px;}
+.articleCard > div:nth-child(6) {font-size: 14px;}
+.articleCard > div:nth-child(4)::before {content: '조회수 : ';}
+.articleCard > div:nth-child(5)::before {content: '작성자 : ';}
+.articleCard > div:nth-child(6)::before {content: '작성일 : ';}
