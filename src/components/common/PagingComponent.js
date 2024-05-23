@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const PagingComponent = ({ articleList, onChange }) => {
-
-  
-  const handleInputChange = (i) => {
-      console.log("자식 : " + i)
-      onChange(i); // 콜백 함수 호출하여 값 전달
-  };
+const PagingComponent = ({ articleList, onPageChange  }) => {
 
     // articleList가 존재하고 total이 0보다 큰 경우에만 페이지 번호를 생성
     if (articleList && articleList.total > 0) {
@@ -21,10 +15,15 @@ const PagingComponent = ({ articleList, onChange }) => {
 
             // Link 컴포넌트를 사용하여 페이지 링크 생성
             pages.push(
-                <Link key={i} className={pageClass} onClick={() => handleInputChange(i)}>
+                <Link 
+                    key={i} 
+                    className={pageClass}
+                    onClick={() => onPageChange(i)} // 페이지 변경 콜백 호출
+                >
                     {i}
                 </Link>
             );
+            
         }
 
         // 페이지 링크 배열을 UI로 반환
