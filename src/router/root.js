@@ -9,7 +9,7 @@ import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
 
 const options = {
-    basename: '/zeropie',
+    basename: '/zeropie.netlify.app',
 };
 
 const root = createBrowserRouter(
