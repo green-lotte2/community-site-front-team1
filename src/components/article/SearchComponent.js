@@ -21,6 +21,7 @@ const SearchComponent = () => {
             <select name="" id="">
                 <option value="">제목</option>
                 <option value="">내용</option>
+                <option value="">제목+내용</option>
                 <option value="">글쓴이</option>
             </select>
             <input type="text"/>
