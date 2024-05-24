@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MemberLayout from '../../layout/MemberLayout';
 import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
-import FileUpload from '../../api/FileuploadApi';
+
 
 
 const RegisterPage = () => {
 
 
     const [preview, setPreview] = useState(null);
-    let file = null;
+    const [file, setFile] = useState(null); // 파일을 상태로 관리onst [file, setFile] = useState(null); // 파일을 상태로 관리
+
     const profileHandler = (files) => {
-        file = files[0];
+        const selectedFile = files[0];
+        setFile(selectedFile);
     
-        //선택한 프로필 사진보기
-        const filePreview = URL.createObjectURL(file);
+        // 선택한 프로필 사진 보기 - setFile 이후의 file 값을 사용해야 함
+        const filePreview = URL.createObjectURL(selectedFile);
         setPreview(filePreview);
-        console.log("filePreview 찍어보기 : "+filePreview);
-
-        // stfImg에 URL 저장
-        //setStf({ ...stf, stfthumbFile: filePreview });
-        //console.log("stfImg 찍어보기 : ", stf.stfthumbFile);
-    }
-
+    
+        // stf 상태 업데이트
+        setStf((prevStf) => ({
+            ...prevStf,
+            thumbFile: selectedFile
+        }));
+    };
+    
     const navigate = useNavigate();
-
+    
     const [stf, setStf] = useState({
         stfName: "",
         stfPass: "",
@@ -38,8 +41,36 @@ const RegisterPage = () => {
         stfEnt: "",
         strDptNo: "",
         strRnkNo: "",
+        thumbFile: null,
     });
 
+
+    const [positions, setPositions] = useState([]);
+    const [deps, setDeps] = useState([]);
+
+    // 컴포넌트가 렌더링될 때(마운트)
+    useEffect(() => {
+        console.log("컴포넌트가 렌더링될 때(마운트)");
+
+        /*
+        const data = ['사원','대리','과장','차장','부장']
+        setPositions(data);    
+        */
+        
+        axios.get('http://localhost:8080/onepie/findPosition')
+        .then((data)=>{
+            setPositions(data.position);    
+        }).catch((err)=>{
+            console.log(err);
+        });
+        
+    }, []); 
+    
+    
+    useEffect(() => {
+        console.log("stf thumbFile 찍어보기 : ", stf.thumbFile);
+    }, [stf.thumbFile, file]); // file 상태도 감지하여 변경되면 useEffect가 호출되도록 설정
+    
     //검색버튼을 클릭하면 주소창 팝업
     const openDaumPostcode = useDaumPostcodePopup();
 
@@ -72,9 +103,6 @@ const RegisterPage = () => {
         formData.append("file", file);
 
         console.log("formData에 있는것들 찍어보기 : ",formData);
-
-
-
 
         axios
             .post("http://localhost:8080/onepie/upload", formData, {
@@ -232,10 +260,9 @@ const RegisterPage = () => {
                                     onChange={changeHandler}
                                 >
                                     <option value="">부서 선택</option>
-                                    <option value="1팀">1팀</option>
-                                    <option value="2팀">2팀</option>
-                                    <option value="3팀">3팀</option>
-                                    <option value="4팀">4팀</option>
+                                    {positions.map((data, index)=>(
+                                        <option key={index}>{data}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -243,11 +270,7 @@ const RegisterPage = () => {
                             <div>직급</div>
                             <div>
                                 <select name="strRnkNo" id="grade" value={stf.strRnkNo} onChange={changeHandler}>
-                                    <option value="">직급 선택</option>
-                                    <option value="사원">사원</option>
-                                    <option value="대리">대리</option>
-                                    <option value="팀장">팀장</option>
-                                    <option value="과장">과장</option>
+                                    <option value="">직급 선택</option>                                    
                                 </select>
                             </div>
                         </div>
