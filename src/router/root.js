@@ -7,6 +7,8 @@ import SignupPage from '../pages/member/SignupPage';
 import LoginPage from '../pages/member/LoginPage';
 import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
+import WritePage from '../pages/artice/WritePage';
+import ViewPage from '../pages/artice/ViewPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -24,6 +26,9 @@ const root = createBrowserRouter([
 
     // article
     { path: '/list', element: <ListPage /> },
+
+    { path: '/write', element: <WritePage /> },
+    { path: '/view', element: <ViewPage /> },
 
     //
 ]);
