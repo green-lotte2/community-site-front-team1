@@ -1,15 +1,16 @@
 import React from 'react'
 import SideBoxComponent from './SideBoxComponent'
+import { Link } from 'react-router-dom';
 
 const SideBarComponent = () => {
   return (
     <section id="sideBar">
-      <div class="boxTitle">
+      <Link to="/main" class="boxTitle">
           <img src="../images/zeroPieLogo.png" alt=""/>
           <div>
               <p>1조 게시판</p>
           </div>
-      </div>
+      </Link>
 
       <SideBoxComponent></SideBoxComponent>
       <SideBoxComponent></SideBoxComponent>
