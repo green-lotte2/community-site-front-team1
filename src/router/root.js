@@ -26,6 +26,7 @@ const root = createBrowserRouter([
 
     // article
     { path: '/list', element: <ListPage /> },
+
     { path: '/write', element: <WritePage /> },
     { path: '/view', element: <ViewPage /> },
 
