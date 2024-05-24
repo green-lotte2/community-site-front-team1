@@ -6,6 +6,8 @@ import axios from 'axios'
 
 
 function FileUpload(){
+
+  
   const dropHandler = (files) => {
 
     files.forEach((file, index) => {
