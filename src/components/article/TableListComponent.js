@@ -7,7 +7,7 @@ const TableListComponent = ({ articleList }) => {
     <>
     {articleList && articleList.dtoList.length > 0 ? (articleList.dtoList.map((article, index) => (
         <div className="articleRow">
-            <div>{index+1}</div>
+            <div>{articleList.total - index}</div>
             <div>
             {article.thumbnail ? (
                 <img src="../images/iconSample5.PNG" alt=""/>
