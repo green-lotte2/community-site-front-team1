@@ -11,6 +11,7 @@ import WritePage from '../pages/artice/WritePage';
 import ViewPage from '../pages/artice/ViewPage';
 import UserListPage from '../pages/admin/UserListPage';
 import UserModifyPage from '../pages/admin/UserModifyPage';
+import ArticleListPage from '../pages/admin/ArticleListPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -37,6 +38,7 @@ const root = createBrowserRouter([
     // admin
     { path: '/userList', element: <UserListPage /> },
     { path: '/userModify', element: <UserModifyPage /> },
+    { path: '/articleList', element: <ArticleListPage /> },
 
 ]);
 export default root;

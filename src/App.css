@@ -39,6 +39,9 @@ body {
 .alignL {
   justify-content: left!important;
 }
+.maR30 {
+  margin-right: 30px;
+}
 
 /* 페이징 */
 .paging {
@@ -60,6 +63,112 @@ body {
 .paging > .pageOn {
   background-color: #eeeeee;
   border-radius: 4px;
+}
+
+/* 모달창 */
+.modlaBack {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.5);
+  z-index: 10;
+}
+.modalBox {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  flex-wrap: wrap;
+  width: auto;
+  height: auto;
+  padding: 20px;
+  border: 1px solid #c4c4c4;
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10px;
+}
+.modalHeader > p {
+  font-size: 18px;
+}
+.modalColumn {
+  display: flex;
+  flex-direction: column;
+}
+.modalRow { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+.modalRow > div {
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  padding: 4px 10px;
+}
+.modalRow > div:nth-child(1) {width: 100px;}
+.modalRow > div:nth-child(2) {width: 200px;}
+
+.modalRow > div > select {
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
+}
+.modalRow > div  option {
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
+}
+.modalRow > input[type="submit"] {
+  width: 100px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0 10px;
+}
+.modalRow > button {
+  width: 100px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0 10px;
+}
+.modalRow input {
+  width: 200px;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  margin: 0 10px;
+}
+
+/* 버튼 */
+.nomalBtn {
+  display: inline-block;
+  width: auto;
+  font-size: 16px;
+  padding: 4px 6px;
+  margin: 0 5px;
+  line-height: 24px;
+  border: 1px solid #111;
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: #f4f4f4;
 }
 /* toast-ui */
 .toastui-editor-contents p {
@@ -360,6 +469,24 @@ section {
 .contentColumn > div > div > a {
   font-size: 16px;
 }
+.createRow {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+}
+.createRow > a {
+  display: inline-block;
+  width: auto;
+  font-size: 16px;
+  padding: 4px 6px;
+  margin: 0 5px;
+  line-height: 24px;
+  border: 1px solid #111;
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: #f4f4f4;
+}
 .contentRow {
   display: flex;
   width: 100%;
@@ -415,6 +542,60 @@ section {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+
+/* member */
+.memberBack {
+  display: flex;
+  width: 100%;
+  height: 1000px;
+}
+.termsBack {
+  background-image: url(../public/images/termsBack.jpg);
+  background-size: cover;
+}
+.memberBox {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  align-items: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  width: 1000px;
+  height: 800px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.5);
+}
+.memberColumn {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+.memberRow {
+  display: flex;
+}
+.memberTitle {
+  display: flex;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.memberColumn > div {
+  margin: 5px 0;
+  
+}
+.termsColumn > div {
+  width: 800px;
+  font-size: 24px;
+
+}
+.termsColumn > div > textarea {
+  width: 100%;
+  height: 150px;
 }
 
 
@@ -845,3 +1026,30 @@ section {
 .adminUserRow > div:nth-child(7) {width: 200px; justify-content: center;}
 .adminUserRow > div:nth-child(8) {width: 300px; justify-content: center;}
 .adminUserRow > div:nth-child(9) {width: 90px; justify-content: center;}
+
+.adminArticleRow {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #808080;
+  align-items: center;
+}
+.adminArticleRow > div {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.adminArticleRow > div > img {
+  width: 100px;
+  height: 100px;
+} 
+/*1540*/
+.adminArticleRow > div:nth-child(1) {width: 100px; justify-content: center;}
+.adminArticleRow > div:nth-child(2) {width: 590px;}
+.adminArticleRow > div:nth-child(3) {width: 150px; justify-content: center;}
+.adminArticleRow > div:nth-child(4) {width: 150px; justify-content: center;}
+.adminArticleRow > div:nth-child(5) {width: 150px; justify-content: center;}
+.adminArticleRow > div:nth-child(6) {width: 150px; justify-content: center;}
+.adminArticleRow > div:nth-child(7) {width: 250px; justify-content: center;}
