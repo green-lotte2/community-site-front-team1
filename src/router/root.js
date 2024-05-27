@@ -9,6 +9,8 @@ import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
 import WritePage from '../pages/artice/WritePage';
 import ViewPage from '../pages/artice/ViewPage';
+import UserListPage from '../pages/admin/UserListPage';
+import UserModifyPage from '../pages/admin/UserModifyPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -32,6 +34,9 @@ const root = createBrowserRouter([
     { path: '/write', element: <WritePage /> },
     { path: '/view', element: <ViewPage /> },
 
-    //
+    // admin
+    { path: '/userList', element: <UserListPage /> },
+    { path: '/userModify', element: <UserModifyPage /> },
+
 ]);
 export default root;

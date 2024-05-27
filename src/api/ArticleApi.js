@@ -2,6 +2,7 @@ import axios from 'axios';
 import { RootUrl } from './RootUrl';
 const rootURL = RootUrl() + '/article';
 
+
 // 게시글 목록 출력 (전체)
 export const getArticleList = async (data) => {
     console.log("글 목록", data);
@@ -33,6 +34,7 @@ export const writeArticle = async (data) => {
     console.log("글 쓰기", data);
     const response = await axios.post(`${rootURL}/write`, data);
     //const response = await axios.post(`http://15.165.24.202:8080/onepie/article/write`, data);
+
 
     return response.data;
 };

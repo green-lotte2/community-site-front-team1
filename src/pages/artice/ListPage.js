@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import SearchComponent from '../../components/article/SearchComponent';
 import PagingComponent from '../../components/common/PagingComponent';
+
 import { getArticleCate, getArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
 import { Link, useLocation } from 'react-router-dom';
@@ -122,6 +123,7 @@ const ListPage = () => {
       </div>
     </MainLayout>
   );
+
 };
 
 export default ListPage;
