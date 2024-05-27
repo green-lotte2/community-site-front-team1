@@ -12,9 +12,9 @@ const SideBarComponent = () => {
           </div>
       </Link>
 
-      <SideBoxComponent></SideBoxComponent>
-      <SideBoxComponent></SideBoxComponent>
-      <SideBoxComponent></SideBoxComponent>
+      <SideBoxComponent sideBarCate={"private"}></SideBoxComponent>
+      <SideBoxComponent sideBarCate={"article"}></SideBoxComponent>
+      <SideBoxComponent sideBarCate={"admin"}></SideBoxComponent>
       
   </section>
   )
