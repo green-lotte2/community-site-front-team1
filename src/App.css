@@ -568,7 +568,9 @@ section {
   height: 800px;
   padding: 20px;
   border-radius: 10px;
-  background-color: rgba(128, 128, 128, 0.5);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border: 2px solid rgba(255, 255, 255, .2);
 }
 .memberColumn {
   display: flex;
@@ -583,29 +585,65 @@ section {
   font-size: 30px;
   font-weight: bold;
   margin: 20px 0;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 .memberColumn > div {
   margin: 5px 0;
-  
 }
 .termsColumn > div {
   width: 800px;
   font-size: 24px;
-
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 .termsColumn > div > textarea {
   width: 100%;
   height: 150px;
+  font-size: 16px;
+  padding: 10px;
+  border: 2px solid white;
+  border-radius: 4px;
+  background-color: transparent;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
+.termsColumn > label {
+  display: flex;
+  font-size: 16px;
+  align-self: end;
+  justify-content: center;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.termsColumn > label > input {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+.termsBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  margin: 0 10px;
+  
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
 
+  background-color: white;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  cursor: pointer;
+}
 
 
 /* 로그인 */
-#loginArea {
-  width: 1480px;
-  height: 900px;
-  justify-content: center;
-}
 .loginBox {
   display: flex;
   flex-direction: column;
@@ -615,6 +653,9 @@ section {
   align-items: center;
   background-color: white;
 }
+
+
+
 
 .loginImg {
   display: flex;
@@ -686,24 +727,48 @@ section {
 }
 
 /* register */
+.registerBox {
+  justify-content: center;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  align-items: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  width: 1000px;
+  height: 800px;
+  padding: 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border: 2px solid rgba(255, 255, 255, .2);
+}
+.registerBack {
+  background-image: url(../public/images/registerBack.jpg);
+  background-size: cover;
+}
+
 .registerTitle {
   font-size: 30px;
   text-align: center;
 }
-.registerRow {
-  flex-direction: column;
+.registerPack {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  padding: 10px 0;
+  padding: 10px 0 0 40px;
 }
-.registerbox {
-  width: 100%;
-}
-.registerbox > div {
-  width: 350px;
+.registerPack > div {
+  width: 400px;
 }
 .registerRow > div:nth-child(1) {
   font-size: 18px;
+  font-weight: bold;
   margin-bottom: 4px;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 .registerRow > .imageBox {
   display: flex;
@@ -712,23 +777,31 @@ section {
 .registerRow > .imageBox > img {
   width: 66px;
   height: 100px;
+
 }
 .registerRow > .imageBox input[type="file"] {
   width: 400px;
 }
-.registerRow > div > input {
+.registerRow > .imageBox > div {
+  font-size: 18px;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+.registerRow > div  input {
   width: 300px;
   height: 40px;
   box-sizing: border-box;
   padding: 4px 10px;
   font-size: 18px;
   margin-bottom: 4px;
-  border: 1px solid #c9c9c9;
+  border: 2px solid white;
   border-radius: 4px;
+  background-color: transparent;
+  color: white;
 }
 .registerRow > span {
   font-size: 14px;
-  color: red;
+  color: rgb(255, 181, 181);
 }
 .registerRow select {
   width: 300px;
@@ -736,34 +809,54 @@ section {
   box-sizing: border-box;
   padding: 4px 10px;
   font-size: 18px;
-  border: 1px solid #c9c9c9;
+  color: white;
+  border: 2px solid white;
   border-radius: 4px;
+  background-color: transparent;
+
 }
 .registerRow option {
   font-size: 18px;
+  color: rgb(0, 0, 0);
 }
 .registerRow button {
-  width: 40px;
+  width: 60px;
   height: 40px;
   box-sizing: border-box;
   padding: 4px 0;
-  line-height: 33px;
-  font-size: 14px;
-  border: 1px solid #c9c9c9;
+  line-height: 31px;
+  margin-left: 4px;
+  font-size: 16px;
+  border: 2px solid white;
   border-radius: 4px;
   background-color: transparent;
   cursor: pointer;
+  color: white;
 }
 .registerRow > div > input[name="addr1"] {width: 650px;}
 .registerRow > div > input[name="addr2"] {width: 650px;}
-.loginBox > input[type="submit"] {
-  width: 200px;
+.registerBtn {
+  display: flex;
+
+  width: 120px;
   height: 40px;
-  font-size: 20px;
-  border: 1px solid #c9c9c9;
-  border-radius: 4px;
-  background-color: transparent;
+  font-size: 16px;
   cursor: pointer;
+  color: #111;
+  font-weight: bold;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+  margin: 10px 5px;
+
+  background-color: white;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  cursor: pointer;
+
 }
 
 /* complete */
