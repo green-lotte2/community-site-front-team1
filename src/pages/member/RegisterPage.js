@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MemberLayout from '../../layout/MemberLayout';
 import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
 
 
@@ -268,28 +268,33 @@ const RegisterPage = () => {
 
     return (
         <MemberLayout>
-            <section id="loginArea">
-                <form className="loginBox" onSubmit={submitHandler}>
-                    <div className="registerTitle">회원가입</div>
-                    <div className="registerRow">
-                        <div>사진</div>
-                        <div className="imageBox">
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Dropzone onDrop={profileHandler}>
-                                    {({ getRootProps, getInputProps }) => (
-                                        <div style={{ width: 100, height: 100, border: '1px solid lightgray', display: 'flex', alignSelf: 'center' }}
-                                            {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            {preview ? (<img src={preview} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />) :
-                                                (<p style={{ color: 'lightgray', fontSize: '40px', margin: '20% 32%' }}>+</p>)}
-                                        </div>
-                                    )}
-                                </Dropzone>
+            <div className='memberBack registerBack'>
+                <form className="registerBox" onSubmit={submitHandler}>
+                    
+                    <div className="memberTitle" style={{marginBottom:"0"}}>회원가입</div>
+
+                    <div className="registerPack">
+                        <div className="registerRow">
+                            <div className="imageBox">
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Dropzone onDrop={profileHandler}>
+                                        {({ getRootProps, getInputProps }) => (
+                                            <div style={{ width: 100, height: 100, border: '1px solid lightgray', display: 'flex', alignSelf: 'center' }}
+                                                {...getRootProps()}>
+                                                <input {...getInputProps()} />
+                                                {preview ? (<img src={preview} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />) :
+                                                    (<p style={{ color: 'lightgray', fontSize: '40px', margin: '20% 32%' }}>+</p>)}
+                                            </div>
+                                        )}
+                                    </Dropzone>
+                                </div>
+                                <div style={{paddingLeft: "10px"}}>사진을 등록해주세요.</div>
                             </div>
                         </div>
+                        <div className="registerRow"></div>
                     </div>
 
-                    <div className="registerbox">
+                    <div className="registerPack">
                         <div className="registerRow">
                             <div>이름</div>
                             <div>
@@ -317,7 +322,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
 
-                    <div className="registerbox">
+                    <div className="registerPack">
                         <div className="registerRow">
                             <div>비밀번호</div>
                             <div>
@@ -348,7 +353,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
 
-                    <div className="registerbox">
+                    <div className="registerPack">
                         <div className="registerRow">
                             <div>부서</div>
                             <div>
@@ -378,7 +383,7 @@ const RegisterPage = () => {
                         </div>
                     </div>
 
-                    <div className="registerbox">
+                    <div className="registerPack">
                         <div className="registerRow">
                             <div>이메일</div>
                             <div>
@@ -395,7 +400,7 @@ const RegisterPage = () => {
                             <span>{emailMessage}</span>
 
                             {showVerification && (
-                                <div className="registerRow">
+                                <div className="registerRow" style={{margin: "4px 0"}}>
                                     <div>인증 코드</div>
                                     <div>
                                         <input
@@ -429,9 +434,9 @@ const RegisterPage = () => {
                         </div>
                     </div>
 
-                    <div className="registerRow">
-                        <div>주소</div>
-                        <div>
+                    <div className="registerRow" style={{marginTop: "4px"}}>
+                        <div style={{paddingLeft:"40px"}}>주소</div>
+                        <div style={{paddingLeft:"40px"}}>
                             <input
                                 type="text"
                                 name="stfZip"
@@ -441,33 +446,34 @@ const RegisterPage = () => {
                             />
                             <button onClick={handlePostcode}>검색</button>
                         </div>
-                        <div>
-                            <input
-                                type="text"
-                                name="stfAddr1"
-                                value={stf.stfAddr1}
-                                onChange={changeHandler}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="text"
-                                name="stfAddr2"
-                                value={stf.stfAddr2}
-                                onChange={changeHandler}
-                                required
-                            />
+                        <div className='registerPack' style={{paddingLeft:"0"}}>
+                            <div style={{paddingLeft:"40px"}}>
+                                <input
+                                    style={{width: "396px"}}
+                                    type="text"
+                                    name="stfAddr1"
+                                    value={stf.stfAddr1}
+                                    onChange={changeHandler}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    type="text"
+                                    name="stfAddr2"
+                                    value={stf.stfAddr2}
+                                    onChange={changeHandler}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
-
-                    <input type="submit" value="회원가입" disabled={!isFormValid} />
+                    <div className='memberRow'>
+                        <Link className='registerBtn' to="/">취소</Link>
+                        <input className='registerBtn' type="submit" value="회원가입" disabled={!isFormValid} />
+                    </div>
                 </form>
-
-                <div className="loginBox">
-                    <img src="../images/iconSample4.PNG" alt="" />
-                </div>
-            </section>
+            </div>
         </MemberLayout>
     );
 };
