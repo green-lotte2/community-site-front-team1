@@ -9,6 +9,9 @@ import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
 import WritePage from '../pages/artice/WritePage';
 import ViewPage from '../pages/artice/ViewPage';
+import UserListPage from '../pages/admin/UserListPage';
+import UserModifyPage from '../pages/admin/UserModifyPage';
+import ArticleListPage from '../pages/admin/ArticleListPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -26,10 +29,16 @@ const root = createBrowserRouter([
 
     // article
     { path: '/list', element: <ListPage /> },
+    { path: '/write', element: <WritePage /> },
+    { path: '/view', element: <ViewPage /> },
 
     { path: '/write', element: <WritePage /> },
     { path: '/view', element: <ViewPage /> },
 
-    //
+    // admin
+    { path: '/userList', element: <UserListPage /> },
+    { path: '/userModify', element: <UserModifyPage /> },
+    { path: '/articleList', element: <ArticleListPage /> },
+
 ]);
 export default root;
