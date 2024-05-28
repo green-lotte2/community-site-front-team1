@@ -30,3 +30,8 @@ export const getArticleCateList = async () => {
     const response = await axios.get(`${rootURL}/articleCateList`);
     return response.data;
 };
+
+export const modifyArticleCate = async (data) => {
+    const response = await axios.put(`${rootURL}/modifyCate`, data);
+    return response.data;
+};
