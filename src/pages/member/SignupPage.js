@@ -11,7 +11,7 @@ const SignupPage = () => {
             <div className="memberTitle">가입 유형? 선택</div>
 
             <div className='registerPack'>
-              <Link to="#" className="singupText">일반회원</Link>
+              <Link to="/terms" className="singupText">일반회원</Link>
               <Link to="#" className="singupText">관리자</Link>
             </div>
           </div>
