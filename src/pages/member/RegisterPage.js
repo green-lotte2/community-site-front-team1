@@ -190,7 +190,7 @@ const RegisterPage = () => {
     const submitHandler = (e) => {
 
         e.preventDefault();
-        alert("인증버튼을 클릭");
+        alert("회원가입이 완료되었습니다");
 
         const formData = new FormData();
         // 기존 stf 필드들 추가
