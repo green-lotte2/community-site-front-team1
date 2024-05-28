@@ -5,17 +5,19 @@ import { Link } from 'react-router-dom'
 const SignupPage = () => {
   return (
     <MemberLayout>
-    <section id="loginArea">
-        <div classNameName="loginBox" id="singupBox1">
-            <Link to="#" classNameName="singupText">일반회원</Link>
-        </div>
+      <div className="memberBack signupBack">
+          <div className="registerBox" >
 
-        <div classNameName="loginBox" id="singupBox2">
-            <Link to="#" classNameName="singupText">관리자</Link>
-        </div>
-    </section>
+            <div className="memberTitle">가입 유형? 선택</div>
+
+            <div className='registerPack'>
+              <Link to="#" className="singupText">일반회원</Link>
+              <Link to="#" className="singupText">관리자</Link>
+            </div>
+          </div>
+      </div>
     </MemberLayout>
   )
 }
 
-export default SignupPage
+export default SignupPage;

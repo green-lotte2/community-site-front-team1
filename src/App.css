@@ -710,20 +710,26 @@ section {
 }
 
 /* signup */
-#singupBox1 {background-image: url(../public/images/registerImage2.png);}
-#singupBox2 {background-image: url(../public/images/registerImage1.png);}
+.signupBack {
+  background-image: url(../public/images/signupBack.jpg);
+  background-size: cover;
+}
 .singupText {
   width: 200px;
   font-size: 30px;
   font-weight: bold;
   text-align: center;
   padding: 10px 20px;
-  border: 1px solid #111;
+  margin: 0 10px;
+  border: 2px solid white;
   border-radius: 10px;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 }
 .singupText:hover {
-  background-color: #ffde1d;
-  border: 1px solid #ffde1d;
+  background-color: #a4a4a4;
+  border: 1px solid #a4a4a4;
 }
 
 /* register */
