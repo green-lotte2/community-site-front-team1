@@ -14,14 +14,14 @@ const ListPage = () => {
   const articleCateNo = queryParams.get('articleCateNo');
 
   // 게시판 제목 상태 저장을 위한 스테이트
-  const [articleTitle, setArticleTitle] = useState(null);
+  const [articleCateName, setArticleCateName] = useState(null);
   
   // 페이지 랜더링 될 때 호출
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getArticleCate(articleCateNo);
-        setArticleTitle(response.articleCateName);
+        setArticleCateName(response.articleCateName);
         
       } catch (error) {
         console.error('Failed to fetch article category:', error);
@@ -89,10 +89,8 @@ const ListPage = () => {
   return (
     <MainLayout>
       <div className="contentBox boxStyle7">
-      <div className="contentTitle font30 alignL">{articleTitle} 게시판</div>
+      <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
   
-
-        
         <SearchComponent onSearch={handleSearch} />
 
         <div className="contentColumn">

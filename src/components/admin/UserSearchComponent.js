@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { getDptList, getRnkList } from '../../api/AdminApi';
+import { findStfList, getDptList, getRnkList } from '../../api/AdminApi';
 
-const UserSearchComponent = () => {
+const UserSearchComponent = ({ onSearch }) => {
     const [dptList, setDptList] = useState(null);
     const [rnkList, setRnkList] = useState(null);
+    const [searchParams, setSearchParams] = useState({
+        stfStatus: null,
+        rnkNo: '',
+        dptNo: '',
+        startDate: '',
+        endDate: '',
+        type: '',
+        keyword: '',
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,12 +40,26 @@ const UserSearchComponent = () => {
         fetchData();
     }, []);
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setSearchParams((prevParams) => ({
+            ...prevParams,
+            [name]: value,
+        }));
+    };
+
+    const searchHandler = (e) => {
+        e.preventDefault();
+        console.log('Search Params:', searchParams);
+        onSearch(searchParams);
+    };
+
     return (
         <div className="contentRow searchBox">
             <div className="searchColumn">
                 <div className="searchRow">
                     <span className="searchTitle">상태</span>
-                    <select name="stfStatus" id="stfStatus">
+                    <select name="stfStatus" id="stfStatus" onChange={handleInputChange}>
                         <option value="">상태 선택</option>
                         <option value="Active">재직</option>
                         <option value="Break">휴직</option>
@@ -46,7 +69,7 @@ const UserSearchComponent = () => {
                     <span className="space150"></span>
 
                     <span className="searchTitle">직책</span>
-                    <select name="rnkNo" id="rnkNo">
+                    <select name="rnkNo" id="rnkNo" onChange={handleInputChange}>
                         <option value="">직책 선택</option>
                         {rnkList && rnkList.length > 0 ? (
                             rnkList.map((rnk, index) => (
@@ -62,7 +85,7 @@ const UserSearchComponent = () => {
                     <span className="space150"></span>
 
                     <span className="searchTitle">부서</span>
-                    <select name="dptNo" id="dptNo">
+                    <select name="dptNo" id="dptNo" onChange={handleInputChange}>
                         <option value="">부서 선택</option>
                         {dptList && dptList.length > 0 ? (
                             dptList.map((dpt, index) => (
@@ -78,19 +101,20 @@ const UserSearchComponent = () => {
 
                 <div className="searchRow">
                     <span className="searchTitle">입사일</span>
-                    <input type="date" name="startDate" /> ~
-                    <input type="date" name="endDate" />
+                    <input type="date" name="startDate" onChange={handleInputChange} /> ~
+                    <input type="date" name="endDate" onChange={handleInputChange} />
                     <span className="space330"></span>
-                    <select name="type" id="">
+                    <select name="type" id="" onChange={handleInputChange}>
+                        <option value="">검색조건 선택</option>
                         <option value="stfName">이름</option>
                         <option value="stfEmail">이메일</option>
                     </select>
-                    <input type="text" />
+                    <input type="text" name="keyword" onChange={handleInputChange} />
                 </div>
             </div>
             <div className="contentColumn">
                 <div className="userSearchRow">
-                    <input type="submit" value="검색" />
+                    <input type="submit" value="검색" onClick={searchHandler} />
                 </div>
             </div>
         </div>

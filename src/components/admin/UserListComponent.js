@@ -1,8 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import UserModifyModal from '../modal/UserModifyModal';
 
 const UserListComponent = ({ userList }) => {
     console.log(userList);
+
+    // 모달창 활성화 여부 저장하는 useState
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // 모달창 오픈 핸들러
+    const handleModalOpen = () => {
+        return setModalOpen(true);
+    };
+    // 모달창 닫는 핸들러
+    const handleModalClose = (event) => {
+        const modalClose = document.getElementsByClassName('modalClose');
+        Array.from(modalClose).forEach(function (each) {
+            if (event.target === each) {
+                return setModalOpen(false);
+            }
+        });
+    };
 
     const formData = (dateString) => {
         return dateString.substring(0, 10);
@@ -36,7 +53,7 @@ const UserListComponent = ({ userList }) => {
                 userList.dtoList.map((user, index) => (
                     <div className="adminUserRow">
                         <div>{userList.total - index}</div>
-                        <div>{user.stfStatus === 'Break' ? '퇴직' : user.stfStatus === 'Active' ? '재직' : '휴직'}</div>
+                        <div>{user.stfStatus === 'Break' ? '휴직' : user.stfStatus === 'Active' ? '재직' : '퇴직'}</div>
                         <div>{user.stfName}</div>
                         <div>{user.stfNo}</div>
                         <div>{rankMapping[user.rnkNo]}</div>
@@ -45,8 +62,10 @@ const UserListComponent = ({ userList }) => {
                         <div>{user.stfEmail}</div>
                         <div>
                             {/* 파라미터로 no값 들고 가기 */}
-                            <Link to="/userModify">수정</Link>
+                            <span onClick={handleModalOpen}>수정</span>
                         </div>
+
+                        {modalOpen && <UserModifyModal handleModalClose={handleModalClose}></UserModifyModal>}
                     </div>
                 ))
             ) : (
