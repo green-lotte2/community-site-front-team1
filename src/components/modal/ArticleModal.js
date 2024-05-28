@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { modifyArticleCate } from '../../api/AdminApi';
+import UserModifyModal from './UserModifyModal';
+
 
 const ArticleModal = ({ cateData, handleModalClose }) => {
     const [formData, setFormData] = useState({
@@ -33,7 +35,7 @@ const ArticleModal = ({ cateData, handleModalClose }) => {
             <div className="modalBox">
                 <div className="modalHeader">
                     <p>게시판 권한 변경</p>
-                    <p className="modalClose" onClick={handleModalClose}>
+                    <p className="modalClose" onClick={handleModalClose} style={{cursor: "pointer"}}>
                         X
                     </p>
                 </div>

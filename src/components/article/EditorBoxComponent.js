@@ -13,7 +13,6 @@ const EditorBoxComponent = () => {
   const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
-    const articleNo = queryParams.get('articleNo');
 
   const navigate = useNavigate();
     // 게시글 제목 보관
@@ -27,21 +26,25 @@ const EditorBoxComponent = () => {
     };
 
     const submitHandler = async () => {
-      const articleContent = editorRef.current.getInstance().getHTML();
-      const stfNo = '0000'; // 가정한 stfNo 값
-      try {
-        const response = await writeArticle({ stfNo, articleTitle, articleCnt: articleContent });
-        if (response === 1) {
-          alert('글이 성공적으로 작성되었습니다.');
-          navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
-        } else {
-          alert('글 작성에 실패하였습니다.');
-        }
-      } catch (error) {
-        console.error('Failed to write article:', error);
-        alert('글 작성 중 오류가 발생하였습니다.');
+      const articleCnt = editorRef.current.getInstance().getHTML();
+
+      // UUID 생성
+    const articleNo = 50;   // Autoincrement 없어서 임의로 넣었음
+    const stfNo = 'HR3326';   // 로그인아이디 없어서 임의로 넣었음
+
+    try {
+      const response = await writeArticle({ articleNo, stfNo, articleTitle, articleCnt, articleCateNo });
+      if (response === 1) {
+        alert('글이 성공적으로 작성되었습니다.');
+        navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+      } else {
+        alert('글 작성에 실패하였습니다.');
       }
-    };
+    } catch (error) {
+      console.error('Failed to write article:', error);
+      alert('글 작성 중 오류가 발생하였습니다.');
+    }
+  };
 
     const cancelHandler = () => {
       navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
