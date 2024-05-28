@@ -747,7 +747,7 @@ section {
   height: 800px;
   padding: 20px;
   border-radius: 10px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, .2);
   border: 2px solid rgba(255, 255, 255, .2);
 }
@@ -882,6 +882,91 @@ section {
 #completeBox span {
   font-size: 26px;
 }
+
+/* 아이디 비밀번호 찾기 */
+.findIdBack {
+  background-image: url(../public/images/findIdBack.jpg);
+  background-size: cover;
+}
+.findPwBack {
+  background-image: url(../public/images/findPwBack.jpg);
+  background-size: cover;
+}
+.findPack {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+}
+.findPack > div {
+  min-width: 100px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 10px;
+  align-content: center;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.findPack > div > input {
+  width: 400px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 4px 10px;
+  font-size: 18px;
+  border: 2px solid white;
+  border-radius: 4px;
+  background-color: transparent;
+  color: white;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+}
+.findPack > div > input[type="email"] {
+  width: 310px;
+}
+.findPack > div > button {
+  width: 80px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 4px 10px;
+  font-size: 18px;
+  border: 2px solid white;
+  border-radius: 4px;
+  background-color: transparent;
+  color: white;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.findPack > div > p {
+  box-sizing: border-box;
+  font-size: 16px;
+  background-color: transparent;
+  color: rgb(255, 201, 201);
+}
+.findPack > div > span {
+  box-sizing: border-box;
+  font-size: 26px;
+  background-color: transparent;
+  color: rgb(161, 255, 178);
+}
+.findPack > div > h2 {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+.bigBtn {
+  width: 170px!important;
+}
+.btnColorW {
+  background-color: white!important;
+  color: #111!important;
+  font-weight: bold; 
+}
+.btnColorR {
+  background-color: rgb(70, 131, 255)!important;
+  border: 2px solid rgb(70, 131, 255)!important;
+  color: white!important;
+  font-weight: bold; 
+}
+
 
 /* 게시판 */
 .listType {

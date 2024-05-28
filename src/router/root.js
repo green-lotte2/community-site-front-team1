@@ -12,6 +12,9 @@ import ViewPage from '../pages/artice/ViewPage';
 import UserListPage from '../pages/admin/UserListPage';
 import UserModifyPage from '../pages/admin/UserModifyPage';
 import ArticleListPage from '../pages/admin/ArticleListPage';
+import FindIdPage from '../pages/member/FindIdPage';
+import FindPwPage from '../pages/member/FindPwPage';
+import UpdatePwPage from '../pages/member/UpdatePwPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -23,6 +26,9 @@ const root = createBrowserRouter([
     { path: '/terms', element: <TermsPage /> },
     { path: '/register', element: <RegisterPage /> },
     { path: '/complete', element: <CompletePage /> },
+    { path: '/findId', element: <FindIdPage /> },
+    { path: '/findPw', element: <FindPwPage /> },
+    { path: '/updatePw', element: <UpdatePwPage /> },
 
     // main
     { path: '/main', element: <MainPage /> },
