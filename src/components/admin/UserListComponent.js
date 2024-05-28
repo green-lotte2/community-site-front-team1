@@ -36,7 +36,7 @@ const UserListComponent = ({ userList }) => {
                 userList.dtoList.map((user, index) => (
                     <div className="adminUserRow">
                         <div>{userList.total - index}</div>
-                        <div>{user.stfStatus === 'Break' ? '퇴직' : user.stfStatus === 'Active' ? '재직' : '휴직'}</div>
+                        <div>{user.stfStatus === 'Break' ? '휴직' : user.stfStatus === 'Active' ? '재직' : '퇴직'}</div>
                         <div>{user.stfName}</div>
                         <div>{user.stfNo}</div>
                         <div>{rankMapping[user.rnkNo]}</div>

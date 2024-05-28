@@ -31,7 +31,7 @@ const UserListPage = () => {
 
         try {
             // 새로운 페이지 정보로 데이터 가져오기
-            const response = await getUserList;
+            const response = await getUserList(newPageNation);
             console.log(response);
             setUserList(response);
             // 페이지 정보 업데이트
@@ -46,20 +46,24 @@ const UserListPage = () => {
             try {
                 const response = await getUserList(pageNation);
                 setUserList(response);
-                console.log('페이지로드' + response);
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [pageNation]);
+
+    const handleSearch = (searchParams) => {
+        const newPageNation = { ...pageNation, ...searchParams, pg: 1 };
+        setPageNation(newPageNation);
+    };
 
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
                 <div className="contentTitle font30 alignL">회원 목록</div>
 
-                <UserSearchComponent></UserSearchComponent>
+                <UserSearchComponent onSearch={handleSearch} />
 
                 <div className="contentColumn">
                     <div className="adminUserRow">
@@ -74,7 +78,7 @@ const UserListPage = () => {
                         <div>관리</div>
                     </div>
 
-                    <UserListComponent userList={userList}></UserListComponent>
+                    <UserListComponent userList={userList} />
                 </div>
 
                 <PagingComponent onPageChange={handlePageChange} />
