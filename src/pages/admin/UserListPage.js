@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import UserListComponent from '../../components/admin/UserListComponent';
 import UserSearchComponent from '../../components/admin/UserSearchComponent';
 import { getUserList } from '../../api/AdminApi';
+import UserModifyModal from '../../components/modal/UserModifyModal';
 
 const UserListPage = () => {
     const [userList, setUserList] = useState(null);
@@ -83,6 +84,7 @@ const UserListPage = () => {
 
                 <PagingComponent onPageChange={handlePageChange} />
             </div>
+
         </MainLayout>
     );
 };

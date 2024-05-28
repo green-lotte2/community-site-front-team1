@@ -91,8 +91,6 @@ const ListPage = () => {
       <div className="contentBox boxStyle7">
       <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
   
-
-        
         <SearchComponent onSearch={handleSearch} />
 
         <div className="contentColumn">

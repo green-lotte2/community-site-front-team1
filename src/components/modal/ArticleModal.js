@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import UserModifyModal from './UserModifyModal';
 
 const ArticleModal = ({ cateData, handleModalClose }) => {
     // const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const ArticleModal = ({ cateData, handleModalClose }) => {
             <div className="modalBox">
                 <div className="modalHeader">
                     <p>게시판 권한 변경</p>
-                    <p className="modalClose" onClick={handleModalClose}>
+                    <p className="modalClose" onClick={handleModalClose} style={{cursor: "pointer"}}>
                         X
                     </p>
                 </div>
