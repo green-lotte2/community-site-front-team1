@@ -2,24 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import MainLayout from '../../layout/MainLayout'
-import { getArticleCate, getArticleView } from '../../api/ArticleApi';
+import { getArticleCate, getArticleModify } from '../../api/ArticleApi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const ViewPage = () => {
+const ModifyPage = () => {
   const navigate = useNavigate();
 
-    const modifyHandler = () => {
-      alert("수정페이지로 이동합니다.")
-      navigate(`/modify?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=1`);
+    const completeHandler = () => {
+      alert("수정완료")
   }
 
-  const deleteHandler = () => {
-      alert("삭제")
-  }
-
-  const listHandler = () => {
+  const cancelHandler = () => {
     setTimeout(() => {
-      navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+      navigate(`/view?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=1`);
     }, 0);
   };
 
@@ -52,11 +47,11 @@ const ViewPage = () => {
   fetchData();
 }, []);
 
-// 페이지 랜더링 될 때 호출(게시판 제목)
+// 페이지 랜더링 될 때 호출(게시판 제목, 내용)
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await getArticleView(articleNo);
+      const response = await getArticleModify(articleNo);
       setArticleTitle(response.articleTitle);
       setArticleCnt(response.articleCnt);
       
@@ -66,10 +61,6 @@ useEffect(() => {
   };
   fetchData();
 }, []);
-
-
-
-
 
   return (
     <MainLayout>
@@ -88,9 +79,8 @@ useEffect(() => {
 
             <div className='writeRow'>
               <div className='wrtieBtnBox'>
-                <input type='submit' value={"수정"} onClick={modifyHandler}/>
-                <input type='submit' value={"삭제"} onClick={deleteHandler}/>
-                <input type='button' value={"목록"} onClick={listHandler}/>
+                <input type='button' value={"수정취소"} onClick={cancelHandler}/>
+                <input type='submit' value={"수정완료"} onClick={completeHandler}/>
               </div>
             </div>
 
@@ -99,4 +89,4 @@ useEffect(() => {
   )
 }
 
-export default ViewPage;
+export default ModifyPage;
