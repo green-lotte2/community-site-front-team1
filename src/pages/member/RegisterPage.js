@@ -188,6 +188,7 @@ const RegisterPage = () => {
 
     //회원가입버튼을 누르면 post전송
     const submitHandler = (e) => {
+
         e.preventDefault();
         alert("인증버튼을 클릭");
 
