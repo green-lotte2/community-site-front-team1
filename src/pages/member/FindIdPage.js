@@ -12,8 +12,7 @@ const FindIdPage = () => {
 
     const [stf, setStf] = useState({
         stfName: "",
-        stfEmail: "",
- 
+        stfEmail: "", 
     });
 
 
@@ -119,13 +118,16 @@ const FindIdPage = () => {
             console.log(err);
           });
       };
-
       
+      const goGoLogin = (e) => {
+        navigate(`/login`);
 
+      }
 
+      const goGoFindPw= (e) => {
+        navigate(`/FindPw`);
 
-  
-
+      }
 
 
   return (
@@ -186,8 +188,8 @@ const FindIdPage = () => {
 
             <div className='findPack'>
                 <div>
-                    <button className='btnColorW'>뒤로</button>
-                    <button className='btnColorW'>로그인</button>
+                    <button className='btnColorW' onClick={goGoLogin}>로그인</button>
+                    <button className='btnColorW' onClick={goGoFindPw}>비밀번호찾기</button>
                 </div>
             </div>
 
