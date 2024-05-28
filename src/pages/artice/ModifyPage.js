@@ -70,11 +70,11 @@ useEffect(() => {
             <div className='writeRow'>
                 <p>{articleTitle}</p>
                 <p>{articleCnt}</p>
-              
-                {/*여기 articleCnt 내용 자꾸만 사라짐..... 왜인지 모르겠음
-                  혹시나 잊을까봐 위에 p태그로 articleCnt 추가해놨음*/}
 
                 <Viewer initialValue={articleCnt}/>
+                {/*여기 articleCnt 내용 자꾸만 사라짐..... 왜인지 모르겠음
+                  혹시나 잊을까봐 위에 p태그로 articleCnt 추가해놨음*/}
+                  
             </div>
 
             <div className='writeRow'>

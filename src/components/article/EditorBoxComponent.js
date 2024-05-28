@@ -30,7 +30,7 @@ const EditorBoxComponent = () => {
 
       // UUID 생성
     const articleNo = 50;   // Autoincrement 없어서 임의로 넣었음
-    const stfNo = 'HR3326';   // 로그인아이디 없어서 임의로 넣었음
+    const stfNo = 'HR1403';   // 로그인아이디 없어서 db stfNo로 직접 넣었음
 
     try {
       const response = await writeArticle({ articleNo, stfNo, articleTitle, articleCnt, articleCateNo });
