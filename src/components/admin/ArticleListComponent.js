@@ -17,6 +17,7 @@ const ArticleListComponent = () => {
     const handleModalOpen = (index) => {
         setModalOpen((prev) => ({ ...prev, [index]: true }));
     };
+    let aa = 1;
     // 모달창 닫는 핸들러
     const handleModalClose = (index) => {
         setModalOpen((prev) => ({ ...prev, [index]: false }));
@@ -37,7 +38,7 @@ const ArticleListComponent = () => {
             }
         };
         fetchData();
-    }, [handleModalClose]);
+    }, []);
 
     return (
         <>
