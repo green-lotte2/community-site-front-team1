@@ -72,7 +72,7 @@ const RegisterPage = () => {
         const isPasswordValid = passwordMessage === "안전한 비밀번호 입니다.";
         const isEmailValid = emailMessage === "성공";
         const isPhoneValid = phoneMessage === "사용 가능한 번호입니다:-)";
-        const isEmailCodeValid = verificationMessage =="성공";
+        const isEmailCodeValid = verificationMessage === "성공";
         const isPasswordMatch = stf.stfPass === stf.stfPass2;
         const isFileUploaded = stf.thumbFile !== null;
         setIsFormValid(isAllFieldsFilled && isPasswordValid && isEmailValid && isPhoneValid && isPasswordMatch && isFileUploaded&&isEmailCodeValid);
@@ -354,7 +354,7 @@ const RegisterPage = () => {
                                 />
                             </div>
                             {stf.stfPass !== stf.stfPass2 && <span>비밀번호가 일치하지 않습니다.</span>}
-                            {stf.stfPass == stf.stfPass2 && <span>비밀번호가 일치합니다.</span>}
+                            {stf.stfPass === stf.stfPass2 && <span>비밀번호가 일치합니다.</span>}
                         </div>
                     </div>
 
