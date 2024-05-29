@@ -79,12 +79,11 @@ const UserListPage = () => {
                         <div>관리</div>
                     </div>
 
-                    <UserListComponent userList={userList} />
+                    <UserListComponent userList={userList} setUserList={setUserList} />
                 </div>
 
                 <PagingComponent onPageChange={handlePageChange} />
             </div>
-
         </MainLayout>
     );
 };
