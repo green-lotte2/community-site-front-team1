@@ -27,7 +27,7 @@ const PagingComponent = ({articleList, changePage}) => {
     }
 
   return (
-    <div>
+    <div className='paging'>
         {prev}
         {pages}
         {next}

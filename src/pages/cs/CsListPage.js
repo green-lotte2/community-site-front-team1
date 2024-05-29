@@ -112,4 +112,4 @@ const CsListPage = () => {
   )
 }
 
-export default CsListPage
+export default CsListPage;
