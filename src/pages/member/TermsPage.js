@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import MemberLayout from '../../layout/MemberLayout'
 import { Link, useNavigate} from 'react-router-dom'
 import axios from 'axios';
+import { RootUrl } from '../../api/RootUrl.js';
+const rootURL = RootUrl();
 
 const TermsPage = () => {
 
@@ -16,7 +18,7 @@ const TermsPage = () => {
 useEffect(() => {
   console.log("컴포넌트가 렌더링될 때(마운트)");
 
-  axios.get('http://localhost:8080/onepie/terms')
+  axios.get(`${rootURL}/terms`)
       .then((data) => {
           setPrivacy(data.data.result1)
           setTerms(data.data.result2)

@@ -4,6 +4,10 @@ import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { Link, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
+import { RootUrl } from '../../api/RootUrl.js';
+const rootURL = RootUrl();
+
+//import { getEmail,getFindPostion,getFindRnk, getVeriftyCode } from '../../api/MemberApi';
 
 
 
@@ -84,7 +88,7 @@ const RegisterPage = () => {
         setPositions(data);    
         */
 
-        axios.get('http://localhost:8080/onepie/findPosition')
+        axios.get(`${rootURL}/findPosition`)
             .then((data) => {
                 setPositions(data.data.result)
                 console.log(data.data.result)
@@ -92,7 +96,7 @@ const RegisterPage = () => {
                 console.log(err);
             });
 
-        axios.get('http://localhost:8080/onepie/findRnk')
+        axios.get(`${rootURL}/findRnk`)
             .then((data) => {
                 setDeps(data.data.result)
                 console.log(data.data.result)
@@ -139,7 +143,7 @@ const RegisterPage = () => {
         }
 
         axios
-            .get(`http://localhost:8080/onepie/sendEmail?email=${stf.stfEmail}`)
+            .get(`${rootURL}/sendEmail?email=${stf.stfEmail}`)
             .then((response) => {
                 const result = response.data.result;
                 const receivedCode = response.data.savedCode;
@@ -165,7 +169,7 @@ const RegisterPage = () => {
 
         e.preventDefault();
 
-        axios.get(`http://localhost:8080/onepie/verifyCode`, {
+        axios.get(`${rootURL}/verifyCode`, {
           params: {
             email: stf.stfEmail,
             code: verificationCode,
@@ -204,7 +208,7 @@ const RegisterPage = () => {
         console.log("formData에 있는것들 찍어보기 : ", formData);
 
         axios
-            .post("http://localhost:8080/onepie/upload", formData, {
+            .post(`${rootURL}/upload`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
