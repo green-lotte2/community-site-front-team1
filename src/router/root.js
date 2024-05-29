@@ -11,13 +11,15 @@ import WritePage from '../pages/artice/WritePage';
 import ViewPage from '../pages/artice/ViewPage';
 import ModifyPage from '../pages/artice/ModifyPage';
 import UserListPage from '../pages/admin/UserListPage';
-import UserModifyPage from '../pages/admin/UserModifyPage';
 import ArticleListPage from '../pages/admin/ArticleListPage';
 import FindIdPage from '../pages/member/FindIdPage';
 import FindPwPage from '../pages/member/FindPwPage';
 import UpdatePwPage from '../pages/member/UpdatePwPage';
 import ArticleModifyPage from '../pages/admin/ArticleModifyPage';
 import CsListPage from '../pages/cs/CsListPage';
+import CsWritePage from '../pages/cs/CsWritePage';
+import ConfigPage from '../pages/admin/ConfigPage';
+import GroupPlanPage from '../pages/member/GroupPlanPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -32,6 +34,7 @@ const root = createBrowserRouter([
     { path: '/findId', element: <FindIdPage /> },
     { path: '/findPw', element: <FindPwPage /> },
     { path: '/updatePw', element: <UpdatePwPage /> },
+    { path: '/groupPlan', element: <GroupPlanPage /> },
 
     // main
     { path: '/main', element: <MainPage /> },
@@ -42,17 +45,18 @@ const root = createBrowserRouter([
     { path: '/view', element: <ViewPage /> },
     { path: '/modify', element: <ModifyPage /> },
 
-    { path: '/write', element: <WritePage /> },
-    { path: '/view', element: <ViewPage /> },
 
     // admin
+    { path: '/config', element: <ConfigPage /> },
     { path: '/userList', element: <UserListPage /> },
-    { path: '/userModify', element: <UserModifyPage /> },
     { path: '/articleList', element: <ArticleListPage /> },
     { path: '/articleModify', element: <ArticleModifyPage /> },
 
     // cs
     { path: '/csList', element: <CsListPage /> },
+    { path: '/csWrite', element: <CsWritePage /> },
+    //{ path: '/csView', element: <CsViewPage /> },
+    //{ path: '/csModify', element: <CsModifyPage /> },
 
 ]);
 export default root;

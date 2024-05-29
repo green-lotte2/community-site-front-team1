@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import MemberLayout from '../../layout/MemberLayout'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import { RootUrl } from '../../api/RootUrl.js';
+const rootURL = RootUrl();
 
 const FindIdPage = () => {
     const navigate = useNavigate();
@@ -56,7 +58,7 @@ const FindIdPage = () => {
         }
 
         axios
-            .get(`http://localhost:8080/onepie/findIdAndSendEmail?email=${stf.stfEmail}`)
+            .get(`${rootURL}/findIdAndSendEmail?email=${stf.stfEmail}`)
             .then((response) => {
                 const result = response.data.result;
                 const receivedCode = response.data.savedCode;
@@ -83,7 +85,7 @@ const FindIdPage = () => {
         e.preventDefault();
 
         //여기는 인증번호 확인하는 곳
-        axios.get(`http://localhost:8080/onepie/verifyCode`, {
+        axios.get(`${rootURL}/verifyCode`, {
           params: {
             email: stf.stfEmail,
             code: code,
@@ -103,7 +105,7 @@ const FindIdPage = () => {
 
 
           //여기는 인증이 끝나고 아이디를 찾는곳 
-          axios.get(`http://localhost:8080/onepie/findId`, {
+          axios.get(`${rootURL}/findId`, {
           params: {
             email: stf.stfEmail,
             name : stf.stfName

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import MemberLayout from '../../layout/MemberLayout';
 import { Link, useNavigate } from 'react-router-dom';
-
-
+import { RootUrl } from '../../api/RootUrl.js';
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login } from "../../slice/LoginSlice"; 
+
+
+const rootURL = RootUrl();
 
 
 const initState = {
@@ -41,7 +43,7 @@ const LoginPage = () => {
       */
   
       axios
-        .post("http://localhost:8080/onepie/login",formData)//loginParam
+        .post(`${rootURL}/login`,formData)//loginParam
         .then((response) => {
           console.log("here1 : " + JSON.stringify(response.data));
   

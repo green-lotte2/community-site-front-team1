@@ -26,6 +26,11 @@ export const getRnkList = async (data) => {
     return response.data;
 };
 
+export const modifyUserLank = async (data) => {
+    const response = await axios.put(`${rootURL}/user/modify`, data);
+    return response.data;
+};
+
 export const getArticleCateList = async () => {
     const response = await axios.get(`${rootURL}/articleCateList`);
     return response.data;
@@ -33,5 +38,10 @@ export const getArticleCateList = async () => {
 
 export const modifyArticleCate = async (data) => {
     const response = await axios.put(`${rootURL}/modifyCate`, data);
+    return response.data;
+};
+
+export const delArticleCateList = async (data) => {
+    const response = await axios.delete(`${rootURL}/deleteCate?articleCateNo=${data}`);
     return response.data;
 };

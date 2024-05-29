@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ArticleModal from '../modal/ArticleModal';
 import PagingComponent from '../common/PagingComponent';
-import { getArticleCateList, getUserList } from '../../api/AdminApi';
+import { delArticleCateList, getArticleCateList, getUserList } from '../../api/AdminApi';
 
 const ArticleListComponent = () => {
     // 모달 컴포넌트로 넘겨야할 요소들이 많음
@@ -17,15 +17,33 @@ const ArticleListComponent = () => {
     const handleModalOpen = (index) => {
         setModalOpen((prev) => ({ ...prev, [index]: true }));
     };
-    let aa = 1;
+
     // 모달창 닫는 핸들러
-    const handleModalClose = (index) => {
+    const handleModalClose = (index, modifiedData) => {
         setModalOpen((prev) => ({ ...prev, [index]: false }));
+
+        console.log('modifiedData : ', modifiedData);
+        setArticleCateList((prevList) => {
+            const newList = [...prevList];
+            newList[index] = modifiedData;
+            return newList;
+        });
     };
+
     // 게시판 삭제 핸들러
-    const handleArticleDelete = (index) => {
-        console.log(index);
-        alert('삭제');
+    const handleArticleDelete = async (index) => {
+        const confirmed = window.confirm(
+            '해당 게시판의 게시글이 모두 삭제 되어야 게시판 삭제가 가능합니다. 삭제하시겠습니까?'
+        );
+        if (confirmed) {
+            try {
+                const delItem = await delArticleCateList(articleCateList[index].articleCateNo);
+                const newList = articleCateList.filter((item, i) => i !== index);
+                setArticleCateList(newList);
+            } catch (err) {
+                console.log('게시판 삭제 실패', err);
+            }
+        }
     };
 
     useEffect(() => {
@@ -58,6 +76,9 @@ const ArticleListComponent = () => {
                             <span className="nomalBtn" onClick={() => handleArticleDelete(index)}>
                                 삭제
                             </span>
+                            <span className="nomalBtn" onClick={() => handleArticleDelete(index)}>
+                                게시물 관리
+                            </span>
                         </div>
 
                         <PagingComponent></PagingComponent>
@@ -65,7 +86,7 @@ const ArticleListComponent = () => {
                         {modalOpen[index] && (
                             <ArticleModal
                                 cateData={cate}
-                                handleModalClose={() => handleModalClose(index)}
+                                handleModalClose={(modifiedData) => handleModalClose(index, modifiedData)}
                             ></ArticleModal>
                         )}
                     </div>

@@ -2,6 +2,7 @@ import React from 'react'
 
 const PagingComponent = ({articleList, changePage}) => {
 
+
     // 페이징 처리 함수 (버튼 생성)
     const pages = [];
     if (articleList && articleList.total > 0) {
@@ -26,7 +27,7 @@ const PagingComponent = ({articleList, changePage}) => {
     }
 
   return (
-    <div>
+    <div className='paging'>
         {prev}
         {pages}
         {next}
