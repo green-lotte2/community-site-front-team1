@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Viewer } from '@toast-ui/react-editor';
+
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import MainLayout from '../../layout/MainLayout'
-import { getArticleCate, getArticleView } from '../../api/ArticleApi';
+import { getArticleCate, getArticleDelete, getArticleView } from '../../api/ArticleApi';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Editor } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import '@toast-ui/editor/dist/i18n/ko-kr';
 
 const ViewPage = () => {
+
   const navigate = useNavigate();
 
     const modifyHandler = () => {
@@ -13,15 +21,23 @@ const ViewPage = () => {
       navigate(`/modify?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=1`);
   }
 
-  const deleteHandler = () => {
-      alert("삭제")
-  }
+  const deleteHandler = async () => {
+    const confirmed = window.confirm("정말 삭제하시겠습니까?");
+    if (confirmed) {
+      try {
+        await getArticleDelete({ articleNo, articleCateNo });
+        alert("게시글이 삭제되었습니다.");
+        navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+      } catch (error) {
+        console.error("Failed to delete article:", error);
+        alert("게시글 삭제에 실패하였습니다.");
+      }
+    }
+  };
 
   const listHandler = () => {
-    setTimeout(() => {
-      navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
-    }, 0);
-  };
+    navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+  }
 
     // URL에서 파라미터값 추출
     const location = useLocation();
@@ -32,11 +48,8 @@ const ViewPage = () => {
   // 게시판 카테고리 저장을 위한 스테이트
   const [articleCateName, setArticleCateName] = useState(null);
 
-  // 게시글 제목을 불러오기 위한 스테이트
-  const [articleTitle, setArticleTitle] = useState(null);
-
-  // 게시글 내용을 불러오기 위한 스테이트
-  const [articleCnt, setArticleCnt] = useState(null);
+  // 제목, 내용
+  const [articleView, setArticleView] = useState("");
 
  // 페이지 랜더링 될 때 호출(게시판 카테고리)
  useEffect(() => {
@@ -57,8 +70,10 @@ useEffect(() => {
   const fetchData = async () => {
     try {
       const response = await getArticleView(articleNo);
-      setArticleTitle(response.articleTitle);
-      setArticleCnt(response.articleCnt);
+      //setArticleTitle(response.articleTitle);
+      //setArticleCnt(response.articleCnt);
+      console.log(response)
+      setArticleView(response)
       
     } catch (error) {
       console.error('Failed to fetch article title:', error);
@@ -69,21 +84,19 @@ useEffect(() => {
 
 
 
-
-
   return (
     <MainLayout>
         <div className="contentBox boxStyle7">
             <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
             
             <div className='writeRow'>
-                <p>{articleTitle}</p>
-                <p>{articleCnt}</p>
-              
-                {/*여기 articleCnt 내용 자꾸만 사라짐..... 왜인지 모르겠음
-                  혹시나 잊을까봐 위에 p태그로 articleCnt 추가해놨음*/}
-
-                <Viewer initialValue={articleCnt}/>
+                <p>{articleView.articleTitle}</p>
+                
+                {articleView.articleCnt ? (
+            <Viewer initialValue={articleView.articleCnt} />
+          ) : (
+            <p>Loading...</p>
+          )}
             </div>
 
             <div className='writeRow'>

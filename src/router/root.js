@@ -9,6 +9,7 @@ import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
 import WritePage from '../pages/artice/WritePage';
 import ViewPage from '../pages/artice/ViewPage';
+import ModifyPage from '../pages/artice/ModifyPage';
 import UserListPage from '../pages/admin/UserListPage';
 import UserModifyPage from '../pages/admin/UserModifyPage';
 import ArticleListPage from '../pages/admin/ArticleListPage';
@@ -39,6 +40,7 @@ const root = createBrowserRouter([
     { path: '/list', element: <ListPage /> },
     { path: '/write', element: <WritePage /> },
     { path: '/view', element: <ViewPage /> },
+    { path: '/modify', element: <ModifyPage /> },
 
     { path: '/write', element: <WritePage /> },
     { path: '/view', element: <ViewPage /> },
