@@ -127,7 +127,7 @@ const UpdatePwPage = () => {
                 <div></div>
                 <div>                   
                     {stf.stfPass !== stf.stfPass2 && <span>비밀번호가 일치하지 않습니다.</span>}
-                    {stf.stfPass == stf.stfPass2 && <span>비밀번호가 일치합니다.</span>}
+                    {stf.stfPass === stf.stfPass2 && <span>비밀번호가 일치합니다.</span>}
                 </div>
             </div>
 

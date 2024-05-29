@@ -60,6 +60,7 @@ body {
     margin: 0 4px;
     border-radius: 4px;
     cursor: pointer;
+    border: 1px solid #808080;
 }
 .paging > button:hover {
     background-color: #eeeeee;
@@ -234,8 +235,8 @@ section {
     flex-direction: column;
     width: 297px;
     padding: 10px;
-    background-color: #070f2b;
-    border-right: 2px solid #535c91;
+    background: linear-gradient(135deg, #232526, #414345); /* 다크 블랙-그레이 그라데이션 */
+    border-right: 2px solid #414345; /* 그레이 테두리 */
 }
 #contentArea {
     flex-direction: column;
@@ -329,8 +330,7 @@ section {
     display: flex;
     width: 100%;
     height: 30px;
-    margin: 4px 0;
-    padding-left: 20px;
+    padding: 20px 0 20px 20px;
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
@@ -341,12 +341,14 @@ section {
     padding: 5px;
 }
 .sideTab p {
-    font-size: 14px;
+    font-size: 16px;
     color: white;
 }
-
+.sideTab:hover {
+    background-color: #414345;
+}
 .sideTabOn {
-    background-color: #7bc9ff;
+    background-color: #414345;
 }
 
 /* 상단바 */
@@ -464,6 +466,13 @@ section {
     padding: 20px;
     box-sizing: border-box;
 }
+.boxStyle8 {
+    width: 1580px;
+    height: auto;
+    margin: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
 .contentTitle {
     display: flex;
@@ -574,6 +583,8 @@ section {
 .termsBack {
     background-image: url(../public/images/termsBack.jpg);
     background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
 .memberBox {
     display: flex;
@@ -588,7 +599,7 @@ section {
     height: 800px;
     padding: 20px;
     border-radius: 10px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.2);
 }
@@ -670,22 +681,37 @@ section {
     padding: 20px;
     justify-content: center;
     align-items: center;
-    background-color: white;
 }
-
+.loginBack {
+    background-image: url(../public/images/loginBack.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
 .loginImg {
     display: flex;
     width: 400px;
 }
 .socialLogin {
+    width: 400px;
+    height: 50px;
     display: flex;
     align-items: center;
+    padding: 10px;
+    margin: 0 0 20px 0;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
 }
 .socialLogin > img {
-    width: 50px;
+    width: 30px;
 }
 .socialLogin > span {
     font-size: 18px;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 .loginBox > div {
     display: flex;
@@ -695,33 +721,65 @@ section {
     flex-direction: column;
     padding: 20px 0;
     margin: 20px 0;
-    border-top: 1px solid #111;
-    border-bottom: 1px solid #111;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
 }
 .loginBox > form > input {
     margin: 5px 0;
-    padding: 0 10px;
     width: 400px;
-    height: 40px;
-    font-size: 16px;
+    height: 50px;
     box-sizing: border-box;
+
+    font-size: 16px;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: transparent;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.loginBox > form > input::placeholder {
+    font-size: 16px;
+    color: white;
 }
 .loginBox > form > input[type='submit'] {
     background-color: #ffde1d;
     font-weight: bold;
+    font-size: 18px;
     border: 0;
+    cursor: pointer;
+}
+.loginBox > form > label {
+    display: flex;
+    height: 30px;
+    font-size: 14px;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    align-items: center;
+}
+.loginBox > form > label > input {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
 .loginBox > p {
     display: flex;
     font-size: 40px;
     margin: 20px 0;
 }
-.loginEtc {
-    margin-top: 20px;
-}
 .loginEtc > a {
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
     font-size: 16px;
-    margin: 0 20px;
+    margin: 0 20px 20px 0;
+}
+.loginEtc > p {
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    margin: 0 20px 10px 0;
 }
 
 /* signup */
@@ -729,6 +787,8 @@ section {
 .signupBack {
     background-image: url(../public/images/signupBack.jpg);
     background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
 .singupText {
     width: 200px;
@@ -770,6 +830,8 @@ section {
 .registerBack {
     background-image: url(../public/images/registerBack.jpg);
     background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
 
 .registerTitle {
@@ -904,10 +966,14 @@ section {
 .findIdBack {
     background-image: url(../public/images/findIdBack.jpg);
     background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
 .findPwBack {
     background-image: url(../public/images/findPwBack.jpg);
     background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
 .findPack {
     display: flex;

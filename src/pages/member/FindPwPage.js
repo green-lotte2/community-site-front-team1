@@ -112,7 +112,7 @@ const FindPwPage = () => {
             setCodeMessage(result); // 서버에서 받은 인증 결과를 상태로 관리
             console.log("아니 왜 실패로 뜨는거야!!!"+result);
 
-            if(result=='성공'){
+            if(result ==='성공'){
 
                 setVerifySuccess(true);
                 setShowResetButton(true); // 버튼 보이기
