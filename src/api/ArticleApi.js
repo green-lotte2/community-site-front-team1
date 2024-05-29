@@ -22,20 +22,12 @@ export const getArticleCate = async (data) => {
 export const getArticleView = async (data) => {
     console.log('글 보기', data);
     const response = await axios.get(`${rootURL}/view?articleNo=${data}`);
-
-    return response.data;
-};
-
-// 게시글 modify 폼
-export const getArticleModify = async (data) => {
-    console.log('글 수정(폼)', data);
-    const response = await axios.get(`${rootURL}/modify?articleNo=${data}`);
-
+    console.log(response);
     return response.data;
 };
 
 // 게시글 작성
-export const writeArticle = async (data) => {
+export const getArticleWrite = async (data) => {
     console.log('글 쓰기', data);
     try {
         const response = await axios.post(`${rootURL}/write`, data);
@@ -46,10 +38,32 @@ export const writeArticle = async (data) => {
     }
 };
 
-// 게시글 삭제
-export const deleteArticle = async (data) => {
-    console.log('글 삭제', data);
-    const response = await axios.post(`${rootURL}/delete`, data);
+// 게시글 modify 폼
+export const getArticleModifyForm = async (data) => {
+    console.log('글 수정(폼)', data);
+    const response = await axios.get(`${rootURL}/modify?articleNo=${data}`);
 
     return response.data;
 };
+
+
+// 게시글 수정
+export const getArticleModify = async (data) => {
+    console.log('글 수정(폼)', data);
+    const response = await axios.get(`${rootURL}/modify?articleNo=${data}`);
+
+    return response.data;
+};
+
+
+// 게시글 삭제
+export const getArticleDelete = async (data) => {
+    console.log('글 삭제', data);
+    try {
+      const response = await axios.post(`${rootURL}/delete`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to delete article:', error);
+      throw error;
+    }
+  };

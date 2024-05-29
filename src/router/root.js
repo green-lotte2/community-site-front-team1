@@ -45,6 +45,7 @@ const root = createBrowserRouter([
     { path: '/view', element: <ViewPage /> },
     { path: '/modify', element: <ModifyPage /> },
 
+
     // admin
     { path: '/config', element: <ConfigPage /> },
     { path: '/userList', element: <UserListPage /> },
