@@ -122,11 +122,11 @@ body {
     width: 100px;
 }
 .modalRow > div:nth-child(2) {
-    width: 200px;
+    width: 201px;
 }
 
 .modalRow > div > select {
-    width: 120px;
+    width: 170px;
     height: 40px;
     font-size: 18px;
 }
@@ -171,7 +171,7 @@ body {
 .nomalBtn {
     display: inline-block;
     width: auto;
-    font-size: 16px;
+    font-size: 15px;
     padding: 4px 6px;
     margin: 0 5px;
     line-height: 24px;
@@ -716,31 +716,29 @@ section {
 /* signup */
 
 .signupBack {
-  background-image: url(../public/images/signupBack.jpg);
-  background-size: cover;
+    background-image: url(../public/images/signupBack.jpg);
+    background-size: cover;
 }
 .singupText {
-  width: 200px;
-  font-size: 30px;
-  font-weight: bold;
-  text-align: center;
-  padding: 10px 20px;
-  margin: 0 10px;
-  border: 2px solid white;
-  border-radius: 10px;
-  color: white;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    width: 200px;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .singupText:hover {
-  background-color: #a4a4a4;
-  border: 1px solid #a4a4a4;
-
+    background-color: #a4a4a4;
+    border: 1px solid #a4a4a4;
 }
 
 /* register */
 .registerBox {
-
     justify-content: center;
     display: flex;
     position: fixed;
@@ -757,7 +755,6 @@ section {
     backdrop-filter: blur(5px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.2);
-
 }
 .registerBack {
     background-image: url(../public/images/registerBack.jpg);
@@ -894,88 +891,87 @@ section {
 
 /* 아이디 비밀번호 찾기 */
 .findIdBack {
-  background-image: url(../public/images/findIdBack.jpg);
-  background-size: cover;
+    background-image: url(../public/images/findIdBack.jpg);
+    background-size: cover;
 }
 .findPwBack {
-  background-image: url(../public/images/findPwBack.jpg);
-  background-size: cover;
+    background-image: url(../public/images/findPwBack.jpg);
+    background-size: cover;
 }
 .findPack {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0;
 }
 .findPack > div {
-  min-width: 100px;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 10px;
-  align-content: center;
-  color: white;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    min-width: 100px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 10px;
+    align-content: center;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 .findPack > div > input {
-  width: 400px;
-  height: 40px;
-  box-sizing: border-box;
-  padding: 4px 10px;
-  font-size: 18px;
-  border: 2px solid white;
-  border-radius: 4px;
-  background-color: transparent;
-  color: white;
-  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    width: 400px;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 4px 10px;
+    font-size: 18px;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: transparent;
+    color: white;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
 }
-.findPack > div > input[type="email"] {
-  width: 310px;
+.findPack > div > input[type='email'] {
+    width: 310px;
 }
 .findPack > div > button {
-  width: 80px;
-  height: 40px;
-  box-sizing: border-box;
-  padding: 4px 10px;
-  font-size: 18px;
-  border: 2px solid white;
-  border-radius: 4px;
-  background-color: transparent;
-  color: white;
-  margin-left: 10px;
-  cursor: pointer;
+    width: 80px;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 4px 10px;
+    font-size: 18px;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: transparent;
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
 }
 .findPack > div > p {
-  box-sizing: border-box;
-  font-size: 16px;
-  background-color: transparent;
-  color: rgb(255, 201, 201);
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: transparent;
+    color: rgb(255, 201, 201);
 }
 .findPack > div > span {
-  box-sizing: border-box;
-  font-size: 26px;
-  background-color: transparent;
-  color: rgb(161, 255, 178);
+    box-sizing: border-box;
+    font-size: 26px;
+    background-color: transparent;
+    color: rgb(161, 255, 178);
 }
 .findPack > div > h2 {
-  font-size: 16px;
-  margin-bottom: 30px;
+    font-size: 16px;
+    margin-bottom: 30px;
 }
 .bigBtn {
-  width: 170px!important;
+    width: 170px !important;
 }
 .btnColorW {
-  background-color: white!important;
-  color: #111!important;
-  font-weight: bold; 
+    background-color: white !important;
+    color: #111 !important;
+    font-weight: bold;
 }
 .btnColorR {
-  background-color: rgb(70, 131, 255)!important;
-  border: 2px solid rgb(70, 131, 255)!important;
-  color: white!important;
-  font-weight: bold; 
+    background-color: rgb(70, 131, 255) !important;
+    border: 2px solid rgb(70, 131, 255) !important;
+    color: white !important;
+    font-weight: bold;
 }
-
 
 /* 게시판 */
 .listType {
@@ -1228,6 +1224,7 @@ section {
     width: 100%;
     border-bottom: 1px solid #808080;
     align-items: center;
+    justify-content: center;
 }
 .adminUserRow > div {
     display: flex;
@@ -1288,7 +1285,7 @@ section {
     display: flex;
     align-items: center;
     height: 100%;
-    padding: 10px 20px;
+    padding: 10px 0px;
     font-size: 16px;
     box-sizing: border-box;
 }
@@ -1302,7 +1299,7 @@ section {
     justify-content: center;
 }
 .adminArticleRow > div:nth-child(2) {
-    width: 590px;
+    width: 570px;
 }
 .adminArticleRow > div:nth-child(3) {
     width: 150px;
