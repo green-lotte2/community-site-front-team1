@@ -3,8 +3,8 @@ import SideTabComponent from './SideTabComponent'
 
 const SideBoxComponent = ({ sideBarCate }) => {
   return (
-    <div class="sideBox">
-        <div class="sideTitle">
+    <div className="sideBox">
+        <div className="sideTitle">
             <span>■</span>
             <div>
                 {(sideBarCate === "admin") && <p>관리자</p>}
@@ -17,8 +17,10 @@ const SideBoxComponent = ({ sideBarCate }) => {
         {(sideBarCate === "admin") && 
           <>
             <SideTabComponent sideTabCate={"index"}></SideTabComponent>
+            <SideTabComponent sideTabCate={"config"}></SideTabComponent>
             <SideTabComponent sideTabCate={"userList"}></SideTabComponent>
             <SideTabComponent sideTabCate={"articleList"}></SideTabComponent>
+            <SideTabComponent sideTabCate={"articleModify?articleCateNo=1&pg=1"}></SideTabComponent>
           </>
         }
         {(sideBarCate === "private") && 

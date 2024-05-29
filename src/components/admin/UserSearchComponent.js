@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { findStfList, getDptList, getRnkList } from '../../api/AdminApi';
+import { getDptList, getRnkList } from '../../api/AdminApi';
 
 const UserSearchComponent = ({ onSearch }) => {
     const [dptList, setDptList] = useState(null);
@@ -44,12 +44,16 @@ const UserSearchComponent = ({ onSearch }) => {
         const { name, value } = e.target;
         setSearchParams((prevParams) => ({
             ...prevParams,
-            [name]: value,
+            [name]: value === '' ? null : value,
         }));
     };
 
     const searchHandler = (e) => {
         e.preventDefault();
+        if (searchParams.keyword && !searchParams.type) {
+            alert('검색 조건을 선택하세요.');
+            return;
+        }
         console.log('Search Params:', searchParams);
         onSearch(searchParams);
     };
@@ -109,7 +113,18 @@ const UserSearchComponent = ({ onSearch }) => {
                         <option value="stfName">이름</option>
                         <option value="stfEmail">이메일</option>
                     </select>
-                    <input type="text" name="keyword" onChange={handleInputChange} />
+                    <input
+                        type="text"
+                        name="keyword"
+                        placeholder="검색어를 입력하세요"
+                        onChange={handleInputChange}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                searchHandler(e);
+                            }
+                        }}
+                    />
                 </div>
             </div>
             <div className="contentColumn">

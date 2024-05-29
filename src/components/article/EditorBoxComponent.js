@@ -4,19 +4,20 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getArticleCate, writeArticle } from '../../api/ArticleApi';
+import { getArticleWrite } from '../../api/ArticleApi';
 
 const EditorBoxComponent = () => {
 
   const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
     // 게시글 제목 보관
     const [articleTitle, setArticleTitle] = useState('');
+
     // 게시글 내용 보관
     const editorRef = useRef();
 
@@ -26,14 +27,13 @@ const EditorBoxComponent = () => {
     };
 
     const submitHandler = async () => {
-      const articleCnt = editorRef.current.getInstance().getHTML();
+    const articleCnt = editorRef.current.getInstance().getHTML();
 
       // UUID 생성
-    const articleNo = 50;   // Autoincrement 없어서 임의로 넣었음
-    const stfNo = 'HR3326';   // 로그인아이디 없어서 임의로 넣었음
+    const stfNo = 'HR1403';   // 로그인아이디 없어서 db stfNo로 직접 넣었음
 
     try {
-      const response = await writeArticle({ articleNo, stfNo, articleTitle, articleCnt, articleCateNo });
+      const response = await getArticleWrite({stfNo, articleTitle, articleCnt, articleCateNo });
       if (response === 1) {
         alert('글이 성공적으로 작성되었습니다.');
         navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);

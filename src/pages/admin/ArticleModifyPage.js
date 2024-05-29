@@ -2,75 +2,111 @@ import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout';
 import TableListComponent from '../../components/article/TableListComponent';
 import PagingComponent from '../../components/common/PagingComponent';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import SearchComponent from '../../components/article/SearchComponent';
+import { getArticleCate, getArticleList } from '../../api/ArticleApi';
+import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
 const ArticleModifyPage = () => {
-      // pageNation 정보를 저장하는 useState
-      const [pageNation, setPageNation] = useState({
-        "pg" : 1,
-        "articleCateNo" : 0,
-        "type" : null,
-        "keyword" : null
-    });
+    // URL에서 파라미터값 추출
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const articleCateNo = queryParams.get('articleCateNo');
+
+  // 게시판 제목 상태 저장을 위한 스테이트
+  const [articleCateName, setArticleCateName] = useState(null);
   
-    // 서버에서 받아온 resopnseDTO를 저장하는 useState
-    const [articleList, setArticleList] = useState(null);
-    
-    // 서버에서 데이터를 받아오는 useEffect
-    useEffect(() => {
+  // 페이지 랜더링 될 때 호출
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getArticleCate(articleCateNo);
+        setArticleCateName(response.articleCateName);
+        
+      } catch (error) {
+        console.error('Failed to fetch article category:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  
+  let pg = queryParams.get('pg');
+    if (pg === null) {
+        pg = 1;
+    }
+
+    // 서버에 전달할 페이지 정보를 저장하는 useState 
+    const [pageRequest, setPageRequest] = useState({
+    "pg": pg,
+    "articleCateNo": articleCateNo,
+    "type": null,
+    "keyword": null,
+    "startDate": null,
+    "endDate": null,
+    "sort": 'default',
+  });
+
+  // 서버에서 받아온 articleList 정보 저장하는 useState
+  const [articleList, setArticleList] = useState(null);
+
+  // 서버에서 게시글 목록 데이터를 가져오는 useEffect
+  // useEffect 의존성배열에 pageRequest가 있어 pageRequest의 내용이 바뀔때마다 수행
+  useEffect(() => {
     const fetchData = async () => {
         try {
-            // 컴포넌트화된 axios 함수 사용해 서버 접근
-            const response = await (pageNation);
+            const response = await getArticleList(pageRequest);
             setArticleList(response);
-
-        } catch (error) {
-            console.log(error);
+        } catch(err) {
+            console.log(err);
         }
-    };
-
+    }
     fetchData();
+  }, [pageRequest]);
 
-    return () => {
-        // 정리 함수
-    };
-    }, [pageNation]);
+  console.log(articleList);
 
-    // 페이지를 변경하는 함수 -> 자식컴포넌트(PagingComponent)로 전달해 pg값 변경 감지
-    const handlePageChange = async (newPage) => {
-        // 새로운 페이지 정보 가져오기
-        const newPageNation = { ...pageNation, pg: newPage };
-                
-    };
+  // pg변경 함수 (페이징 버튼 클릭시)
+  const changePage = (newPg) => {
+    setPageRequest(prevPageRequest => ({...prevPageRequest, pg: newPg}));
+  }
 
+  const handleSearch = async (searchParams) => {
+    const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
+
+    console.log('검색 옵션:', searchParams);
+    console.log('검색 결과:', newPageNation);
+
+    try {
+      const response = await getArticleList(newPageNation);
+      setArticleList(response);
+      setPageRequest(newPageNation);
+    } catch (error) {
+      console.log(error);
+    }
+  };
     return (
     <MainLayout>
     <div className="contentBox boxStyle7">
         <div className="contentTitle font30 alignL">게시글 관리</div>
         
+        <SearchComponent onSearch={handleSearch} />
+
         <div className="contentColumn">
-            <div className="adminArticleRow">
+            <div className="articleRow">
                 <div>NO</div>
-                <div>게시판 제목</div>
-                <div>사용 여부</div>
-                <div>읽기 권한</div>
-                <div>쓰기 권한</div>
-                <div>댓글 권한</div>
+                <div>작성자</div>
+                <div>제목</div>
+                <div style={{width:"150px"}}>날짜</div>
+                <div style={{width:"100px"}}>상태</div>
                 <div>관리</div>
             </div>
 
-            <TableListComponent></TableListComponent>
-            
+            <ArticleModifyComponent articleList={articleList} />
         </div>
 
-        <PagingComponent 
-            onPageChange={handlePageChange} 
-        />
-        <div className="contentColumn">
-            <div className='createRow'>
-                <Link to="">게시판 생성</Link>
-            </div>
-        </div>
+        <PagingComponent articleList={articleList} changePage={changePage}></PagingComponent>
+
     </div>     
     </MainLayout>
   )

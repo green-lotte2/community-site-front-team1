@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import MemberLayout from '../../layout/MemberLayout'
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { RootUrl } from '../../api/RootUrl.js';
+const rootURL = RootUrl();
+
 
 const UpdatePwPage = () => {
 
@@ -64,14 +67,14 @@ const UpdatePwPage = () => {
         });
 
         axios
-            .post("http://localhost:8080/onepie/updatePass", formData, {
+            .post(`${rootURL}/updatePass`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             })
             .then((response) => {
                 console.log("완료쓰");
-                //navigate("/login");
+                navigate("/login");
             })
             .catch((err) => {
                 console.log(err);

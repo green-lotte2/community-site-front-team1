@@ -69,7 +69,7 @@ const ListPage = () => {
   // pg변경 함수 (페이징 버튼 클릭시)
   const changePage = (newPg) => {
     setPageRequest(prevPageRequest => ({...prevPageRequest, pg: newPg}));
-}
+  }
 
   const handleSearch = async (searchParams) => {
     const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };

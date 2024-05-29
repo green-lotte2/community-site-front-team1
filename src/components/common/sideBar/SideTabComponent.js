@@ -8,8 +8,10 @@ const SideTabComponent = ({sideTabCate}) => {
         <div>
             {/* 관리자 */}
             {(sideTabCate === "index") && <p>관리자메인</p>}
+            {(sideTabCate === "config") && <p>기본설정</p>}
             {(sideTabCate === "userList") && <p>회원관리</p>}
-            {(sideTabCate === "articleList") && <p>게시글관리</p>}
+            {(sideTabCate === "articleList") && <p>게시판관리</p>}
+            {(sideTabCate === "articleModify?articleCateNo=1&pg=1") && <p>게시글관리</p>}
 
             {/* 개인 */}
             {(sideTabCate === "myPage") && <p>마이페이지</p>}

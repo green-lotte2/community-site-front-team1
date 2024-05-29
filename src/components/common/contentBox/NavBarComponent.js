@@ -3,9 +3,9 @@ import React from 'react'
 const NavBarComponent = () => {
   return (
     <div id="navbar">
-        <label class="searchBar" for="">
+        <label className="searchBar" htmlFor="">
             <input type="text" placeholder="검색어를 입력해주세요."/>
-            <span class="searchIcon"></span>
+            <span className="searchIcon"></span>
         </label>
         <div id="userBox">
             <div>홍길동님</div>
