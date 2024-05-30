@@ -4,7 +4,6 @@ import EditorBoxComponent from '../../components/article/EditorBoxComponent';
 import { useLocation } from 'react-router-dom';
 import { getArticleCate } from '../../api/ArticleApi';
 
-
 const WritePage = () => {
 
   // URL에서 파라미터값 추출

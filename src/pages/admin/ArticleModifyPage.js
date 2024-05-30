@@ -4,7 +4,9 @@ import TableListComponent from '../../components/article/TableListComponent';
 import PagingComponent from '../../components/common/PagingComponent';
 import { Link, useLocation } from 'react-router-dom';
 import SearchComponent from '../../components/article/SearchComponent';
+
 import { getArticleCate, getArticleDelete, getArticleList } from '../../api/ArticleApi';
+
 import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
 const ArticleModifyPage = () => {
@@ -96,11 +98,13 @@ const ArticleModifyPage = () => {
         setPageRequest((prevPageRequest) => ({ ...prevPageRequest, pg: newPg }));
     };
 
+
     const handleSearch = async (searchParams) => {
         const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
 
         console.log('검색 옵션:', searchParams);
         console.log('검색 결과:', newPageNation);
+
 
         try {
             const response = await getArticleList(newPageNation);
@@ -110,6 +114,7 @@ const ArticleModifyPage = () => {
             console.log(error);
         }
     };
+
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">

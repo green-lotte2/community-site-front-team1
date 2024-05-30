@@ -6,13 +6,15 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getArticleWrite } from '../../api/ArticleApi';
+import { ArticleWrite } from '../../api/ArticleApi';
+//import { uploadImage } from './api/imageApi'; // 이미지 업로드 API를 호출하는 함수
 
 const EditorBoxComponent = () => {
 
-  const location = useLocation();
+    const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
+    
     const navigate = useNavigate();
 
     // 게시글 제목 보관
@@ -20,6 +22,8 @@ const EditorBoxComponent = () => {
 
     // 게시글 내용 보관
     const editorRef = useRef();
+
+    //const [thumbnailUrl, setThumbnailUrl] = useState('');
 
     const onChange = () => {
       const data = editorRef.current.getInstance().getHTML();
@@ -29,11 +33,23 @@ const EditorBoxComponent = () => {
     const submitHandler = async () => {
     const articleCnt = editorRef.current.getInstance().getHTML();
 
+/*
+    const handleImageUpload = async (file) => {
+      try {
+          const imageUrl = await uploadImage(file); // 이미지를 업로드하고 URL을 받아옴
+          setThumbnailUrl(imageUrl); // 업로드된 이미지 URL을 저장
+      } catch (error) {
+          console.error('Failed to upload image:', error);
+      }
+  };
+*/
+
       // UUID 생성
     const stfNo = 'HR1403';   // 로그인아이디 없어서 db stfNo로 직접 넣었음
+    const writer = '테스터';
 
     try {
-      const response = await getArticleWrite({stfNo, articleTitle, articleCnt, articleCateNo });
+      const response = await ArticleWrite({writer, stfNo, articleTitle, articleCnt, articleCateNo });
       if (response === 1) {
         alert('글이 성공적으로 작성되었습니다.');
         navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
@@ -64,12 +80,28 @@ const EditorBoxComponent = () => {
             language="ko-KR"
             ref={editorRef}
             onChange={onChange}
+            /*
+            hooks={{
+              addImageBlobHook: async (file, callback) => {
+                  try {
+                      const imageUrl = await uploadImage(file); // 이미지 업로드
+                      callback(imageUrl, 'alt text'); // 콜백 함수를 호출하여 이미지 삽입
+                  } catch (error) {
+                      console.error('Failed to upload image:', error);
+                  }
+              },
+          }}
+          */
         />
+        {/*
+        {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" />} 
+        */}{/* 썸네일 렌더링 */}
 
         <div className='wrtieBtnBox'>
             <input type='button' value={"취소"} onClick={cancelHandler}/>   
             <input type='submit' value={"작성"} onClick={submitHandler}/>
         </div>
+        
     </>
   )
 }

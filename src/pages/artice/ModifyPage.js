@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout';
-import EditorBoxComponent from '../../components/article/EditorBoxComponent';
 import { useLocation } from 'react-router-dom';
-import { getArticleCate, getArticleModifyForm } from '../../api/ArticleApi';
+import { getArticleCate, ArticleModifyForm } from '../../api/ArticleApi';
 import EditorBoxComponentModify from '../../components/article/EditorBoxComponentModify';
-
 
 const ModifyPage = () => {
 
@@ -37,11 +35,11 @@ const fetchData = async () => {
 fetchData();
 }, []);
 
-// 페이지 랜더링 될 때 호출(게시판 제목)
+// 페이지 랜더링 될 때 호출(게시판 제목, 내용)
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await getArticleModifyForm(articleNo);
+      const response = await ArticleModifyForm(articleNo);
       setArticleTitle(response.articleTitle);
       setArticleCnt(response.articleCnt);
       
@@ -58,9 +56,8 @@ useEffect(() => {
         <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
           
         <div className='writeRow'>
-          <EditorBoxComponentModify></EditorBoxComponentModify>
+          <EditorBoxComponentModify articleTitle={articleTitle} setArticleTitle={setArticleTitle} articleCnt={articleCnt} setArticleCnt={setArticleCnt} />
         </div>
-
       </div>     
     </MainLayout>
   )
