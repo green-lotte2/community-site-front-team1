@@ -59,7 +59,6 @@ const UserListPage = () => {
         setPageNation(newPageNation);
     };
 
-
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -68,7 +67,7 @@ const UserListPage = () => {
                 <UserSearchComponent onSearch={handleSearch} />
 
                 <div className="contentColumn">
-                    <div className="adminUserRow">
+                    <div className="adminUserRowTitle">
                         <div>NO</div>
                         <div>상태</div>
                         <div>이름</div>
