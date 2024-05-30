@@ -8,7 +8,7 @@ import { getArticleCate, getArticleList } from '../../api/ArticleApi';
 import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
 const ArticleModifyPage = () => {
-    // URL에서 파라미터값 추출
+  // URL에서 파라미터값 추출
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const articleCateNo = queryParams.get('articleCateNo');
