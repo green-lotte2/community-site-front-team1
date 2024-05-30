@@ -26,37 +26,34 @@ const initState = {
 
 const CsListPage = () => {
 
-    // URL에서 파라미터값 추출
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const csCate = queryParams.get('cate');
-
-    //여기는 일단 보류
-   // const navigate = useNavigate();
-   // const loginSlice = useSelector((state) => state.loginSlice);
-   // const [cate1, cate2] = useCates();
-    const [serverData, setServerData] = useState(initState);
-    
-
-    
-    let pg = queryParams.get('pg');
+    let pg = queryParams.get('pg');// URL에서 파라미터값 추출
     if (pg === null) {
         pg = 1;
     }
 
+    const [serverData, setServerData] = useState(initState); 
+   
+
     // 서버에 전달할 페이지 정보를 저장하는 useState 
     const [pageRequest, setPageRequest] = useState({
         "pg": pg,
-        "csCate": null,
-        "type": null,
-        "keyword": null,
+        "csCate": '',
+        "csTitle":'',
+        "csReply":'',
+        "type": '',
+        "keyword": '',
+        "startDate":'',
+        "endDate":'',
+        "latest":'',
+        "hit":''
       });
 
     // pg변경 함수 (페이징 버튼 클릭시)
     const changePage = (newPg) => {
         setPageRequest(prevPageRequest => ({...prevPageRequest, pg: newPg}));
     }
-
  
       // 페이지 랜더링 될 때 호출
       useEffect(() => {
@@ -75,12 +72,15 @@ const CsListPage = () => {
         }
         fetchCsList();
       }, [pageRequest]);
-{/*
+
       const handleSearch = (searchParams) => {
-        const newPageNation = { ...pageNation, ...searchParams, pg: 1 };
-        setPageNation(newPageNation);
+
+        console.log('handleSearch!');
+       // const newPageNation = { ...pageNation, ...searchParams, pg: 1 };
+       // setPageNation(newPageNation);
+       setPageRequest(prevPageRequest => ({ ...prevPageRequest, ...searchParams, pg: 1 }));
     };
-  */}
+  
 
 
 
@@ -89,7 +89,7 @@ const CsListPage = () => {
         <div className="contentBox boxStyle7">
             <div className="contentTitle font30 alignL">QnA 게시판</div>
 
-        <CsSearchComponent ></CsSearchComponent>{/*onSearch={handleSearch}*/}
+        <CsSearchComponent onSearch={handleSearch}></CsSearchComponent>{/**/}
 
         <div className="contentColumn">
             <div className="articleRow">

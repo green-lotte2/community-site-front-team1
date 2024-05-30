@@ -11,12 +11,12 @@ export const postCsList = async (data) => {
     return response.data;
 };
 
-//검색을 위한것
-export const postSearch = async (data) =>{
-
+//게시글 쓰기 
+export const postCsWrite = async (data) => {
     console.log('글 목록', data);
-    const response = await axios.post(`${rootURL}/search`,data);
+    const response = await axios.post(`${rootURL}/register`,data);
 
     return response.data;
 };
+
 

@@ -31,7 +31,6 @@ fetchData();
     <MainLayout>
       <div className="contentBox boxStyle7">
         <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
-          
         <div className='writeRow'>
           <EditorBoxComponent></EditorBoxComponent>
         </div>
