@@ -5,7 +5,7 @@ import PagingComponent from '../../components/common/PagingComponent';
 import { Link, useLocation } from 'react-router-dom';
 import SearchComponent from '../../components/article/SearchComponent';
 
-import { getArticleCate, getArticleDelete, getArticleList } from '../../api/ArticleApi';
+import { getArticleCate, ArticleDelete, ArticleList } from '../../api/ArticleApi';
 
 import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
@@ -45,7 +45,7 @@ const ArticleModifyPage = () => {
         const confirmed = window.confirm('선택된 게시글을 삭제하시겠습니까?');
         if (confirmed) {
             try {
-                await Promise.all(selectedArticles.map((articleNo) => getArticleDelete({ articleNo })));
+                await Promise.all(selectedArticles.map((articleNo) => ArticleDelete({ articleNo })));
 
                 alert('선택된 게시글이 삭제되었습니다.');
             } catch (error) {
@@ -80,7 +80,7 @@ const ArticleModifyPage = () => {
             try {
                 const [cateResponse, listResponse] = await Promise.all([
                     getArticleCate(articleCateNo),
-                    getArticleList(pageRequest),
+                    ArticleList(pageRequest),
                 ]);
                 setArticleCateName(cateResponse.articleCateName);
                 setArticleList(listResponse);
@@ -107,7 +107,7 @@ const ArticleModifyPage = () => {
 
 
         try {
-            const response = await getArticleList(newPageNation);
+            const response = await ArticleList(newPageNation);
             setArticleList(response);
             setPageRequest(newPageNation);
         } catch (error) {
