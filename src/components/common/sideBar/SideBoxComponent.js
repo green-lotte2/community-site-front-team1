@@ -1,30 +1,62 @@
 import React, { useState } from 'react'
 import SideTabComponent from './SideTabComponent'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faPhoneVolume, faUnlockKeyhole, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 
 const SideBoxComponent = ({ sideBarCate }) => {
 
-  const [accordion, setAccordion]  = useState(true);
+  const [accordion, setAccordion]  = useState(false);
 
   const handleAccordion = (e) => {
+    const arrow = e.target.closest(".sideTitle").querySelector(".arrow");
     setAccordion(!accordion);
     console.log(accordion);
     if (accordion) {
-      e.target.innerText = "▲";
+      arrow.innerText = "▲";
     } else {
-      e.target.innerText = "▼";
+      arrow.innerText = "▼";
     }
   }
 
   return (
     <div className="sideBox">
-        <div className="sideTitle">
-            <span>■</span>
-            <div>
-                {(sideBarCate === "admin") && <p>관리자</p>}
-                {(sideBarCate === "private") && <p>개인</p>}
-                {(sideBarCate === "article") && <p>게시판</p>}
-                <span onClick={handleAccordion}>▼</span>
-            </div>
+        <div className="sideTitle" onClick={handleAccordion}>
+          {(sideBarCate === "private") && 
+            <>
+              <span><FontAwesomeIcon icon={faUserLarge} /></span>
+              <div>
+                <p>개인</p>
+                <span className='arrow'>▲</span>
+              </div>
+            </>
+          }
+          {(sideBarCate === "article") && 
+            <>
+              <span><FontAwesomeIcon icon={faPenToSquare} /></span>
+              <div>
+                <p>게시판</p>
+                <span className='arrow'>▲</span>
+              </div>
+            </>
+          }
+          {(sideBarCate === "admin") && 
+            <>
+              <span><FontAwesomeIcon icon={faUnlockKeyhole} /></span>
+              <div>
+                <p>관리자</p>
+                <span className='arrow'>▲</span>
+              </div>
+            </>
+          }
+          {(sideBarCate === "cs") && 
+            <>
+              <span><FontAwesomeIcon icon={faPhoneVolume} /></span>
+              <div>
+                <p>고객센터</p>
+                <span className='arrow'>▲</span>
+              </div>
+            </>
+          }
         </div>
 
       {accordion && 
@@ -52,6 +84,12 @@ const SideBoxComponent = ({ sideBarCate }) => {
               <SideTabComponent sideTabCate={"list?articleCateNo=1&pg=1"}></SideTabComponent>
               <SideTabComponent sideTabCate={"article1"}></SideTabComponent>
               <SideTabComponent sideTabCate={"article2"}></SideTabComponent>
+            </>
+          }
+          {(sideBarCate === "cs") && 
+            <>
+              <SideTabComponent sideTabCate={"csList"}></SideTabComponent>
+              <SideTabComponent sideTabCate={"csTerms"}></SideTabComponent>
             </>
           }
         </>
