@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ArticleModal from '../modal/ArticleModal';
 import PagingComponent from '../common/PagingComponent';
-import { delArticleCateList, getArticleCateList, getUserList } from '../../api/AdminApi';
+import { delArticleCateList, getArticleCateList } from '../../api/AdminApi';
+import { RootUrl } from '../../api/RootUrl';
 
 const ArticleListComponent = () => {
-    // 모달 컴포넌트로 넘겨야할 요소들이 많음
-    // 모달창 닫는 핸들러
-    // 해당 게시판의 현재 활성화 여부 useState
-    // 상태를 변경할 핸들러 + useState
-
     // 모달창 활성화 여부 저장하는 useState
     const [modalOpen, setModalOpen] = useState({});
     const [articleCateList, setArticleCateList] = useState(null);
@@ -28,6 +24,11 @@ const ArticleListComponent = () => {
             newList[index] = modifiedData;
             return newList;
         });
+    };
+
+    const handleNavigation = (articleCateNo) => {
+        const url = `articleModify?articleCateNo=${articleCateNo}&pg=1`;
+        window.location.href = url;
     };
 
     // 게시판 삭제 핸들러
@@ -76,7 +77,7 @@ const ArticleListComponent = () => {
                             <span className="nomalBtn" onClick={() => handleArticleDelete(index)}>
                                 삭제
                             </span>
-                            <span className="nomalBtn" onClick={() => handleArticleDelete(index)}>
+                            <span className="nomalBtn" onClick={() => handleNavigation(cate.articleCateNo)}>
                                 게시물 관리
                             </span>
                         </div>
