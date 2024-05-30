@@ -8,6 +8,7 @@ import { getArticleCate, getArticleDelete, getArticleList } from '../../api/Arti
 import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
 const ArticleModifyPage = () => {
+
     // URL에서 파라미터값 추출
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -34,6 +35,7 @@ const ArticleModifyPage = () => {
         } else {
             setSelectedArticles([...selectedArticles, articleNo]);
         }
+
     };
 
     // 선택 삭제 핸들러
