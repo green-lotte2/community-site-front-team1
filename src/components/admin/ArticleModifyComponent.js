@@ -5,7 +5,7 @@ import ArticleHideModal from '../modal/ArticleHideModal';
 import Moment from 'moment';
 import 'moment/locale/ko';
 import { Link } from 'react-router-dom';
-import { getArticleDelete } from '../../api/ArticleApi';
+import { ArticleDelete } from '../../api/ArticleApi';
 
 const ArticleModifyComponent = ({ articleList, setArticleList, selectedArticles, handleSelectArticle, selectAll }) => {
     console.log(articleList);
@@ -26,7 +26,7 @@ const ArticleModifyComponent = ({ articleList, setArticleList, selectedArticles,
         const confirmed = window.confirm('정말 삭제하시겠습니까?');
         if (confirmed) {
             try {
-                await getArticleDelete({ articleNo });
+                await ArticleDelete({ articleNo });
                 console.log('Before filter:', articleList.dtoList);
                 const newList = articleList.dtoList.filter((article) => article.articleNo !== articleNo);
                 console.log('After filter:', newList);

@@ -5,12 +5,11 @@ import PagingComponent from '../../components/common/PagingComponent';
 import { Link, useLocation } from 'react-router-dom';
 import SearchComponent from '../../components/article/SearchComponent';
 
-import { getArticleCate, getArticleDelete, getArticleList } from '../../api/ArticleApi';
+import { getArticleCate, ArticleDelete, ArticleList } from '../../api/ArticleApi';
 
 import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
 const ArticleModifyPage = () => {
-
     // URL에서 파라미터값 추출
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -37,7 +36,6 @@ const ArticleModifyPage = () => {
         } else {
             setSelectedArticles([...selectedArticles, articleNo]);
         }
-
     };
 
     // 선택 삭제 핸들러
@@ -45,7 +43,7 @@ const ArticleModifyPage = () => {
         const confirmed = window.confirm('선택된 게시글을 삭제하시겠습니까?');
         if (confirmed) {
             try {
-                await Promise.all(selectedArticles.map((articleNo) => getArticleDelete({ articleNo })));
+                await Promise.all(selectedArticles.map((articleNo) => ArticleDelete({ articleNo })));
 
                 alert('선택된 게시글이 삭제되었습니다.');
             } catch (error) {
@@ -80,7 +78,7 @@ const ArticleModifyPage = () => {
             try {
                 const [cateResponse, listResponse] = await Promise.all([
                     getArticleCate(articleCateNo),
-                    getArticleList(pageRequest),
+                    ArticleList(pageRequest),
                 ]);
                 setArticleCateName(cateResponse.articleCateName);
                 setArticleList(listResponse);
@@ -98,16 +96,14 @@ const ArticleModifyPage = () => {
         setPageRequest((prevPageRequest) => ({ ...prevPageRequest, pg: newPg }));
     };
 
-
     const handleSearch = async (searchParams) => {
         const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
 
         console.log('검색 옵션:', searchParams);
         console.log('검색 결과:', newPageNation);
 
-
         try {
-            const response = await getArticleList(newPageNation);
+            const response = await ArticleList(newPageNation);
             setArticleList(response);
             setPageRequest(newPageNation);
         } catch (error) {
