@@ -4,7 +4,7 @@ import TableListComponent from '../../components/article/TableListComponent';
 import PagingComponent from '../../components/common/PagingComponent';
 import { Link, useLocation } from 'react-router-dom';
 import SearchComponent from '../../components/article/SearchComponent';
-import { getArticleCate, getArticleList } from '../../api/ArticleApi';
+import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import ArticleModifyComponent from '../../components/admin/ArticleModifyComponent';
 
 const ArticleModifyPage = () => {
@@ -55,7 +55,7 @@ const ArticleModifyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await getArticleList(pageRequest);
+            const response = await ArticleList(pageRequest);
             setArticleList(response);
         } catch(err) {
             console.log(err);
@@ -78,7 +78,7 @@ const ArticleModifyPage = () => {
     console.log('검색 결과:', newPageNation);
 
     try {
-      const response = await getArticleList(newPageNation);
+      const response = await ArticleList(newPageNation);
       setArticleList(response);
       setPageRequest(newPageNation);
     } catch (error) {

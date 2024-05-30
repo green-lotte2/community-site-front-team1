@@ -3,7 +3,7 @@ import MainLayout from '../../layout/MainLayout';
 import SearchComponent from '../../components/article/SearchComponent';
 import PagingComponent from '../../components/common/PagingComponent';
 
-import { getArticleCate, getArticleList } from '../../api/ArticleApi';
+import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -55,7 +55,7 @@ const ListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await getArticleList(pageRequest);
+            const response = await ArticleList(pageRequest);
             setArticleList(response);
         } catch(err) {
             console.log(err);
@@ -78,7 +78,7 @@ const ListPage = () => {
     console.log('검색 결과:', newPageNation);
 
     try {
-      const response = await getArticleList(newPageNation);
+      const response = await ArticleList(newPageNation);
       setArticleList(response);
       setPageRequest(newPageNation);
     } catch (error) {
