@@ -80,7 +80,7 @@ const UserListComponent = ({ userList, setUserList }) => {
                         <div>{user.stfEmail}</div>
                         <div>
                             {/* 파라미터로 no값 들고 가기 */}
-                            <span onClick={() => handleModalOpen(index)} style={{ cursor: 'pointer' }}>
+                            <span onClick={() => handleModalOpen(index)} style={{ cursor: 'pointer', fontSize:"16px" }}>
                                 수정
                             </span>
                         </div>

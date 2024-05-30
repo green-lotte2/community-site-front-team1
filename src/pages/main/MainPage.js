@@ -8,36 +8,36 @@ const MainPage = () => {
       <div className="contentBox boxStyle1">
         <div className="contentTitle">결재</div>
         <div className="contentColumn">
-          <a href="#" className="contentRow">
+          <Link to="#" className="contentRow">
               <p>[24.05.22] 연차 신청</p>
               <p>승인대기</p>
-          </a>
-          <a href="#" className="contentRow">
+          </Link>
+          <Link to="#" className="contentRow">
               <p>[24.05.23] 연차 신청</p>
               <p>승인대기</p>
-          </a>
-          <a href="#" className="contentRow">
+          </Link>
+          <Link to="#" className="contentRow">
               <p>[24.05.20] 비품구매 결재건</p>
               <p>승인대기</p>
-          </a>
+          </Link>
         </div>
       </div>
 
       <div className="contentBox boxStyle1">
         <div className="contentTitle">생일</div>
         <div className="contentColumn">
-          <a href="#" className="contentRow">
+          <Link to="#" className="contentRow">
               <p>[24.05.22] 경영지원본부 인사/총무팀</p>
               <p>홍길동 대리</p>
-          </a>
-          <a href="#" className="contentRow">
+          </Link>
+          <Link to="#" className="contentRow">
               <p>[24.05.23] 시스템사업본부 공공영업팀</p>
               <p>김유신 대리</p>
-          </a>
-          <a href="#" className="contentRow">
+          </Link>
+          <Link to="#" className="contentRow">
               <p>[24.05.25] 개발사업부 SW개발</p>
               <p>김춘추 과장</p>
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -90,18 +90,18 @@ const MainPage = () => {
       <div className="contentBox boxStyle6">
         <div className="contentTitle">공지사항</div>
         <div className="contentColumn">
-          <a href="#" className="contentRow">
+          <Link to="#" className="contentRow">
             <p className="hidden">그룹웨어 프로젝트 스토리보드 회의 결과 공지</p>
             <p>24.05.22</p>
-          </a>
-          <a href="#" className="contentRow">
+          </Link>
+          <Link to="#" className="contentRow">
             <p className="hidden">그룹웨어 프로젝트 데이터베이스 구축 회의 결과 공지</p>
             <p>24.05.23</p>
-          </a>
-          <a href="#" className="contentRow">
+          </Link>
+          <Link to="#" className="contentRow">
             <p className="hidden">그룹웨어 프로젝트 서버구축 회의 결과 공지</p>
             <p>24.05.25</p>
-          </a>
+          </Link>
         </div>
       </div>
     </MainLayout>

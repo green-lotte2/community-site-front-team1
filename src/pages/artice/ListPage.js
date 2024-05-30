@@ -114,8 +114,8 @@ const ListPage = () => {
         </div>
 
         <PagingComponent articleList={articleList} changePage={changePage}></PagingComponent>
-        <div>
-            <Link className='btn' to="/">뒤로</Link>
+        <div style={{alignSelf:"end"}}>
+            <Link className='btn' to="/main">뒤로</Link>
             <Link className='btn' to={`/write?articleCateNo=${articleCateNo}&pg=${pageRequest.pg}`}>글쓰기</Link>
         </div>
       </div>

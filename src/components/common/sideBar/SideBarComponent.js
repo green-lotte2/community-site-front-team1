@@ -7,7 +7,6 @@ const SideBarComponent = () => {
     <section id="sideBar">
       <Link to="/main" className="boxTitle">
           <img src="../images/zeroPie2.png" alt=""/>
-          <img src="../images/zeroPieLogo.png" alt=""/>
           <div>
               <p>ZeroPie</p>
           </div>
@@ -16,6 +15,7 @@ const SideBarComponent = () => {
       <SideBoxComponent sideBarCate={"private"}></SideBoxComponent>
       <SideBoxComponent sideBarCate={"article"}></SideBoxComponent>
       <SideBoxComponent sideBarCate={"admin"}></SideBoxComponent>
+      <SideBoxComponent sideBarCate={"cs"}></SideBoxComponent>
       
   </section>
   )
