@@ -18,8 +18,10 @@ import UpdatePwPage from '../pages/member/UpdatePwPage';
 import ArticleModifyPage from '../pages/admin/ArticleModifyPage';
 import CsListPage from '../pages/cs/CsListPage';
 import CsWritePage from '../pages/cs/CsWritePage';
+import CsViewPage from '../pages/cs/CsViewPage';
 import ConfigPage from '../pages/admin/ConfigPage';
 import GroupPlanPage from '../pages/member/GroupPlanPage';
+import GroupPage from '../pages/private/GroupPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -39,12 +41,14 @@ const root = createBrowserRouter([
     // main
     { path: '/main', element: <MainPage /> },
 
+    // private
+    { path: '/group', element: <GroupPage /> },
+
     // article
     { path: '/list', element: <ListPage /> },
     { path: '/write', element: <WritePage /> },
     { path: '/view', element: <ViewPage /> },
     { path: '/modify', element: <ModifyPage /> },
-
 
     // admin
     { path: '/config', element: <ConfigPage /> },
@@ -55,7 +59,7 @@ const root = createBrowserRouter([
     // cs
     { path: '/csList', element: <CsListPage /> },
     { path: '/csWrite', element: <CsWritePage /> },
-    //{ path: '/csView', element: <CsViewPage /> },
+    { path: '/csView', element: <CsViewPage /> },
     //{ path: '/csModify', element: <CsModifyPage /> },
 
 ]);
