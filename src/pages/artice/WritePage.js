@@ -4,7 +4,6 @@ import EditorBoxComponent from '../../components/article/EditorBoxComponent';
 import { useLocation } from 'react-router-dom';
 import { getArticleCate } from '../../api/ArticleApi';
 
-
 const WritePage = () => {
 
   // URL에서 파라미터값 추출
@@ -32,7 +31,6 @@ fetchData();
     <MainLayout>
       <div className="contentBox boxStyle7">
         <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
-          
         <div className='writeRow'>
           <EditorBoxComponent></EditorBoxComponent>
         </div>

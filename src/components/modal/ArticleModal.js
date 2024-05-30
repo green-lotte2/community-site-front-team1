@@ -72,9 +72,9 @@ const ArticleModal = ({ cateData, handleModalClose }) => {
                                 value={formData.articleCateVRole}
                                 onChange={handleInputChange}
                             >
-                                <option value="user">USER</option>
-                                <option value="manager">MANAGER</option>
-                                <option value="admin">ADMIN</option>
+                                <option value="USER">USER</option>
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="ADMIN">ADMIN</option>
                             </select>
                         </div>
                     </div>
@@ -87,9 +87,9 @@ const ArticleModal = ({ cateData, handleModalClose }) => {
                                 value={formData.articleCateWRole}
                                 onChange={handleInputChange}
                             >
-                                <option value="user">USER</option>
-                                <option value="manager">MANAGER</option>
-                                <option value="admin">ADMIN</option>
+                                <option value="USER">USER</option>
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="ADMIN">ADMIN</option>
                             </select>
                         </div>
                     </div>
@@ -102,9 +102,9 @@ const ArticleModal = ({ cateData, handleModalClose }) => {
                                 value={formData.articleCateCoRole}
                                 onChange={handleInputChange}
                             >
-                                <option value="user">USER</option>
-                                <option value="manager">MANAGER</option>
-                                <option value="admin">ADMIN</option>
+                                <option value="USER">USER</option>
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="ADMIN">ADMIN</option>
                             </select>
                         </div>
                     </div>

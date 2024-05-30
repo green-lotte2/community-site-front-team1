@@ -17,6 +17,7 @@ const SideTabComponent = ({sideTabCate}) => {
             {(sideTabCate === "myPage") && <p>마이페이지</p>}
             {(sideTabCate === "menu1") && <p>메뉴1</p>}
             {(sideTabCate === "menu2") && <p>메뉴2</p>}
+            {(sideTabCate === "group") && <p>조직도</p>}
 
             {/* 게시판 */}
             {(sideTabCate === "list?articleCateNo=1&pg=1") && <p>공지사항</p>}

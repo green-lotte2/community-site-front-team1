@@ -60,19 +60,10 @@ const LoginPage = () => {
 
   return (
     <MemberLayout>
-    <section id="loginArea">
-        <div className="loginBox">
+    <div className="memberBack loginBack">
+        <div className="memberBox loginBox">
             <div>
-                <img className="loginImg" src="../images/zeroPieLogo.png" alt=""/>
-            </div>
-
-            <p>WelcomeBack</p>
-
-            <div>
-                <Link to="#" className="socialLogin">
-                    <img src="/images/googleIcon.png" alt=""/>
-                    <span>GoogleLogin</span>
-                </Link>
+                <img className="loginImg" src="../images/zeroPie2.png" alt=""/>
             </div>
 
             <form onSubmit={submitHandler}>
@@ -85,17 +76,26 @@ const LoginPage = () => {
                 <input type="submit" value="로그인" className='btnLogin'/>
             </form>
 
+            <div>
+                <Link to="#" className="socialLogin">
+                    <img src="/images/googleIcon.png" alt=""/>
+                    <span style={{color:"white"}}>구글 계정으로 로그인</span>
+                </Link>
+            </div>
+
             <div className="loginEtc">
-                <Link to="/">아이디찾기</Link>
-                <Link to="/">비밀번호찾기</Link>
-                <Link to="/register">회원가입</Link>
+                <Link to="/findId">아이디찾기</Link>
+                <Link to="/findPw">비밀번호찾기</Link>
+                <Link to="/terms">회원가입</Link>
+            </div>
+            
+            <div className="loginEtc" style={{flexDirection:"column", textAlign:"center"}}>
+              <p>Copyright ⓒ ZeroPie Corp. All Rights Reserved.</p>
+              <p>Version : {process.env.REACT_APP_VERSION}</p>
             </div>
         </div>
 
-        <div className="loginBox">
-            <img src="../images/iconSample4.PNG" alt=""/>
-        </div>
-    </section>
+    </div>
     </MemberLayout>
   )
 }

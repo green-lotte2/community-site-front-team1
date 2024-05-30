@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
-import EditorBoxComponent from '../../components/article/EditorBoxComponent';
+import EditorBoxComponent1 from '../../components/cs/EditorBoxComponent1';
 
 const CsWritePage = () => {
+
+  const [csCate, setCsCate] = useState(''); // 초기 값을 설정합니다.
+
+
     return (
         <MainLayout>
           <div className="contentBox boxStyle7">
@@ -15,20 +19,18 @@ const CsWritePage = () => {
                     <input type="radio" id="private" name='secret'/>
                     <label htmlFor="private">비밀글</label>
 
-                    <select name="" id="">
-                        <option value="">결재</option>
-                        <option value="">CS카테고리</option>
-                        <option value="">어떻게</option>
-                        <option value="">나누면</option>
-                        <option value="">좋지?</option>
+                    <select name="csCate" id="private" value={csCate} onChange={(e) => setCsCate(e.target.value)}>
+                        <option value="">카테고리</option>
+                        <option value="결재관련">결재관련</option>
+                        <option value="기타">기타</option>
+                        <option value="일정관련">일정관련</option>
+                        <option value="시스템사용관련">시스템사용관련</option>
                     </select>
                 </div> 
             </div>
             
-            
-
             <div className='writeRow'>
-              <EditorBoxComponent></EditorBoxComponent>
+              <EditorBoxComponent1 csCate={csCate}></EditorBoxComponent1>
             </div>
     
           </div>     
