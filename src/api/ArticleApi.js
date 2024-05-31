@@ -27,15 +27,15 @@ export const ArticleView = async (data) => {
 };
 
 // 게시글 작성
-export const ArticleWrite = async (data) => {
-    console.log('글 쓰기', data);
-    try {
-        const response = await axios.post(`${rootURL}/write`, data);
-        return response.data;
-    } catch (error) {
-        console.error('Failed to write article:', error);
-        throw error;
-    }
+export const ArticleWrite = async (formData) => {
+  console.log('글 쓰기');
+
+  const response = await axios.post(`${rootURL}/write`, formData, 
+  {header: {
+    'Content-Type':'multipart/form-data'}
+  })
+
+  return response.data;
 };
 
 // 게시글 modify 폼
