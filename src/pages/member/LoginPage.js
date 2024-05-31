@@ -5,10 +5,11 @@ import { RootUrl } from '../../api/RootUrl.js';
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login } from "../../slice/LoginSlice"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 
 
 const rootURL = RootUrl();
-
 
 const initState = {
     uid: "",
@@ -20,14 +21,29 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [showPswd, setShowPswd] = useState(false);
     const [loginParam, setLoginParam] = useState({ ...initState });
+    const [lockState, setLockState] = useState(false);
+    //const [isCheck,setIsCheck] = useState(true)
+    //const [isCheck1,setIsCheck1] = useState(true);
   
+
     const changeHandler = (e) => {
         console.log("여기 일단 들어와?");
       //loginParam[e.target.name] = e.target.value;
       setLoginParam({ ...loginParam, [e.target.name]: e.target.value });
     };
-  
+
+
+    const changePassStatus =  () =>{
+
+      console.log("비밀번호 상태를 바꿔보자꾸나.");
+
+      setShowPswd((prevShowPswd) => !prevShowPswd);
+      setLockState((prevLockState) => !prevLockState);
+
+    }
+   
     const submitHandler = (e) => {
       e.preventDefault();
   
@@ -35,12 +51,7 @@ const LoginPage = () => {
       const formData = new FormData();
       formData.append("username", loginParam.uid);
       formData.append("password", loginParam.pass);
-      /*
-      const formData = {
-        username: loginParam.uid,
-        password: loginParam.pass,
-      };
-      */
+
   
       axios
         .post(`${rootURL}/login`,formData)//loginParam
@@ -58,6 +69,8 @@ const LoginPage = () => {
         });
     };
 
+
+
   return (
     <MemberLayout>
     <div className="memberBack loginBack">
@@ -67,9 +80,23 @@ const LoginPage = () => {
             </div>
 
             <form onSubmit={submitHandler}>
-                <input type="text" name = "uid" placeholder='아이디입력' value={loginParam.uid} onChange={changeHandler} />
-                <input type="password" name="pass" placeholder='비밀번호입력' value={loginParam.pass} onChange={changeHandler}/>
-                <label htmlFor="myInput">
+                <label htmlFor="">
+                <input type="text" name = "uid" placeholder='아이디입력' value={loginParam.uid} onChange={changeHandler}/>
+                </label>
+
+                <label htmlFor="">
+                <input type={showPswd ? "text" : "password"} name="pass" placeholder='비밀번호입력' value={loginParam.pass} onChange={changeHandler}/>
+                
+                {lockState ? (
+                  <button onClick={changePassStatus}><FontAwesomeIcon icon={faLockOpen} /></button>                
+
+                ) : (
+                  <button onClick={changePassStatus}><FontAwesomeIcon icon={faLock} /></button>
+                )}
+                
+                </label>
+
+                <label htmlFor="myInput" className="labelSvae">
                     <input type="checkbox"/> 아이디 저장
                 </label>
 
