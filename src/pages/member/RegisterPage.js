@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MemberLayout from '../../layout/MemberLayout';
 import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
 import { RootUrl } from '../../api/RootUrl.js';
 const rootURL = RootUrl();
@@ -13,6 +13,9 @@ const rootURL = RootUrl();
 
 const RegisterPage = () => {
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const type = queryParams.get('type');
 
     const [preview, setPreview] = useState(null);
     const [file, setFile] = useState(null); // 파일을 상태로 관리onst [file, setFile] = useState(null);
@@ -45,6 +48,7 @@ const RegisterPage = () => {
         stfAddr2: "",
         stfEmail: "",
         stfEnt: "",
+        stfRole: type,
         strDptNo: "",
         strRnkNo: "",
         thumbFile: null,
@@ -415,8 +419,8 @@ const RegisterPage = () => {
                                             onChange={(e) => setVerificationCode(e.target.value)}
                                         />
                                         <button onClick={handleVerifyCode}>확인</button>
-                                        <span>{verificationMessage}</span>
                                     </div>
+                                    <span>{verificationMessage}</span>
                                 </div>
                             )}
                         </div>

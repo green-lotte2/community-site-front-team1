@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import MainLayout from '../../layout/MainLayout';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MainPage = () => {
+
+  // 저장된 로그인 인증 정보를 불러오는 Hook
+  const dispatch = useDispatch();
+  const loginSlice = useSelector((state) => state.loginSlice);
+
+
+  useEffect(() => {
+
+    
+    if (loginSlice.userRole === "ADMIN") {
+      setTimeout(() => {
+        alert("플랜 가입 해야지?");
+      }, 1000);
+    }
+    
+
+  }, [])
+
+  
+
   return (
     <MainLayout>
       <div className="contentBox boxStyle1">
