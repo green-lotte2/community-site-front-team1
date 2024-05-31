@@ -301,6 +301,8 @@ section {
     padding: 10px;
     background: #F5F5F5; /* 다크 블랙-그레이 그라데이션 */
     border-right: 2px solid #414345; /* 그레이 테두리 */
+    box-shadow: 10px 0px 20px #c8c8c8;
+    z-index: 10;
 }
 #contentArea {
     flex-direction: column;
@@ -432,6 +434,8 @@ section {
     align-content: center;
     background-color: white;
     border-bottom: 1px solid #535c91;
+    box-shadow: 10px 0px 20px #c8c8c8;
+    z-index: 10;
 }
 .searchBar {
     display: flex;
