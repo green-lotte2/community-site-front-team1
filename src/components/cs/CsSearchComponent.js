@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { postSearch } from '../../api/CsApi';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,109 +27,39 @@ const handleSearch = () => {
   onSearch(searchParams);
 };
 
-const ChageCheckBox1 = () => {
-
-  setIsChecked1(!isChecked1)
-
-}
-
-const ChageCheckBox2 = () => {
-
-  setIsChecked2(!isChecked2)
-
-}
-/*
-
- // 최신순 체크박스 상태 변경 시 호출될 함수
- const handleChange1 = () => {
-  setIsChecked1(!isChecked1); // 체크 상태 반전
-  setSearchParams((prevParams) => ({
-    ...prevParams,
-    latest: !isChecked1 ? 1 : 0, // 현재 상태 반영하여 업데이트
-  }));
-
-  if (isChecked1) {
-    handleSearch(); // 최신순 체크가 되었을 때 검색 실행
+useEffect(() => {
+  if (searchParams.latest || searchParams.hit) {
+    handleSearch();
   }
-};
-*/
+}, [searchParams.latest, searchParams.hit]);
 
 const handleChange1 = () => {
-  console.log("전 : " + searchParams.latest)
+  const newLatest = isChecked1 ? 0 : 1;
 
+  setSearchParams((prevParams) => ({
+    ...prevParams,
+    latest: newLatest,
+    hit: 0 // 첫 번째 체크박스가 선택되면 두 번째 체크박스를 해제
+  }));
 
-  if(isChecked1){
-    setIsChecked2(false);
-  }
-
-  if (searchParams.latest==0){
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      latest: searchParams.latest+1 // 현재 상태 반영하여 업데이트
-    }));
-    console.log("하이")
-  }
-  else {
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      latest: searchParams.latest-1 // 현재 상태 반영하여 업데이트
-    }));
-
-  }
-
-  
-
-  console.log('here1');
-  const updatedIsChecked1 = !isChecked1; // 체크 상태 반전
-
-   setIsChecked1(updatedIsChecked1); // 상태 업데이트 반영
-
-   if (updatedIsChecked1) {
-    setIsChecked2(false); // 첫 번째 체크박스가 선택되면 두 번째 체크박스를 해제
-    setSearchParams(prevParams => ({
-      ...prevParams,
-      hit: 0 // 두 번째 체크박스 상태를 업데이트
-    }));
-    handleSearch(); // 최신순 체크가 되었을 때 검색 실행
-  }
-
-  handleSearch();
-
+  setIsChecked1((prev) => !prev);
+  setIsChecked2(false);
 };
 
 const handleChange2 = () => {
-  if (searchParams.hit==0){
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      hit: searchParams.hit+1 // 현재 상태 반영하여 업데이트
-    }));
-    console.log("하이")
-  }
-  else {
-    setSearchParams((prevParams) => ({
-      ...prevParams,
-      hit: searchParams.hit-1 // 현재 상태 반영하여 업데이트
-    }));
+  const newHit = isChecked2 ? 0 : 1;
 
-  }
+  setSearchParams((prevParams) => ({
+    ...prevParams,
+    hit: newHit,
+    latest: 0 // 두 번째 체크박스가 선택되면 첫 번째 체크박스를 해제
+  }));
 
-  console.log('here1');
-  const updatedIsChecked2 = !isChecked2; // 체크 상태 반전
-
-  setIsChecked2(updatedIsChecked2); // 상태 업데이트 반영
-
-  if (updatedIsChecked2) {
-    setIsChecked1(false); // 두 번째 체크박스가 선택되면 두 번째 체크박스를 해제
-    setSearchParams(prevParams => ({
-      ...prevParams,
-      latest: 0 // 첫 번째 체크박스 상태를 업데이트
-    }));
-    handleSearch(); // 최신순 체크가 되었을 때 검색 실행
-  }
-
-  handleSearch();
-
+  setIsChecked2((prev) => !prev);
+  setIsChecked1(false);
 };
+
+
 
 
 const handleInputChange = (e) => {

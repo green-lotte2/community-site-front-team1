@@ -14,9 +14,15 @@ const CsListComponent = ({dtoList=[]}) => {
           <div>
             <Link to={`/cs/${item.csCate}/${item.csNo}`}>{item.csTitle}</Link>
           </div>
-          <div>{item.csRdate}</div>
+          <div style={{width: "150px"}}>{item.csRdate}</div>
           <div>{item.csHit}</div>
-          <div>{item.csReply}</div>
+
+          {(item.csReply > 0) ? (
+            <div style={{color: "green"}}>답변완료</div>
+          ) : (
+            <div style={{color: "#615EFC"}}>답변대기</div>
+          )}
+          
         </div>
       ))}   
     

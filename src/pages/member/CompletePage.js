@@ -9,7 +9,7 @@ const CompletePage = () => {
 
   return (
     <MemberLayout>
-    <section id="loginArea">
+    <section className="memberBack completeBack">
         <div id="completeBox">
             <p>회원가입이 완료되었습니다.</p>
             <p>회원님의 아이디는 <span>{user}</span> 입니다.</p>

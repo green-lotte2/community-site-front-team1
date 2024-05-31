@@ -47,7 +47,7 @@ const  signUpHandler= ()=>{
 
   if (isChecked1&&isChecked2) {
     alert('회원가입을 진행합니다.');
-    navigate('/register');
+    navigate('/signup');
   } else {
     alert('약관에 동의해야 회원가입이 가능합니다.');
   }

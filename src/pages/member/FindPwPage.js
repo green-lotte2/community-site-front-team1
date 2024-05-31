@@ -137,11 +137,6 @@ const FindPwPage = () => {
 
       }
 
-      const goGoBefore = () => {
-        navigate(`/login`);
-
-      }
-
       const goPwChage = () => {
 
         navigate(`/updatePw`, { state: { user: stf.stfNo} });
@@ -209,7 +204,6 @@ const FindPwPage = () => {
 
             <div className='findPack'>
                 <div>
-                    <button onClick={goGoBefore} className='btnColorW'>뒤로</button>
                     <button onClick={goGoLogin} className='btnColorW'>로그인</button>
                 </div>
             </div>

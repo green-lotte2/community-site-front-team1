@@ -4,7 +4,7 @@ import CsListComponent from '../../components/cs/CsListComponent'
 import PagingComponent from '../../components/common/PagingComponent'
 import CsSearchComponent from '../../components/cs/CsSearchComponent'
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { postCsList } from '../../api/CsApi'
 import { useSelector } from 'react-redux'
 
@@ -96,7 +96,7 @@ const CsListPage = () => {
                 <div>NO</div>
                 <div>작성자</div>
                 <div>제목</div>
-                <div>작성일</div>
+                <div style={{width: "150px"}}>작성일</div>
                 <div>조회수</div>
                 <div>답변상태</div>
             </div>
@@ -104,9 +104,14 @@ const CsListPage = () => {
             <CsListComponent dtoList={serverData.dtoList}></CsListComponent>
 
             </div>
+
+            <PagingComponent articleList={serverData} changePage={changePage}></PagingComponent>
+            <div style={{alignSelf:"end"}}>
+              <Link className='btn' to="/main">뒤로</Link>
+              <Link className='btn' >글쓰기</Link>
+            </div>
         </div>
 
-        <PagingComponent articleList={serverData} changePage={changePage}></PagingComponent>
 
     </MainLayout>
   )

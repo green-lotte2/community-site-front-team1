@@ -51,7 +51,7 @@ const LoginPage = () => {
           dispatch(login(response.data));
   
           // 메인 이동
-          navigate("/");
+          navigate("/main");
         })
         .catch((err) => {
           console.log(err);

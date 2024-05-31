@@ -191,7 +191,7 @@ const FindIdPage = () => {
             <div className='findPack'>
                 <div>
                     <button className='btnColorW' onClick={goGoLogin}>로그인</button>
-                    <button className='btnColorW' onClick={goGoFindPw}>비밀번호찾기</button>
+                    <button className='btnColorW bigBtn' onClick={goGoFindPw}>비밀번호찾기</button>
                 </div>
             </div>
 

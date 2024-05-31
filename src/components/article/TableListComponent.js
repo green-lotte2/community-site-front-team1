@@ -13,7 +13,7 @@ const TableListComponent = ({ articleList }) => {
     <>
     {articleList && articleList.dtoList.length > 0 ? (articleList.dtoList.map((article, index) => (
         <div key={index} className="articleRow">
-            <div>{articleList.total - index}</div>
+            <div>{articleList.startNo - index}</div>
             <div>
             {article.articleThumb ? (
                 <img src={article.articleThumb} alt="Thumbnail" style={{ width: '100px', height: '100px' }} /> /*<img src={article.articleThumb} alt="Thumbnail" />*/ // 이미지 썸네일 렌더링
