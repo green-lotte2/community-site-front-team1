@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
+
 import { RootUrl } from '../../api/RootUrl.js';
 const rootURL = RootUrl();
 
@@ -64,23 +65,30 @@ const RegisterPage = () => {
     const [savedCode , setsavedCode] = useState(null);
 
     //유효성 결과 보여주기
-    const [passwordMessage, setPasswordMessage] = useState("");
+    const [passwordMessage, setPasswordMessage] = useState(false);
     const [emailMessage, setEmailMessage] = useState("");
     const [phoneMessage, setPhoneMessage] = useState("");
+    const [passMatchMessage,setPassMatchMessage] = useState(false);
+    
+    //이메일 스피너
+    const [isSendingEmail,setIsSendingEmail] = useState(false);
 
 
 
     useEffect(() => {
         // 모든 필드가 채워졌는지 확인
         const isAllFieldsFilled = Object.values(stf).every((value) => value !== "");
-        const isPasswordValid = passwordMessage === "안전한 비밀번호 입니다.";
+        const isPasswordValid = passwordMessage === true;
         const isEmailValid = emailMessage === "성공";
-        const isPhoneValid = phoneMessage === "사용 가능한 번호입니다:-)";
+        const isPhoneValid = phoneMessage === true;
         const isEmailCodeValid = verificationMessage === "성공";
         const isPasswordMatch = stf.stfPass === stf.stfPass2;
         const isFileUploaded = stf.thumbFile !== null;
         setIsFormValid(isAllFieldsFilled && isPasswordValid && isEmailValid && isPhoneValid && isPasswordMatch && isFileUploaded&&isEmailCodeValid);
     }, [stf, passwordMessage, emailMessage, phoneMessage]);
+
+
+
 
 
     // 컴포넌트가 렌더링될 때(마운트)
@@ -146,6 +154,8 @@ const RegisterPage = () => {
             return;
         }
 
+        setIsSendingEmail(true);
+
         axios
             .get(`${rootURL}/sendEmail?email=${stf.stfEmail}`)
             .then((response) => {
@@ -154,6 +164,8 @@ const RegisterPage = () => {
                 console.log("이게 결과값?" + result);
                 setEmailMessage(result); // 서버에서 받은 결과를 상태로 관리
                 setsavedCode(receivedCode);
+
+                setIsSendingEmail(false);
 
                 if (result === '성공') { // 인증 코드 입력 필드 표시
                     alert('이메일을 성공적으로 보냈습니다');
@@ -190,13 +202,18 @@ const RegisterPage = () => {
           });
       };
 
-
+      console.log("isPasswordValid"+passwordMessage);
+      console.log("isEmailValid"+emailMessage);
+      console.log("isPhoneValid"+phoneMessage);
+      console.log("isEmailCodeValid"+verificationMessage);
+      console.log("isPasswordMatch"+stf.stfPass === stf.stfPass2);
+      console.log("isFileUploaded"+stf.thumbFile !== null);
+  
 
 
 
     //회원가입버튼을 누르면 post전송
     const submitHandler = (e) => {
-
         e.preventDefault();
         alert("회원가입이 완료되었습니다");
 
@@ -239,10 +256,14 @@ const RegisterPage = () => {
             /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
         if (!passwordRegExp.test(currentPassword)) {
             setPasswordMessage(
-                "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
+                false
+                //"숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
             );
         } else {
-            setPasswordMessage("안전한 비밀번호 입니다.");
+            setPasswordMessage(
+                true
+                //"안전한 비밀번호 입니다."
+            );
         }
     };
 
@@ -255,9 +276,9 @@ const RegisterPage = () => {
             /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
         if (!emailRegExp.test(currentEmail)) {
-            setEmailMessage("이메일의 형식이 올바르지 않습니다!");
+            setEmailMessage(false);
         } else {
-            setEmailMessage("사용 가능한 이메일 입니다.");
+            setEmailMessage(true);
         }
     };
 
@@ -269,9 +290,9 @@ const RegisterPage = () => {
         const phoneRegExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
 
         if (!phoneRegExp.test(currentPhone)) {
-            setPhoneMessage("올바른 형식이 아닙니다!");
+            setPhoneMessage(false);
         } else {
-            setPhoneMessage("사용 가능한 번호입니다:-)");
+            setPhoneMessage(true);
         }
     };
 
@@ -343,6 +364,13 @@ const RegisterPage = () => {
                                     required
                                 />
                             </div>
+                            {passwordMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
+
+
                             <span>{passwordMessage}</span>
                         </div>
 
@@ -357,8 +385,8 @@ const RegisterPage = () => {
                                     required
                                 />
                             </div>
-                            {stf.stfPass !== stf.stfPass2 && <span>비밀번호가 일치하지 않습니다.</span>}
-                            {stf.stfPass === stf.stfPass2 && <span>비밀번호가 일치합니다.</span>}
+                            {stf.stfPass !== stf.stfPass2 && <span style={{color : "rgb(255, 181, 181)"}}>비밀번호가 일치하지 않습니다.</span>}
+                            {stf.stfPass === stf.stfPass2 && <span style={{color : "rgb(152, 198, 163)"}}>비밀번호가 일치합니다.</span>}
                         </div>
                     </div>
 
@@ -403,10 +431,18 @@ const RegisterPage = () => {
                                     onChange={onChangeEmail}
                                     required
                                 />
-                                <button onClick={handleSendEmail}>인증</button>
+                                 <button onClick={handleSendEmail} disabled={isSendingEmail}>
+                                {isSendingEmail ? <div className="spinner"></div> : '인증'}
+                                    
+                                </button>
                             </div>
 
-                            <span>{emailMessage}</span>
+
+                             {emailMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
 
                             {showVerification && (
                                 <div className="registerRow" style={{margin: "4px 0"}}>
@@ -420,7 +456,12 @@ const RegisterPage = () => {
                                         />
                                         <button onClick={handleVerifyCode}>확인</button>
                                     </div>
-                                    <span>{verificationMessage}</span>
+                                    {verificationMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
+                                 
                                 </div>
                             )}
                         </div>
@@ -437,8 +478,11 @@ const RegisterPage = () => {
                                     required
                                 />
                             </div>
-
-                            <span>{phoneMessage}</span>
+                            {phoneMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
 
                         </div>
                     </div>

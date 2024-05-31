@@ -44,7 +44,8 @@ const ArticleModifyPage = () => {
         if (confirmed) {
             try {
                 await Promise.all(selectedArticles.map((articleNo) => ArticleDelete({ articleNo })));
-
+                setSelectedArticles([]);
+                await fetchArticleList(); // 삭제 후 데이터를 다시 불러옴
                 alert('선택된 게시글이 삭제되었습니다.');
             } catch (error) {
                 console.error('Failed to delete selected articles:', error);
@@ -72,22 +73,31 @@ const ArticleModifyPage = () => {
     // 서버에서 받아온 articleList 정보 저장하는 useState
     const [articleList, setArticleList] = useState(null);
 
+    const fetchArticleList = async () => {
+        try {
+            const response = await ArticleList(pageRequest);
+            setArticleList(response);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     // 서버에서 게시글 목록 데이터를 가져오는 useEffect
     useEffect(() => {
-        const fetchArticleData = async () => {
+        fetchArticleList();
+    }, [articleCateNo, pageRequest]);
+
+    useEffect(() => {
+        const fetchData = async () => {
             try {
-                const [cateResponse, listResponse] = await Promise.all([
-                    getArticleCate(articleCateNo),
-                    ArticleList(pageRequest),
-                ]);
-                setArticleCateName(cateResponse.articleCateName);
-                setArticleList(listResponse);
-            } catch (error) {
-                console.error('Failed to fetch article data:', error);
+                const response = await getArticleCate(articleCateNo);
+                setArticleCateName(response.articleCateName);
+            } catch (err) {
+                console.log(err);
             }
         };
-        fetchArticleData();
-    }, [articleCateNo, pageRequest, articleList]);
+        fetchData();
+    }, [articleCateNo]);
 
     console.log(articleList);
 

@@ -70,7 +70,7 @@ const UserListComponent = ({ userList, setUserList }) => {
             {userList && userList.dtoList.length > 0 ? (
                 userList.dtoList.map((user, index) => (
                     <div className="adminUserRow" key={user.stfNo}>
-                        <div>{userList.total - index}</div>
+                        <div>{userList.startNo - index}</div>
                         <div>{user.stfStatus === 'Break' ? '휴직' : user.stfStatus === 'Active' ? '재직' : '퇴직'}</div>
                         <div>{user.stfName}</div>
                         <div>{user.stfNo}</div>
@@ -80,7 +80,10 @@ const UserListComponent = ({ userList, setUserList }) => {
                         <div>{user.stfEmail}</div>
                         <div>
                             {/* 파라미터로 no값 들고 가기 */}
-                            <span onClick={() => handleModalOpen(index)} style={{ cursor: 'pointer', fontSize:"16px" }}>
+                            <span
+                                onClick={() => handleModalOpen(index)}
+                                style={{ cursor: 'pointer', fontSize: '16px' }}
+                            >
                                 수정
                             </span>
                         </div>
