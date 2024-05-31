@@ -46,6 +46,7 @@ const UserListPage = () => {
         const fetchData = async () => {
             try {
                 const response = await getUserList(pageNation);
+                console.log(response);
                 setUserList(response);
             } catch (err) {
                 console.log(err);
@@ -82,7 +83,7 @@ const UserListPage = () => {
                     <UserListComponent userList={userList} setUserList={setUserList} />
                 </div>
 
-                <PagingComponent onPageChange={handlePageChange} />
+                <PagingComponent onPageChange={handlePageChange} articleList={userList} />
             </div>
         </MainLayout>
     );

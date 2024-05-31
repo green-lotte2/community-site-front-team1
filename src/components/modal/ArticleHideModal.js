@@ -32,7 +32,7 @@ const ArticleModal = ({ articleData, handleModalClose }) => {
                     <div className="modalColumnRow">
                         <div className="maR30">가시성 설정</div>
                         <div>
-                            <select name="articleCateVRole">
+                            <select name="articleCateVRole" value={articleData.articleStatus}>
                                 <option value="hide">비활성화</option>
                                 <option value="view">활성화</option>
                             </select>

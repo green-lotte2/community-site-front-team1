@@ -52,11 +52,17 @@ const ArticleModifyComponent = ({ articleList, setArticleList, selectedArticles,
                                 onChange={() => handleSelectArticle(article.articleNo)}
                             />
                         </div>
-                        <div>{articleList.total - index}</div>
+                        <div>{articleList.startNo - index}</div>
                         <div>{article.writer}</div>
-                        <div>{article.articleTitle}</div>
+                        <div>
+                            <Link
+                                to={`/view?articleNo=${article.articleNo}&articleCateNo=${article.articleCateNo}&pg=${articleList.pg}`}
+                            >
+                                {article.articleTitle}
+                            </Link>
+                        </div>
                         <div style={{ width: '150px' }}>{Moment(article.articleRdate).format('YY-MM-DD')}</div>
-                        <div style={{ width: '100px' }}>좋음</div>
+                        <div style={{ width: '100px' }}>{article.articleStatus === 'view' ? '활성화' : '비활성화'}</div>
                         <div>
                             <button
                                 className="nomalBtn"
