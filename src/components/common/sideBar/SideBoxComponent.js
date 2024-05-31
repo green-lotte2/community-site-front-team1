@@ -5,16 +5,16 @@ import { faPenToSquare, faPhoneVolume, faUnlockKeyhole, faUserLarge } from '@for
 
 const SideBoxComponent = ({ sideBarCate }) => {
 
-  const [accordion, setAccordion]  = useState(false);
+  const [accordion, setAccordion]  = useState(true);
 
   const handleAccordion = (e) => {
     const arrow = e.target.closest(".sideTitle").querySelector(".arrow");
     setAccordion(!accordion);
     console.log(accordion);
     if (accordion) {
-      arrow.innerText = "▲";
-    } else {
       arrow.innerText = "▼";
+    } else {
+      arrow.innerText = "▲";
     }
   }
 
@@ -26,7 +26,7 @@ const SideBoxComponent = ({ sideBarCate }) => {
               <span><FontAwesomeIcon icon={faUserLarge} /></span>
               <div>
                 <p>개인</p>
-                <span className='arrow'>▲</span>
+                <span className='arrow'>▼</span>
               </div>
             </>
           }
