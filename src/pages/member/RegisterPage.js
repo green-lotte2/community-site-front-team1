@@ -78,7 +78,7 @@ const RegisterPage = () => {
         const isAllFieldsFilled = Object.values(stf).every((value) => value !== "");
         const isPasswordValid = passwordMessage === true;
         const isEmailValid = emailMessage === "성공";
-        const isPhoneValid = phoneMessage === "사용가능";
+        const isPhoneValid = phoneMessage === true;
         const isEmailCodeValid = verificationMessage === "성공";
         const isPasswordMatch = stf.stfPass === stf.stfPass2;
         const isFileUploaded = stf.thumbFile !== null;
