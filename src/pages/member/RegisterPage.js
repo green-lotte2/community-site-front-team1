@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
+
 import { RootUrl } from '../../api/RootUrl.js';
 const rootURL = RootUrl();
 
@@ -67,6 +68,7 @@ const RegisterPage = () => {
     const [passwordMessage, setPasswordMessage] = useState(false);
     const [emailMessage, setEmailMessage] = useState("");
     const [phoneMessage, setPhoneMessage] = useState("");
+    const [passMatchMessage,setPassMatchMessage] = useState(false);
     
     //이메일 스피너
     const [isSendingEmail,setIsSendingEmail] = useState(false);
@@ -84,6 +86,9 @@ const RegisterPage = () => {
         const isFileUploaded = stf.thumbFile !== null;
         setIsFormValid(isAllFieldsFilled && isPasswordValid && isEmailValid && isPhoneValid && isPasswordMatch && isFileUploaded&&isEmailCodeValid);
     }, [stf, passwordMessage, emailMessage, phoneMessage]);
+
+
+
 
 
     // 컴포넌트가 렌더링될 때(마운트)
@@ -197,13 +202,18 @@ const RegisterPage = () => {
           });
       };
 
-
+      console.log("isPasswordValid"+passwordMessage);
+      console.log("isEmailValid"+emailMessage);
+      console.log("isPhoneValid"+phoneMessage);
+      console.log("isEmailCodeValid"+verificationMessage);
+      console.log("isPasswordMatch"+stf.stfPass === stf.stfPass2);
+      console.log("isFileUploaded"+stf.thumbFile !== null);
+  
 
 
 
     //회원가입버튼을 누르면 post전송
     const submitHandler = (e) => {
-
         e.preventDefault();
         alert("회원가입이 완료되었습니다");
 
@@ -266,9 +276,9 @@ const RegisterPage = () => {
             /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
         if (!emailRegExp.test(currentEmail)) {
-            setEmailMessage("이메일의 형식이 올바르지 않습니다!");
+            setEmailMessage(false);
         } else {
-            setEmailMessage("사용 가능한 이메일 입니다.");
+            setEmailMessage(true);
         }
     };
 
@@ -427,7 +437,12 @@ const RegisterPage = () => {
                                 </button>
                             </div>
 
-                            <span>{emailMessage}</span>
+
+                             {emailMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
 
                             {showVerification && (
                                 <div className="registerRow" style={{margin: "4px 0"}}>
@@ -441,7 +456,12 @@ const RegisterPage = () => {
                                         />
                                         <button onClick={handleVerifyCode}>확인</button>
                                     </div>
-                                    <span>{verificationMessage}</span>
+                                    {verificationMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
+                                 
                                 </div>
                             )}
                         </div>
@@ -463,7 +483,6 @@ const RegisterPage = () => {
                             ) : (
                                 <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
                             )}
-                            <span>{phoneMessage}</span>
 
                         </div>
                     </div>
