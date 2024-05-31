@@ -65,7 +65,9 @@ const ArticleListComponent = () => {
                 articleCateList.map((cate, index) => (
                     <div className="adminArticleRow" key={index}>
                         <div>{articleCateList.length - index}</div>
-                        <div>{cate.articleCateName}</div>
+                        <div>
+                            {cate.articleCateName} [ {cate.articleCount} ]
+                        </div>
                         <div>{cate.articleCateStatus === 0 ? '비활성화' : '활성화'}</div>
                         <div>{cate.articleCateVRole}</div>
                         <div>{cate.articleCateWRole}</div>
