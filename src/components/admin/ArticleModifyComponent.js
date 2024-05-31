@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArticleHideModal from '../modal/ArticleHideModal';
 
 // 밑에 2개 날짜 포맷
@@ -9,6 +9,7 @@ import { ArticleDelete } from '../../api/ArticleApi';
 
 const ArticleModifyComponent = ({ articleList, setArticleList, selectedArticles, handleSelectArticle, selectAll }) => {
     console.log(articleList);
+
     // 모달창 활성화 여부 저장하는 useState
     const [modalOpen, setModalOpen] = useState({});
 

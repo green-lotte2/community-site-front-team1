@@ -22,12 +22,13 @@ const ListPage = () => {
             try {
                 const response = await getArticleCate(articleCateNo);
                 setArticleCateName(response.articleCateName);
+                setPageRequest((prev) => ({ ...prev, articleCateNo: articleCateNo }));
             } catch (error) {
                 console.error('Failed to fetch article category:', error);
             }
         };
         fetchData();
-    }, []);
+    }, [articleCateNo]);
 
     let pg = queryParams.get('pg');
     if (pg === null) {
