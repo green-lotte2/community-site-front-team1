@@ -975,6 +975,7 @@ section {
     color: rgb(0, 0, 0);
 }
 .registerRow button {
+    position: absolute;
     width: 60px;
     height: 40px;
     box-sizing: border-box;
@@ -987,6 +988,7 @@ section {
     background-color: transparent;
     cursor: pointer;
     color: white;
+
 }
 .registerRow > div > input[name='addr1'] {
     width: 650px;
@@ -1848,4 +1850,27 @@ section {
     border: 1px solid #f1f1f1;
     resize: none;
 }
+
+/*회원가입 스피너*/
+.spinner {
+    position: relative;
+    top: 0px;
+    left: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    box-sizing: border-box;   
+    width: 30px;
+    height: 30px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
