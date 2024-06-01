@@ -3,9 +3,9 @@ import { RootUrl } from './RootUrl';
 
 const rootURL = RootUrl() + '/admin';
 
-export const getUserList = async (data) => {
+export const postUserList = async (data) => {
     try {
-        console.log('검색감지');
+        
         const response = await axios.post(`${rootURL}/user/list`, data);
         return response.data;
     } catch (err) {
@@ -14,8 +14,20 @@ export const getUserList = async (data) => {
     }
 };
 
-export const getDptList = async (data) => {
+export const getUserList = async () => {
+    const response = await axios.get(`${rootURL}/user/list`);
+
+    return response.data;
+};
+
+export const getDptList = async () => {
     const response = await axios.get(`${rootURL}/user/dptList`);
+
+    return response.data;
+};
+
+export const getDptAndStfList = async () => {
+    const response = await axios.get(`${rootURL}/user/dptAndStfList`);
 
     return response.data;
 };

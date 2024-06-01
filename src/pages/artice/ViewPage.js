@@ -34,7 +34,8 @@ const ViewPage = () => {
     };
 
     const listHandler = () => {
-        navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+        //navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+        navigate(-1);
     };
 
     // URL에서 파라미터값 추출
