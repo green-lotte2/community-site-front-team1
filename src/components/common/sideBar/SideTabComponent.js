@@ -30,7 +30,7 @@ const SideTabComponent = ({ sideTabCate, sideTabCateName, type }) => {
                         <p>기본설정</p>
                     </>
                 )}
-                {sideTabCate === 'userList' && (
+                {sideTabCate === 'userList?pg=1' && (
                     <>
                         <FontAwesomeIcon icon={faUserGear} />
                         <p>회원관리</p>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
 import GroupHeadComponent from '../../components/common/private/GroupHeadComponent';
+import { getDptAndStfList, getDptList, getUserList } from '../../api/AdminApi';
 
 const GroupPage = () => {
 
     // 서버에서 받아온 정보를 GroupHeadComponent에 전달하면됨
     // 아래는 예시 실제로는 List의 인덱스 번호로 넘기면 될듯
+    /*
     const [groupInfo, setGroupInfo] = useState([
         {
             department : "인사지원부",
@@ -35,9 +37,40 @@ const GroupPage = () => {
             ]
         }
     ])
+    */
 
+    const [groupInfo, setGroupInfo] = useState([]);
     // 오른쪽 화면 (처음에는 안뜨고 회원 이름 클릭하면 서버에서 정보 받아와서 띄우기)
     const [userInfo, setUserInfo] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getDptAndStfList();
+                console.log('getDptList' + groupInfo);
+                setGroupInfo(response);
+               
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getUserList();
+                console.log(response);
+                setUserInfo(response);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
+
 
 
   return (
@@ -54,18 +87,19 @@ const GroupPage = () => {
         </div>
     </div>
 
-    <div className="contentBox boxStyle5">
-        <div className="contentColumn">
-            <div className="groupRow">
-                <img src="../images/iconSample3.png" alt="" />
-                <div>
-                    <p>홍길동</p>
-                    <p>직  책 : 팀장</p>
-                    <p>부  서 : 인사지원부</p>
-                    <p>이메일 : abcd1234@gmail.com</p>
-                    <p>연락처 : 010-1111-1111</p>
-                </div>
-            </div>
+    {userInfo && (
+                <div className="contentBox boxStyle5">
+                    <div className="contentColumn">
+                        <div className="groupRow">
+                            <img src="../images/iconSample3.png" alt="" />
+                            <div>
+                                <p>{userInfo.stfName}</p>
+                                <p>직 책: {userInfo.rnkNo}</p>
+                                <p>부 서: {userInfo.dptNo}</p>
+                                <p>이메일: {userInfo.stfEmail}</p>
+                                <p>연락처: {userInfo.stfPh}</p>
+                            </div>
+                        </div>
 
             <div className="groupRow">
                 <div>
@@ -76,7 +110,7 @@ const GroupPage = () => {
             아이디어가 없음..
         </div>
     </div>
-
+    )}
     </MainLayout>
   )
 }
