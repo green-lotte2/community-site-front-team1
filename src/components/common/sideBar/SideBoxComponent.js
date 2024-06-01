@@ -85,7 +85,7 @@ const SideBoxComponent = ({ sideBarCate }) => {
                         <>
                             <SideTabComponent sideTabCate={'index'}></SideTabComponent>
                             <SideTabComponent sideTabCate={'config'}></SideTabComponent>
-                            <SideTabComponent sideTabCate={'userList'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'userList?pg=1'}></SideTabComponent>
                             <SideTabComponent sideTabCate={'articleList'}></SideTabComponent>
                         </>
                     )}
