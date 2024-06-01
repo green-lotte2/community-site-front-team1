@@ -5,17 +5,17 @@ import FooterComponent from './FooterComponent'
 const ContentAreaComponent = ({ children }) => {
   return (
     <section id="contentArea">
-            {/*상단바*/}
-            <NavBarComponent></NavBarComponent>
+      {/*상단바*/}
+      <NavBarComponent></NavBarComponent>
 
-            {/*메인*/}
-            <div id="mainBox">
-              {children}
-            </div>
+      {/*메인*/}
+      <div id="mainBox">
+        {children}
+      </div>
 
-            {/*Footer*/}
-            <FooterComponent></FooterComponent>
-        </section>
+      {/*Footer*/}
+      <FooterComponent></FooterComponent>
+  </section>
   )
 }
 

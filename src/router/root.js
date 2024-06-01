@@ -22,6 +22,8 @@ import CsViewPage from '../pages/cs/CsViewPage';
 import ConfigPage from '../pages/admin/ConfigPage';
 import GroupPlanPage from '../pages/member/GroupPlanPage';
 import GroupPage from '../pages/private/GroupPage';
+import ChatPage from '../pages/private/ChatPage';
+import ProjectPage from '../pages/private/ProjectPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -43,6 +45,8 @@ const root = createBrowserRouter([
 
     // private
     { path: '/group', element: <GroupPage /> },
+    { path: '/chat', element: <ChatPage /> },
+    { path: '/project', element: <ProjectPage /> },
 
     // article
     { path: '/list', element: <ListPage /> },

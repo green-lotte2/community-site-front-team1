@@ -75,42 +75,41 @@ const GroupPage = () => {
 
   return (
     <MainLayout>
-    <div className="contentBox boxStyle7">
-      <div className="contentTitle font30 alignL">조직도</div>
-    </div>
+        <div className='chatBox'>
+            <div className="contentBox boxStyle9">
+                <div className='groupBox'>
+                    
+                    <GroupHeadComponent groupInfo={groupInfo}/>
 
-    <div className="contentBox boxStyle6">
-        <div className='groupBox'>
-            
-            <GroupHeadComponent groupInfo={groupInfo}/>
-
-        </div>
-    </div>
-
-    {userInfo && (
-                <div className="contentBox boxStyle5">
-                    <div className="contentColumn">
-                        <div className="groupRow">
-                            <img src="../images/iconSample3.png" alt="" />
-                            <div>
-                                <p>{userInfo.stfName}</p>
-                                <p>직 책: {userInfo.rnkNo}</p>
-                                <p>부 서: {userInfo.dptNo}</p>
-                                <p>이메일: {userInfo.stfEmail}</p>
-                                <p>연락처: {userInfo.stfPh}</p>
-                            </div>
-                        </div>
-
-            <div className="groupRow">
-                <div>
-                    채팅하기
                 </div>
             </div>
 
-            아이디어가 없음..
+
+            {userInfo && (
+            <div className="contentBox boxStyle5">
+                <div className="contentColumn">
+                    <div className="groupRow">
+                        <img src="../images/iconSample3.png" alt="" />
+                        <div>
+                            <p>{userInfo.stfName}</p>
+                            <p>직 책: {userInfo.rnkNo}</p>
+                            <p>부 서: {userInfo.dptNo}</p>
+                            <p>이메일: {userInfo.stfEmail}</p>
+                            <p>연락처: {userInfo.stfPh}</p>
+                        </div>
+                    </div>
+            
+                    <div className="groupRow">
+                        <div>
+                            채팅하기
+                        </div>
+                    </div>
+
+                    아이디어가 없음..
+                </div>
+            </div>
+            )}
         </div>
-    </div>
-    )}
     </MainLayout>
   )
 }

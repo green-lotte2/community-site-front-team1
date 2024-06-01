@@ -23,8 +23,14 @@ textarea {
     width: 22px;
     height: 22px;
 }
+div {
+    box-sizing: border-box;
+}
 body {
-    background-color: #eeeeee;
+    background-color: #f0f1f4;
+    height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 .font14 {
     font-size: 14px !important;
@@ -44,7 +50,6 @@ body {
 .maR30 {
     margin-right: 30px;
 }
-
 /* 페이징 */
 .paging {
     display: flex;
@@ -284,8 +289,8 @@ body {
 #container {
     display: flex;
     justify-content: center;
-    width: 1920px;
-    height: auto;
+    width: 100%;
+    height: 100vh;
     box-sizing: border-box;
     background-color: #eeeeee;
     margin: 0 auto;
@@ -298,15 +303,20 @@ section {
 #sideBar {
     flex-direction: column;
     width: 297px;
+    height: 100%;
     padding: 10px;
-    background: #F5F5F5; /* 다크 블랙-그레이 그라데이션 */
+    background: #3f4d67; /* 다크 블랙-그레이 그라데이션 */
     border-right: 2px solid #414345; /* 그레이 테두리 */
     box-shadow: 10px 0px 20px #c8c8c8;
     z-index: 10;
+    overflow: scroll;
+    scrollbar-width: none;
 }
+
 #contentArea {
     flex-direction: column;
-    width: 1620px;
+    width: 100%;
+    height: 100%;
     background-color: #eeeeee;
     overflow: scroll;
 }
@@ -338,7 +348,7 @@ section {
     width: 100%;
     height: 50px;
     padding-bottom: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
@@ -358,7 +368,7 @@ section {
 .sideBox {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .sideTitle {
     display: flex;
@@ -395,8 +405,8 @@ section {
 .sideTab {
     display: flex;
     width: 100%;
-    height: 30px;
-    padding: 20px 0 20px 20px;
+    height: 36px;
+    padding: 0px 0 0px 20px;
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
@@ -479,14 +489,17 @@ section {
 #mainBox {
     display: flex;
     flex-wrap: wrap;
-    padding: 10px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    justify-content: center;
 }
 .contentBox {
     display: flex;
     flex-direction: column;
     border-radius: 6px;
     background-color: white;
-    box-shadow: 10px 10px 20px rgba(200, 200, 200, 0.5);
+    box-shadow: 0px 0px 5px rgba(163, 163, 163, 0.5);
 }
 .contentBox > p {
     font-size: 18px;
@@ -515,8 +528,8 @@ section {
     box-sizing: border-box;
 }
 .boxStyle4 {
-    width: 780px;
-    height: 780px;
+    width: 50%;
+    height: auto;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
@@ -529,26 +542,39 @@ section {
     box-sizing: border-box;
 }
 .boxStyle6 {
-    width: 380px;
-    height: 780px;
+    width: 25%;
+    height: auto;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
 }
+/*가로:무한 세로:무한 스크롤*/
 .boxStyle7 {
-    width: 1580px;
-    height: auto;
+    width: 100%;
+    height: 97%;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
+    overflow: scroll;
+    scrollbar-width: none;
 }
+/*가로:무한 세로:자동*/
 .boxStyle8 {
-    width: 1580px;
+    width: 100%;
     height: auto;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
 }
+/*가로:25% 세로 자동*/
+.boxStyle9 {
+    width: 25%;
+    height: auto;
+    margin: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
 
 .contentTitle {
     display: flex;
@@ -1280,6 +1306,8 @@ section {
     width: 100%;
     border-bottom: 1px solid #808080;
     align-items: center;
+    font-size: 20px;
+    justify-content: center;
 }
 .articleRow > div {
     display: flex;
@@ -1294,26 +1322,26 @@ section {
     height: 100px;
 }
 .articleRow > div:nth-child(1) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .articleRow > div:nth-child(2) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .articleRow > div:nth-child(3) {
-    width: 890px;
+    width: 55%;
 }
 .articleRow > div:nth-child(4) {
-    width: 100px;
+    width: 10%;
     justify-content: center;
 }
 .articleRow > div:nth-child(5) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .articleRow > div:nth-child(6) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 
@@ -1441,39 +1469,39 @@ section {
     height: 100px;
 }
 .adminUserRow > div:nth-child(1) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(2) {
-    width: 100px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(3) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(4) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(5) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(6) {
-    width: 300px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(7) {
-    width: 200px;
+    width: 15%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(8) {
-    width: 300px;
+    width: 20%;
     justify-content: center;
 }
 .adminUserRow > div:nth-child(9) {
-    width: 90px;
+    width: 10%;
     justify-content: center;
 }
 
@@ -1499,39 +1527,39 @@ section {
     height: 100px;
 }
 .adminUserRowTitle > div:nth-child(1) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(2) {
-    width: 100px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(3) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(4) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(5) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(6) {
-    width: 300px;
+    width: 10%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(7) {
-    width: 200px;
+    width: 15%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(8) {
-    width: 300px;
+    width: 20%;
     justify-content: center;
 }
 .adminUserRowTitle > div:nth-child(9) {
-    width: 90px;
+    width: 10%;
     justify-content: center;
 }
 
@@ -1555,30 +1583,30 @@ section {
 }
 /*1540*/
 .adminArticleRow > div:nth-child(1) {
-    width: 100px;
+    width: 10%;
     justify-content: center;
 }
 .adminArticleRow > div:nth-child(2) {
-    width: 570px;
+    width: 30%;
 }
 .adminArticleRow > div:nth-child(3) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminArticleRow > div:nth-child(4) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminArticleRow > div:nth-child(5) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminArticleRow > div:nth-child(6) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .adminArticleRow > div:nth-child(7) {
-    width: 250px;
+    width: 20%;
     justify-content: center;
 }
 /*            어드민 게시글 관리 시작               */
@@ -1603,30 +1631,30 @@ section {
     box-sizing: border-box;
 }
 .ModArticleRow > div:nth-child(1) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(2) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(3) {
-    width: 150px;
+    width: 15%;
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(4) {
-    width: 780px;
+    width: 40%;
 }
 .ModArticleRow > div:nth-child(5) {
-    width: 100px;
+    width: 10%;
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(6) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(7) {
-    width: 150px;
+    width: 15%;
     justify-content: center;
 }
 
@@ -1646,30 +1674,30 @@ section {
     box-sizing: border-box;
 }
 .ModArticleRowTitle > div:nth-child(1) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(2) {
-    width: 100px;
+    width: 5%;
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(3) {
-    width: 150px;
+    width: 15%;
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(4) {
-    width: 780px;
+    width: 40%;
 }
 .ModArticleRowTitle > div:nth-child(5) {
-    width: 100px;
+    width: 10%;
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(6) {
-    width: 150px;
+    width: 10%;
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(7) {
-    width: 150px;
+    width: 15%;
     justify-content: center;
 }
 
@@ -1679,8 +1707,7 @@ section {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 70%;
-    overflow: scroll;
+    height: 100%;
 }
 .scrollRow {
     display: flex;
@@ -1898,3 +1925,276 @@ section {
     100% { transform: rotate(360deg); }
   }
 
+/* 채팅 */
+.chatBox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+.chatInfo {
+    width: 100%;
+    display: flex;
+    font-weight: bolder; 
+    padding: 8px 10px;
+    margin: 10px 0;
+    border-bottom: 2px solid #dddddd;
+}
+.chatInfo > img {
+    width: 50px;
+    height: 50px;
+}
+.chatInfo > div {
+    width: 80%;
+    padding: 0 10px;
+    align-content: center;
+    font-size: 20px;
+    font-weight: bolder;
+}
+.chatInfo p:nth-child(1) {
+    font-weight: bolder;
+    font-size: 16px;
+}
+.chatInfo p {
+    width: 100%;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.chatInfo span {
+    display: flex;
+    font-size: 16px;
+    margin: 0 10px;
+    align-self: center;
+    cursor: pointer;
+}
+.chatRoomList {
+    display: flex;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 8px 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.chatRoomList:hover {
+    background-color: #dddddd;
+}
+.chatRoomList > div {
+    width: 85%;
+    padding: 0 10px;
+}
+.chatRoomList p {
+    width: 100%;
+    font-size: 14px;
+    font-weight: bolder;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.ballCount {
+    background-color: red;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    color: white;
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: center;
+    align-content: center;
+}
+.chatRoom {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    width: 100%;
+    height: 100%;
+    padding: 10px 0;
+}
+.chat {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 2px 10px;
+}
+.chat:hover {
+    background-color: #dddddd;
+}
+.chat > img {
+    width: 50px;
+    height: 50px;
+}
+.chat > div {
+    padding: 4px 10px;
+}
+.chat > div > p {font-size: 14px;}
+.chat > div > p:nth-child(1) {
+    font-weight: bolder;
+    padding-bottom: 4px;
+}
+.chat > div > p > span {
+    color: #727272;
+}
+.inputChatBox {
+    display: flex;
+    width: 100%;
+    height: 20%;
+    padding: 10px;
+}
+.inputChat {
+    display: flex;
+    width: 100%;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    position: relative;
+}
+.inputChat > span {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.chatIcon {
+    margin: 10px 10px 0 10px;
+    cursor: pointer;
+}
+.inputChat > textarea {
+    border: 0;
+    width: 100%;
+    resize: none;
+    padding: 10px;
+    font-size: 16px;
+    position: relative;
+    border-left: 1px solid #dddddd;
+}
+.inputChat > span > span {
+    position: relative;
+    display: block;
+    width: 30px;
+    height: 40px;
+}
+.inviteList {
+    flex-wrap: wrap;
+}
+.inviteList > span {
+    border: 1px solid red;
+    border-radius: 4px;
+    margin: 4px;
+    padding: 4px;
+    cursor: pointer;
+}
+.emojiBox {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    top: 2px;
+    left: 38px;
+    width: 180px;
+    height: 90px;
+    border: 1px solid #b8b8b8;
+    border-radius: 4px;
+    background-color: white;
+    z-index: 10;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+.emojiBox > span {
+    width: 10%;
+    height: 20%;
+    margin: 2%;
+    display: flex;
+    cursor: pointer;
+}
+
+/* 프로젝트 */
+.projectList {
+    display: flex;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 10px 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.projectList:hover {
+    background-color: #dddddd;
+}
+.projectList > div {
+    width: 100%;
+    padding: 0 10px;
+}
+.projectList p {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 2px 0;
+}
+.projectList p:nth-child(1) {
+    font-size: 16px;
+    font-weight: bolder;
+}
+.projectList p:nth-child(2) {
+    font-size: 14px;
+    color: #5e5e5e;
+}
+/* 칸반 */
+.App2 {
+    height: 100%;
+    width: 99%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color);
+    transition: all 350ms;
+    overflow: scroll;
+  }
+  .app_outer {
+    flex: 1;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .app_boards {
+    margin-top: 20px;
+    min-width: fit-content;
+    display: flex;
+    gap: 30px;
+    padding-inline: 2rem;
+    color: var(--text-color);
+  }
+  /* p {
+    font-size: 16px;
+    line-height: 28px;
+  } */
+  
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f2f2f2;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 20px 20px 20px 20px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(195, 195, 195);
+  }
+  .add__board > textarea {
+    border: 0.5px solid rgb(167, 167, 167) !important;
+    height: 2rem !important;
+  }
+  .card_detail > textarea {
+    border: 0.5px solid rgb(167, 167, 167) !important;
+  }
+  .card__values > p {
+    background: #ccc !important;
+  }
+  .cardinfo__editable {
+    width: fit-content;
+  }

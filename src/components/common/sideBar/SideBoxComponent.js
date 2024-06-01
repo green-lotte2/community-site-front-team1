@@ -92,8 +92,8 @@ const SideBoxComponent = ({ sideBarCate }) => {
                     {sideBarCate === 'private' && (
                         <>
                             <SideTabComponent sideTabCate={'myPage'}></SideTabComponent>
-                            <SideTabComponent sideTabCate={'menu1'}></SideTabComponent>
-                            <SideTabComponent sideTabCate={'menu2'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'chat'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'project'}></SideTabComponent>
                             <SideTabComponent sideTabCate={'group'}></SideTabComponent>
                         </>
                     )}
