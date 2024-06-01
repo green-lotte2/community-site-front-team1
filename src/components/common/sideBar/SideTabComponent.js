@@ -50,16 +50,16 @@ const SideTabComponent = ({ sideTabCate, sideTabCateName, type }) => {
                         <p>마이페이지</p>
                     </>
                 )}
-                {sideTabCate === 'menu1' && (
+                {sideTabCate === 'chat' && (
                     <>
                         <FontAwesomeIcon icon={faFileLines} />
-                        <p>메뉴1</p>
+                        <p>채팅</p>
                     </>
                 )}
-                {sideTabCate === 'menu2' && (
+                {sideTabCate === 'project' && (
                     <>
                         <FontAwesomeIcon icon={faFileLines} />
-                        <p>메뉴2</p>
+                        <p>프로젝트</p>
                     </>
                 )}
                 {sideTabCate === 'group' && (

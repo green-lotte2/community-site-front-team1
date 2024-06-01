@@ -62,8 +62,8 @@ const ArticleModifyComponent = ({ articleList, setArticleList, selectedArticles,
                                 {article.articleTitle}
                             </Link>
                         </div>
-                        <div style={{ width: '150px' }}>{Moment(article.articleRdate).format('YY-MM-DD')}</div>
-                        <div style={{ width: '100px' }}>{article.articleStatus === 'view' ? '활성화' : '비활성화'}</div>
+                        <div>{Moment(article.articleRdate).format('YY-MM-DD')}</div>
+                        <div>{article.articleStatus === 'view' ? '활성화' : '비활성화'}</div>
                         <div>
                             <button
                                 className="nomalBtn"

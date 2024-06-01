@@ -42,41 +42,38 @@ const GroupPage = () => {
 
   return (
     <MainLayout>
-    <div className="contentBox boxStyle7">
-      <div className="contentTitle font30 alignL">조직도</div>
-    </div>
+        <div className='chatBox'>
+            <div className="contentBox boxStyle9">
+                <div className='groupBox'>
+                    
+                    <GroupHeadComponent groupInfo={groupInfo}/>
 
-    <div className="contentBox boxStyle6">
-        <div className='groupBox'>
-            
-            <GroupHeadComponent groupInfo={groupInfo}/>
-
-        </div>
-    </div>
-
-    <div className="contentBox boxStyle5">
-        <div className="contentColumn">
-            <div className="groupRow">
-                <img src="../images/iconSample3.png" alt="" />
-                <div>
-                    <p>홍길동</p>
-                    <p>직  책 : 팀장</p>
-                    <p>부  서 : 인사지원부</p>
-                    <p>이메일 : abcd1234@gmail.com</p>
-                    <p>연락처 : 010-1111-1111</p>
                 </div>
             </div>
 
-            <div className="groupRow">
-                <div>
-                    채팅하기
+            <div className="contentBox boxStyle5">
+                <div className="contentColumn">
+                    <div className="groupRow">
+                        <img src="../images/iconSample3.png" alt="" />
+                        <div>
+                            <p>홍길동</p>
+                            <p>직  책 : 팀장</p>
+                            <p>부  서 : 인사지원부</p>
+                            <p>이메일 : abcd1234@gmail.com</p>
+                            <p>연락처 : 010-1111-1111</p>
+                        </div>
+                    </div>
+
+                    <div className="groupRow">
+                        <div>
+                            채팅하기
+                        </div>
+                    </div>
+
+                    아이디어가 없음..
                 </div>
             </div>
-
-            아이디어가 없음..
         </div>
-    </div>
-
     </MainLayout>
   )
 }
