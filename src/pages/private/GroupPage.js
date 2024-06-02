@@ -1,43 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
 import GroupHeadComponent from '../../components/common/private/GroupHeadComponent';
-import { getDptAndStfList, getDptList, getUserList } from '../../api/AdminApi';
+import { getDptAndStfList, getDptList, getUserInfo, getUserList } from '../../api/AdminApi';
+import { RootUrl } from '../../api/RootUrl';
 
 const GroupPage = () => {
-
-    // 서버에서 받아온 정보를 GroupHeadComponent에 전달하면됨
-    // 아래는 예시 실제로는 List의 인덱스 번호로 넘기면 될듯
-    /*
-    const [groupInfo, setGroupInfo] = useState([
-        {
-            department : "인사지원부",
-            member : [
-                { name: "홍길동", rank: "팀장" },
-                { name: "강감찬", rank: "대리" },
-                { name: "김유신", rank: "사원" },
-                { name: "이순신", rank: "사원" }
-            ]
-        },
-        {
-            department : "영업부",
-            member : [
-                { name: "홍길동", rank: "팀장" },
-                { name: "강감찬", rank: "대리" },
-                { name: "김유신", rank: "사원" },
-                { name: "이순신", rank: "사원" }
-            ]
-        },
-        {
-            department : "전산부",
-            member : [
-                { name: "홍길동", rank: "팀장" },
-                { name: "강감찬", rank: "대리" },
-                { name: "김유신", rank: "사원" },
-                { name: "이순신", rank: "사원" }
-            ]
-        }
-    ])
-    */
 
     const [groupInfo, setGroupInfo] = useState([]);
     // 오른쪽 화면 (처음에는 안뜨고 회원 이름 클릭하면 서버에서 정보 받아와서 띄우기)
@@ -57,19 +24,16 @@ const GroupPage = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getUserList();
-                console.log(response);
-                setUserInfo(response);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, []);
 
+    const handleMemberClick = async (member) => {
+        try {
+            // 클릭된 멤버의 정보를 가져와서 userInfo를 설정
+            const response = await getUserInfo(member.stfNo);
+            setUserInfo(response);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
 
 
@@ -79,7 +43,7 @@ const GroupPage = () => {
             <div className="contentBox boxStyle9">
                 <div className='groupBox'>
                     
-                    <GroupHeadComponent groupInfo={groupInfo}/>
+                    <GroupHeadComponent groupInfo={groupInfo} handleMemberClick={handleMemberClick}/>
 
                 </div>
             </div>
@@ -89,11 +53,13 @@ const GroupPage = () => {
             <div className="contentBox boxStyle5">
                 <div className="contentColumn">
                     <div className="groupRow">
-                        <img src="../images/iconSample3.png" alt="" />
+                        {userInfo.stfImg && (
+                                    <img src={`${RootUrl()}/images/${userInfo.stfImg}`} alt="sft" name="stfImg" />
+                                )}
                         <div>
                             <p>{userInfo.stfName}</p>
-                            <p>직 책: {userInfo.rnkNo}</p>
-                            <p>부 서: {userInfo.dptNo}</p>
+                            <p>직 책: {userInfo.strRnkNo}</p>
+                            <p>부 서: {userInfo.strDptName}</p>
                             <p>이메일: {userInfo.stfEmail}</p>
                             <p>연락처: {userInfo.stfPh}</p>
                         </div>
