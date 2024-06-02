@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faBriefcase, faUserGear } from "@fortawesome/free-solid-svg-icons";
 import GroupBodyComponent from './GroupBodyComponent';
 
-const GroupHeadComponent = ({groupInfo}) => {
+const GroupHeadComponent = ({groupInfo, handleMemberClick}) => {
 
     const [accordions, setAccordions] = useState(Array(groupInfo.length).fill(false));
 
@@ -35,7 +35,11 @@ const GroupHeadComponent = ({groupInfo}) => {
                     {group.dptName}({group.member.length})
                 </p>
                 {accordions[index] && group.member.map((member, index) => (
-                    <GroupBodyComponent key={member.stfNo} member={member} index={index} />
+                    <GroupBodyComponent 
+                        key={member.stfNo} 
+                        member={member} 
+                        index={index}
+                        onClick={handleMemberClick} />
                 ))}
         
             </div>

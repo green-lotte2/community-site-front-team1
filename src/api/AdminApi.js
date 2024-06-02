@@ -26,6 +26,12 @@ export const getDptList = async () => {
     return response.data;
 };
 
+export const getUserInfo = async (data) => {
+    
+    const response = await axios.get(`${rootURL}/user/detail?stfNo=${data}`)
+    return response.data;
+}
+
 export const getDptAndStfList = async () => {
     const response = await axios.get(`${rootURL}/user/dptAndStfList`);
 

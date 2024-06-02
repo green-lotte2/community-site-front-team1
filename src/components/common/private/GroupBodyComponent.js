@@ -1,8 +1,14 @@
 import React from 'react'
 
-const GroupBodyComponent = ({member}, {index}) => {
+const GroupBodyComponent = ({index, member, onClick}) => {
+
+  const handleMemberClick = () => {
+    console.log(member.stfNo);
+    onClick(member);
+  };
+
   return (
-    <div className='groupBody'>
+    <div className='groupBody' onClick={handleMemberClick}>
         <p key={index}>{member.stfName} [{member.rankNo}]</p>
     </div>
   )
