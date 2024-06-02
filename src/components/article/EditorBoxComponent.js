@@ -132,6 +132,17 @@ const EditorBoxComponent = () => {
         <>
             <input className='writeTitle' type="text" value={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} placeholder='제목을 입력하세요.' />
 
+            <div className='writeFile'>
+              <input type='file' multiple></input>
+              {/** 첨부파일이 없다면 fileList안의 span이 없으면됨
+               *   input file에 파일을 올리면 스크립트 처리로 이름 따올 수 있음!
+               */}
+              <div className='fileList'>
+                <span>첨부파일목록</span>
+                <span>2분기 실적보고서.txt</span>
+              </div>
+            </div>
+
             <Editor
                 initialValue=" "
                 previewStyle="vertical"

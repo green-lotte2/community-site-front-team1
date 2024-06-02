@@ -4,7 +4,7 @@ import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import MainLayout from '../../layout/MainLayout';
 import { getArticleCate, ArticleDelete, ArticleView } from '../../api/ArticleApi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
@@ -109,10 +109,18 @@ const ViewPage = () => {
         <MainLayout>
             <div className="contentBox boxStyle7">
                 <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
-                <div className="writeRow">
+                <div className="viewRow">
                     <p>{articleView.articleTitle}</p>
                     {articleView.articleCnt ? <Viewer initialValue={articleView.articleCnt} /> : <p>Loading...</p>}
                 </div>
+
+                <div className='writeFile'>
+                    <div className='fileList'>
+                        <Link to="">첨부파일목록</Link>
+                        <Link to="">2분기 실적보고서.txt</Link>
+                    </div>
+                </div>
+
                 <div className="writeRow">
                     <div className="wrtieBtnBox">
                         <input type="submit" value={'수정'} onClick={modifyHandler} />
