@@ -1,9 +1,15 @@
 import React from 'react'
 
-const GroupBodyComponent = ({member}, {index}) => {
+const GroupBodyComponent = ({index, member, onClick}) => {
+
+  const handleMemberClick = () => {
+    console.log(member.stfNo);
+    onClick(member);
+  };
+
   return (
-    <div className='groupBody'>
-        <p key={index}>{member.name} [{member.rank}]</p>
+    <div className='groupBody' onClick={handleMemberClick} style={{padding:"0 10px 10px 20px"}}>
+        <p key={index}>{member.stfName} [{member.rankNo}]</p>
     </div>
   )
 }

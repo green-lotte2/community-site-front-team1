@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
 import EditorBoxComponent1 from '../../components/cs/EditorBoxComponent1';
+import { getCookie } from "../../util/cookieUtil";
+
 
 const CsWritePage = () => {
 
+
+
   const [csCate, setCsCate] = useState(''); // 초기 값을 설정합니다.
+  const [secret, setSecret] = useState('');
+
+  const secretHandler=(e)=>{
+
+    setSecret(e.target.value);
+    console.log("전체 공개? 비밀글? : "+secret);
+
+  }
 
 
     return (
@@ -13,10 +25,10 @@ const CsWritePage = () => {
             <div className="contentTitle font30" style={{justifyContent:"space-between"}}>
                 글쓰기
                 <div className="CsSelect">
-                    <input type="radio" id="public" name='secret' checked/>
+                    <input type="radio" id="public" name='secret' value="전체공개" checked={secret === '전체공개'} onChange={secretHandler} />
                     <label htmlFor="public">전체공개</label>
                     
-                    <input type="radio" id="private" name='secret'/>
+                    <input type="radio" id="private" name='secret' value="비밀글" checked={secret === '비밀글'} onChange={secretHandler}/>
                     <label htmlFor="private">비밀글</label>
 
                     <select name="csCate" id="private" value={csCate} onChange={(e) => setCsCate(e.target.value)}>
@@ -30,7 +42,7 @@ const CsWritePage = () => {
             </div>
             
             <div className='writeRow'>
-              <EditorBoxComponent1 csCate={csCate}></EditorBoxComponent1>
+              <EditorBoxComponent1 csCate={csCate} secret={secret} ></EditorBoxComponent1>
             </div>
     
           </div>     

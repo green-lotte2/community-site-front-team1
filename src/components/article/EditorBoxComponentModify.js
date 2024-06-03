@@ -44,7 +44,7 @@ const EditorBoxComponentModify = ({ articleTitle, setArticleTitle, articleCnt, s
   };
 
   const cancelHandler = () => {
-    navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+    navigate(-1);
   };
 
   return (
@@ -56,6 +56,18 @@ const EditorBoxComponentModify = ({ articleTitle, setArticleTitle, articleCnt, s
         onChange={(e) => setArticleTitle(e.target.value)}
         placeholder={'제목을 입력하세요.'}
       />
+
+      <div className='writeFile'>
+        <input type='file' multiple></input>
+        {/** 첨부한 파일명 불러와서 fileList에 표시
+         *   새롭게 추가한 파일도 실시간으로 표시
+         *   X span에 함수 걸어서 첨부파일 삭제하기 (이거 빢셈)
+         */}
+        <div className='fileList'>
+          <span>첨부파일목록 <span>x</span></span>
+          <span>2분기 실적보고서.txt <span>x</span></span>
+        </div>
+      </div>
 
       {articleCnt && (
         <Editor

@@ -3,18 +3,30 @@ import PagingComponent from '../../components/common/PagingComponent';
 import TableListComponent from '../../components/article/TableListComponent';
 import SearchComponent from '../../components/article/SearchComponent';
 import MainLayout from '../../layout/MainLayout';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserListComponent from '../../components/admin/UserListComponent';
 import UserSearchComponent from '../../components/admin/UserSearchComponent';
-import { getUserList } from '../../api/AdminApi';
+import { getUserList, postUserList } from '../../api/AdminApi';
 import UserModifyModal from '../../components/modal/UserModifyModal';
+import ExcelForm from '../../components/admin/ExcelForm';
 
 const UserListPage = () => {
+    const location = useLocation();
+
+    const queryParams = new URLSearchParams(location.search);
+
     const [userList, setUserList] = useState(null);
 
+    const navigate = useNavigate();
+
+    let pg = queryParams.get('pg');
+    if (pg === null) {
+        pg = 1;
+    }
+
     // pageNation 정보를 저장하는 useState
-    const [pageNation, setPageNation] = useState({
-        pg: 1,
+    const [pageRequest, setPageRequest] = useState({
+        pg: pg,
         articleCateNo: 0,
         type: null,
         keyword: null,
@@ -25,27 +37,10 @@ const UserListPage = () => {
         department: null,
     });
 
-    // 페이지를 변경하는 함수 -> 자식컴포넌트(PagingComponent)로 전달해 pg값 변경 감지
-    const handlePageChange = async (newPage) => {
-        // 새로운 페이지 정보 가져오기
-        const newPageNation = { ...pageNation, pg: newPage };
-
-        try {
-            // 새로운 페이지 정보로 데이터 가져오기
-            const response = await getUserList(newPageNation);
-            console.log(response);
-            setUserList(response);
-            // 페이지 정보 업데이트
-            setPageNation(newPageNation);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getUserList(pageNation);
+                const response = await postUserList(pageRequest);
                 console.log(response);
                 setUserList(response);
             } catch (err) {
@@ -53,11 +48,32 @@ const UserListPage = () => {
             }
         };
         fetchData();
-    }, [pageNation]);
+    }, [pageRequest]);
 
-    const handleSearch = (searchParams) => {
-        const newPageNation = { ...pageNation, ...searchParams, pg: 1 };
-        setPageNation(newPageNation);
+    // pg변경 함수 (페이징 버튼 클릭시)
+    const changePage = (newPg) => {
+        setPageRequest((prevPageRequest) => {
+            const updatedRequest = { ...prevPageRequest, pg: newPg };
+            const newParam = { pg: newPg };
+            const searchParams = new URLSearchParams(newParam).toString();
+            navigate(`?${searchParams}`);
+            return updatedRequest;
+        });
+    };
+
+    const handleSearch = async (searchParams) => {
+        const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
+
+        console.log('검색 옵션:', searchParams);
+        console.log('검색 결과:', newPageNation);
+
+        try {
+            const response = await postUserList(newPageNation);
+            setUserList(response);
+            setPageRequest(newPageNation);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -82,8 +98,8 @@ const UserListPage = () => {
 
                     <UserListComponent userList={userList} setUserList={setUserList} />
                 </div>
-
-                <PagingComponent onPageChange={handlePageChange} articleList={userList} />
+                <ExcelForm userList={userList} />
+                <PagingComponent changePage={changePage} articleList={userList} />
             </div>
         </MainLayout>
     );

@@ -85,15 +85,16 @@ const SideBoxComponent = ({ sideBarCate }) => {
                         <>
                             <SideTabComponent sideTabCate={'index'}></SideTabComponent>
                             <SideTabComponent sideTabCate={'config'}></SideTabComponent>
-                            <SideTabComponent sideTabCate={'userList'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'userList?pg=1'}></SideTabComponent>
                             <SideTabComponent sideTabCate={'articleList'}></SideTabComponent>
                         </>
                     )}
                     {sideBarCate === 'private' && (
                         <>
-                            <SideTabComponent sideTabCate={'myPage'}></SideTabComponent>
-                            <SideTabComponent sideTabCate={'menu1'}></SideTabComponent>
-                            <SideTabComponent sideTabCate={'menu2'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'mypage'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'chat'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'project'}></SideTabComponent>
+                            <SideTabComponent sideTabCate={'calendar'}></SideTabComponent>
                             <SideTabComponent sideTabCate={'group'}></SideTabComponent>
                         </>
                     )}
