@@ -8,18 +8,17 @@ import UserListComponent from '../../components/admin/UserListComponent';
 import UserSearchComponent from '../../components/admin/UserSearchComponent';
 import { getUserList, postUserList } from '../../api/AdminApi';
 import UserModifyModal from '../../components/modal/UserModifyModal';
+import ExcelForm from '../../components/admin/ExcelForm';
 
 const UserListPage = () => {
-
     const location = useLocation();
-    
+
     const queryParams = new URLSearchParams(location.search);
 
     const [userList, setUserList] = useState(null);
 
     const navigate = useNavigate();
 
-    
     let pg = queryParams.get('pg');
     if (pg === null) {
         pg = 1;
@@ -38,7 +37,6 @@ const UserListPage = () => {
         department: null,
     });
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -52,11 +50,11 @@ const UserListPage = () => {
         fetchData();
     }, [pageRequest]);
 
-     // pg변경 함수 (페이징 버튼 클릭시)
-     const changePage = (newPg) => {
-        setPageRequest(prevPageRequest => {
+    // pg변경 함수 (페이징 버튼 클릭시)
+    const changePage = (newPg) => {
+        setPageRequest((prevPageRequest) => {
             const updatedRequest = { ...prevPageRequest, pg: newPg };
-            const newParam = {pg : newPg};
+            const newParam = { pg: newPg };
             const searchParams = new URLSearchParams(newParam).toString();
             navigate(`?${searchParams}`);
             return updatedRequest;
@@ -65,7 +63,7 @@ const UserListPage = () => {
 
     const handleSearch = async (searchParams) => {
         const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
-       
+
         console.log('검색 옵션:', searchParams);
         console.log('검색 결과:', newPageNation);
 
@@ -73,13 +71,10 @@ const UserListPage = () => {
             const response = await postUserList(newPageNation);
             setUserList(response);
             setPageRequest(newPageNation);
-      
         } catch (error) {
             console.log(error);
         }
     };
-
-    
 
     return (
         <MainLayout>
@@ -103,7 +98,7 @@ const UserListPage = () => {
 
                     <UserListComponent userList={userList} setUserList={setUserList} />
                 </div>
-
+                <ExcelForm userList={userList} />
                 <PagingComponent changePage={changePage} articleList={userList} />
             </div>
         </MainLayout>
