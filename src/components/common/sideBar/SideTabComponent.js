@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    faCalendarDays,
     faFileLines,
     faFilePen,
     faFlag,
@@ -44,7 +45,7 @@ const SideTabComponent = ({ sideTabCate, sideTabCateName, type }) => {
                 )}
 
                 {/* 개인 */}
-                {sideTabCate === 'myPage' && (
+                {sideTabCate === 'mypage' && (
                     <>
                         <FontAwesomeIcon icon={faUserLock} />
                         <p>마이페이지</p>
@@ -60,6 +61,12 @@ const SideTabComponent = ({ sideTabCate, sideTabCateName, type }) => {
                     <>
                         <FontAwesomeIcon icon={faFileLines} />
                         <p>프로젝트</p>
+                    </>
+                )}
+                {sideTabCate === 'calendar' && (
+                    <>
+                        <FontAwesomeIcon icon={faCalendarDays} />
+                        <p>캘린더</p>
                     </>
                 )}
                 {sideTabCate === 'group' && (

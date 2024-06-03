@@ -224,6 +224,15 @@ body {
     height: 301px;
     font-size: 18px;
 }
+.modalGroup {
+    display: flex;
+    width: 100%;
+    border: 1px solid #cacaca;
+    border-radius: 4px;
+}
+.modalGroup * {
+    font-size: 12px!important;
+}
 
 .delBtn {
     display: block;
@@ -2259,6 +2268,7 @@ section {
 }
 .cardinfo__editable {
     width: fit-content;
+
 }
 
 /* 엑셀 다운 버튼 */
@@ -2277,3 +2287,92 @@ section {
 #btn_excelDown:hover {
     background-color: #eeeeee; /* 호버 시 배경색 */
 }
+
+
+  /* 캘린더 */
+  .CalendarList {
+    display: flex;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 18px 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.CalendarList:hover {
+    background-color: #dddddd;
+}
+.CalendarList > div {
+    width: 100%;
+    padding: 0 10px;
+}
+.CalendarList p {
+    width: 100%;
+    font-size: 14px;
+    font-weight: bolder;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* 마이페이지 */
+.myPage {
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    padding: 10px;
+}
+.myPage * {
+    display: flex;
+}
+.myInfo {
+    flex-direction: column;
+    padding: 10px;
+    justify-content: center;
+}
+.myInfo > p {
+    padding: 10px 0;
+}
+.myInfo > p:nth-child(1) {font-size: 30px; font-weight: bolder;}
+.myInfo > p:nth-child(2) {font-size: 20px;}
+.myInfo > p:nth-child(3) {font-size: 20px;}
+.myPage img {
+    width: 200px;
+}
+
+.myPage input {
+    border: 0;
+    width: 280px;
+    height: 30px;
+    font-size: 16px;
+}
+.myContent {
+    height: 50px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    border-bottom: 1px solid #dddddd;
+}
+.myContent > div > p {
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bolder;
+    align-items: center;
+    padding-left: 10px;
+}
+.myPage button {
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+    background-color: transparent;
+    padding: 4px 10px;
+    margin: 0 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #808080;
+}
+
