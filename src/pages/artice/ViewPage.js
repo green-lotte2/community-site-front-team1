@@ -16,7 +16,7 @@ const ViewPage = () => {
     const navigate = useNavigate();
 
     const modifyHandler = () => {
-        navigate(`/modify?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=1`);
+        navigate(`/modify?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=${pg}`);
     };
 
     const deleteHandler = async () => {
@@ -25,7 +25,7 @@ const ViewPage = () => {
             try {
                 await ArticleDelete({ articleNo });
                 alert('게시글이 삭제되었습니다.');
-                navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+                navigate(`/list?articleCateNo=${articleCateNo}&pg=${pg}`);
             } catch (error) {
                 console.error('Failed to delete article:', error);
                 alert('게시글 삭제에 실패하였습니다.');
@@ -42,6 +42,11 @@ const ViewPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
     const articleNo = queryParams.get('articleNo');
+
+    let pg = queryParams.get('pg');
+    if (pg === null) {
+        pg = 1;
+    }
 
     // 게시판 카테고리 저장을 위한 스테이트
     const [articleCateName, setArticleCateName] = useState(null);

@@ -5,7 +5,7 @@ import PagingComponent from '../../components/common/PagingComponent';
 
 import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const ListPage = () => {
     // URL에서 파라미터값 추출
@@ -15,6 +15,8 @@ const ListPage = () => {
 
     // 게시판 제목 상태 저장을 위한 스테이트
     const [articleCateName, setArticleCateName] = useState(null);
+
+    const navigate = useNavigate();
 
     // 페이지 랜더링 될 때 호출
     useEffect(() => {
@@ -46,6 +48,10 @@ const ListPage = () => {
         sort: 'default',
     });
 
+    
+
+ 
+
     // 서버에서 받아온 articleList 정보 저장하는 useState
     const [articleList, setArticleList] = useState(null);
 
@@ -67,8 +73,16 @@ const ListPage = () => {
 
     // pg변경 함수 (페이징 버튼 클릭시)
     const changePage = (newPg) => {
-        setPageRequest((prevPageRequest) => ({ ...prevPageRequest, pg: newPg }));
+        setPageRequest(prevPageRequest => {
+            const updatedRequest = { ...prevPageRequest, pg: newPg };
+            const newParam = {pg : newPg};
+            const searchParams = new URLSearchParams(newParam).toString();
+            navigate(`?articleCateNo=${articleCateNo}&${searchParams}`);
+            return updatedRequest;
+        });
     };
+
+    
 
     const handleSearch = async (searchParams) => {
         const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
