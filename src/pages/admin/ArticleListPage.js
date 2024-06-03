@@ -17,6 +17,7 @@ const ArticleListPage = () => {
 
     // 서버에서 받아온 resopnseDTO를 저장하는 useState
     const [articleList, setArticleList] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // 서버에서 데이터를 받아오는 useEffect
     useEffect(() => {
@@ -27,6 +28,8 @@ const ArticleListPage = () => {
                 setArticleList(response);
             } catch (error) {
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -59,7 +62,7 @@ const ArticleListPage = () => {
                         <div>관리</div>
                     </div>
 
-                    <ArticleListComponent></ArticleListComponent>
+                    {loading ? <div>Loading...</div> : <ArticleListComponent></ArticleListComponent>}
                 </div>
 
                 <PagingComponent onPageChange={handlePageChange} />

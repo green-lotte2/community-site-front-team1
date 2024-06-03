@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import TableListComponent from '../../components/article/TableListComponent';
 import PagingComponent from '../../components/common/PagingComponent';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SearchComponent from '../../components/article/SearchComponent';
 
 import { getArticleCate, ArticleDelete, ArticleList } from '../../api/ArticleApi';
@@ -14,6 +14,7 @@ const ArticleModifyPage = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
+    const navigate = useNavigate();
 
     // 게시판 제목 상태 저장을 위한 스테이트
     const [articleCateName, setArticleCateName] = useState(null);
@@ -103,7 +104,13 @@ const ArticleModifyPage = () => {
 
     // pg변경 함수 (페이징 버튼 클릭시)
     const changePage = (newPg) => {
-        setPageRequest((prevPageRequest) => ({ ...prevPageRequest, pg: newPg }));
+        setPageRequest((prevPageRequest) => {
+            const updatePage = { ...prevPageRequest, pg: newPg };
+            const newPageNo = { articleCateNo: articleCateNo, pg: newPg };
+            const newParams = new URLSearchParams(newPageNo).toString();
+            navigate(`?${newParams}`);
+            return updatePage;
+        });
     };
 
     const handleSearch = async (searchParams) => {

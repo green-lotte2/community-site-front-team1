@@ -575,7 +575,6 @@ section {
     box-sizing: border-box;
 }
 
-
 .contentTitle {
     display: flex;
     font-size: 18px;
@@ -1038,7 +1037,6 @@ section {
     background-color: transparent;
     cursor: pointer;
     color: white;
-
 }
 .registerRow > div > input[name='addr1'] {
     width: 650px;
@@ -1836,8 +1834,6 @@ section {
     box-sizing: border-box;
 }
 
-
-
 /* 조직도 */
 .groupBox {
     border: 1px solid #cacaca;
@@ -1971,19 +1967,23 @@ section {
     justify-content: center;
     align-items: center;
     vertical-align: middle;
-    box-sizing: border-box;   
+    box-sizing: border-box;
     width: 30px;
     height: 30px;
     border: 4px solid #f3f3f3;
     border-top: 4px solid #3498db;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 /* 채팅 */
 .chatBox {
@@ -1994,7 +1994,7 @@ section {
 .chatInfo {
     width: 100%;
     display: flex;
-    font-weight: bolder; 
+    font-weight: bolder;
     padding: 8px 10px;
     margin: 10px 0;
     border-bottom: 2px solid #dddddd;
@@ -2087,7 +2087,9 @@ section {
 .chat > div {
     padding: 4px 10px;
 }
-.chat > div > p {font-size: 14px;}
+.chat > div > p {
+    font-size: 14px;
+}
 .chat > div > p:nth-child(1) {
     font-weight: bolder;
     padding-bottom: 4px;
@@ -2206,55 +2208,72 @@ section {
     background-color: var(--background-color);
     transition: all 350ms;
     overflow: scroll;
-  }
-  .app_outer {
+}
+.app_outer {
     flex: 1;
     width: 100%;
     overflow-x: auto;
-  }
-  
-  .app_boards {
+}
+
+.app_boards {
     margin-top: 20px;
     min-width: fit-content;
     display: flex;
     gap: 30px;
     padding-inline: 2rem;
     color: var(--text-color);
-  }
-  /* p {
+}
+/* p {
     font-size: 16px;
     line-height: 28px;
   } */
-  
-  ::-webkit-scrollbar {
+
+::-webkit-scrollbar {
     width: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
+}
+
+/* Track */
+::-webkit-scrollbar-track {
     background: #f2f2f2;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 20px 20px 20px 20px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: rgb(195, 195, 195);
-  }
-  .add__board > textarea {
+}
+.add__board > textarea {
     border: 0.5px solid rgb(167, 167, 167) !important;
     height: 2rem !important;
-  }
-  .card_detail > textarea {
+}
+.card_detail > textarea {
     border: 0.5px solid rgb(167, 167, 167) !important;
-  }
-  .card__values > p {
+}
+.card__values > p {
     background: #ccc !important;
-  }
-  .cardinfo__editable {
+}
+.cardinfo__editable {
     width: fit-content;
-  }
+}
+
+/* 엑셀 다운 버튼 */
+#btn_excelDown {
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 5px; /* 둥근 모서리 */
+    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+#btn_excelDown:hover {
+    background-color: #eeeeee; /* 호버 시 배경색 */
+}
