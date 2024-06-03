@@ -8,7 +8,7 @@ const GroupBodyComponent = ({index, member, onClick}) => {
   };
 
   return (
-    <div className='groupBody' onClick={handleMemberClick}>
+    <div className='groupBody' onClick={handleMemberClick} style={{padding:"0 10px 10px 20px"}}>
         <p key={index}>{member.stfName} [{member.rankNo}]</p>
     </div>
   )
