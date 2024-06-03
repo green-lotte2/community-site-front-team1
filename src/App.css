@@ -47,6 +47,9 @@ body {
 .alignL {
     justify-content: left !important;
 }
+.alignR {
+    justify-content: right !important;
+}
 .maR30 {
     margin-right: 30px;
 }
@@ -172,6 +175,7 @@ body {
     box-sizing: border-box;
     cursor: pointer;
     margin: 0 10px;
+    border: 1px solid #6a6a6a;
 }
 .modalRow input {
     width: 200px;
@@ -180,6 +184,7 @@ body {
     padding: 0 10px;
     box-sizing: border-box;
     margin: 0 10px;
+    border: 1px solid #6a6a6a;
 }
 .modalRow img {
     display: flex;
@@ -1782,12 +1787,15 @@ section {
     padding: 10px 0;
     border-bottom: 1px solid #f1f1f1;
 }
-
+.configRow {
+    justify-content: space-between;
+}
 .configRow > div > input {
     width: 300px;
     height: 40px;
     font-size: 16px;
     padding: 0 10px;
+    margin: 0 10px;
 }
 .configRow > div {
     font-size: 16px;
@@ -1797,6 +1805,59 @@ section {
     width: 100px;
 }
 .configRow > div:nth-child(2) {
+}
+.custSelect {
+    position: relative;
+    display: flex;
+    width: 150px;
+    height: 44px;
+    border: 1px solid #848484;
+    margin: 0 10px;
+    padding: 10px!important;
+    align-content: center!important;
+    justify-content: space-between!important;
+    cursor: pointer;
+}
+.custSelect > span {
+    display: flex;
+    font-size: 16px;
+}
+.custOption {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 201px;
+    top: 42px;
+    left: -1px;
+    border: 1px solid #848484;
+    background-color: white;
+    box-sizing: border-box;
+    z-index: 10;
+}
+.custOption > p {
+    display: flex;
+    width: 200px;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #848484;
+    cursor: pointer;
+    align-items: center;
+    box-sizing: border-box;
+}
+.custOption> p:hover {
+    background-color: #dddddd;
+}
+.configBtn > button {
+    width: 70px;
+    height: 42px;
+    border: 1px solid #848484;
+    margin: 0 4px;
+    background-color: white;
+    cursor: pointer;
+}
+.configBtn > button:hover {
+    background-color: #dddddd;
 }
 
 /* CS */
