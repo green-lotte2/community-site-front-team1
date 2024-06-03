@@ -28,10 +28,13 @@ const CsListPage = () => {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
+
     let pg = queryParams.get('pg');// URL에서 파라미터값 추출
     if (pg === null) {
         pg = 1;
     }
+
+    const navigate = useNavigate();
 
     const [serverData, setServerData] = useState(initState); 
    
@@ -52,7 +55,13 @@ const CsListPage = () => {
 
     // pg변경 함수 (페이징 버튼 클릭시)
     const changePage = (newPg) => {
-        setPageRequest(prevPageRequest => ({...prevPageRequest, pg: newPg}));
+        setPageRequest(prevPageRequest => {
+            const updatedRequest = { ...prevPageRequest, pg: newPg };
+            const newParam = {pg : newPg};
+            const searchParams = new URLSearchParams(newParam).toString();
+            navigate(`?${searchParams}`);
+            return updatedRequest;
+        });
     }
  
       // 페이지 랜더링 될 때 호출
@@ -108,7 +117,7 @@ const CsListPage = () => {
             <PagingComponent articleList={serverData} changePage={changePage}></PagingComponent>
             <div style={{alignSelf:"end"}}>
               <Link className='btn' to="/main">뒤로</Link>
-              <Link className='btn' >글쓰기</Link>
+              <Link className='btn' to="/csWrite" >글쓰기</Link>
             </div>
         </div>
 

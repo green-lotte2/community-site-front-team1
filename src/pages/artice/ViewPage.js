@@ -112,8 +112,7 @@ const ViewPage = () => {
                 <div className="viewRow">
                     <p>{articleView.articleTitle}</p>
                     {articleView.articleCnt ? <Viewer initialValue={articleView.articleCnt} /> : <p>Loading...</p>}
-                </div>
-
+                </div>               
                 <div className='writeFile'>
                     <div className='fileList'>
                         <Link to="">첨부파일목록</Link>
