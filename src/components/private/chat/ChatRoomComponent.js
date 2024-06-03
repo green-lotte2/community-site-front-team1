@@ -30,10 +30,14 @@ const ChatRoomComponent = () => {
     }
 
     /** 입력한 채팅 내용 */
-    const [chatMsg, setChatMsg] = useState();
+    const [chatMsg, setChatMsg] = useState("");
 
     const updateMsg = (event) => {
-        setChatMsg(prevChatMsg => event.target.value);
+        if (chatMsg !== ""){
+            setChatMsg(prevChatMsg => event.target.value);
+        } else {
+            setChatMsg(event.target.value);
+        }
     }
 
   return (
