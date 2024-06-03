@@ -34,7 +34,6 @@ const ViewPage = () => {
     };
 
     const listHandler = () => {
-        //navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
         navigate(-1);
     };
 

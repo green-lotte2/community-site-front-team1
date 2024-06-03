@@ -44,7 +44,7 @@ const EditorBoxComponentModify = ({ articleTitle, setArticleTitle, articleCnt, s
   };
 
   const cancelHandler = () => {
-    navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+    navigate(-1);
   };
 
   return (
