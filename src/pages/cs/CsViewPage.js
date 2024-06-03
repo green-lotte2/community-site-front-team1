@@ -3,14 +3,52 @@ import MainLayout from '../../layout/MainLayout';
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import CommentListComponent from '../../components/common/comment/CommentListComponent';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getCsView } from '../../api/CsApi';
 
 const CsViewPage = () => {
 
+    const navigate = useNavigate();
+
+       // 제목, 내용
+       const [csView, setCsView] = useState("");
+       // 중복 요청 방지를 위한 상태 변수
+       const [isCateFetched, setIsCateFetched] = useState(false);
+       const [isArticleFetched, setIsArticleFetched] = useState(false);
 
     // pages - article - ViewPage 참고
     const test = "test";
+     // URL에서 파라미터값 추출
+     const location = useLocation();
+     const queryParams = new URLSearchParams(location.search);
+     const csCate = queryParams.get('csCate');
+     const csNo = queryParams.get('csNo');//나옴
+
+    console.log("이거는 url에서 추출한 값 : "+csNo);    
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getCsView(csNo);
+
+                console.log(response);
+                setCsView(response);
+                console.log(csView);
+
+            } catch (error) {
+                console.error('Failed to fetch article title:', error);
+            } finally {
+                setIsArticleFetched(true);
+            }
+        };
+
+        if (!isArticleFetched) {
+            fetchData();
+        }
+    }, [isArticleFetched]);
+
+   
     
     /** 댓글 */
     const [comment, setComment] = useState([
@@ -30,24 +68,13 @@ const CsViewPage = () => {
         }
     ]);
 
-    /** 서버에서 댓글 가져오는 useEffect */
-    useEffect = (() => {
-
-        // 서버에서 댓글 가져오는 로직
-
-    },[comment])
-
-    
-
-
 
   return (
     <MainLayout>
         <div className="contentBox boxStyle7">
-            <div className="contentTitle font30 alignL">ㅇㅇㅇ 게시판</div>
-            
+            <div className="contentTitle font30 alignL">QnA 게시판</div>
             <div className='writeRow'>
-                <p>제목 <span>[답변완료]</span></p>
+                <p>{csView.csTitle} <span>[답변완료]</span></p>
                
                 {test ? (
                 <Viewer initialValue={test} />
@@ -67,7 +94,6 @@ const CsViewPage = () => {
             {/* 댓글 */}
             <div className='commentColumn'>
                 <p>답변 0</p>
-
                 {/* 댓글 작성 */}
                 <div className='commentRow commentColumn'>
                     <div>

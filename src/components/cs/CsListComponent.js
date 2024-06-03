@@ -12,7 +12,7 @@ const CsListComponent = ({dtoList=[],totalItems}) => {
           <div>{totalItems--}</div>{/*키값이 아닌 일반 순번 출력 */}
           <div>{item.stfName}</div>
           <div>
-            <Link to={`/cs/${item.csCate}/${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>
+            <Link to={`/csView?csCate=${item.csCate}&csNo=${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>
           </div>
           <div style={{width: "150px"}}>{item.csRdate}</div>
           <div>{item.csHit}</div>

@@ -7,18 +7,25 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { postCsWrite } from '../../api/CsApi';
+import { getCookie} from "../../util/cookieUtil";
 
-const EditorBoxComponent1 = ({csCate}) => {
+const EditorBoxComponent1 = ({csCate,secret}) => {
 
   console.log("카테가 잘 들어오나?"+csCate);
 
     const navigate = useNavigate();
+
+    const auth = getCookie("auth");
 
     // 게시글 제목 보관
     const [csTitle, setCsTitle] = useState('');
 
     // 게시글 내용 보관
     const editorRef = useRef();
+
+    //로그인한 사용자의 아이디
+    const id = auth?.userId;
+    const name = auth?.username;
 
     const onChange = () => {
       const data = editorRef.current.getInstance().getHTML();
@@ -28,14 +35,18 @@ const EditorBoxComponent1 = ({csCate}) => {
     const submitHandler = async () => {
     const csContent = editorRef.current.getInstance().getHTML();//글 내용과 함께 에디터가 저장이 됨
 
+    console.log("아이디 출력 : "+id);
+    console.log("이름 출력 : "+name);
+
       // UUID 생성
-    const stfNo = 'HR1403'; 
+    const stfNo = id; 
 
     try {
-      const response = await postCsWrite({stfNo, csTitle, csContent,csCate});
+      const response = await postCsWrite({stfNo, csTitle, csContent,csCate,secret});
       if (response === 1) {
         alert('글이 성공적으로 작성되었습니다.');
-        navigate(`/csList`);
+        console.log("로그인한 사용자의 아이디 : "+id);
+        //navigate(`/csList`);
       } else {
         alert('글 작성에 실패하였습니다.');
       }
