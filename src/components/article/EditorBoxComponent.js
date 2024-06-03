@@ -19,11 +19,14 @@ const EditorBoxComponent = () => {
 
     const loginSlice = useSelector((state) => state.loginSlice);
 
-    // 게시글 제목 보관
+    /** 게시글 제목 보관 */
     const [articleTitle, setArticleTitle] = useState('');
 
-    // 게시글 내용 보관
+    /** 게시글 내용 보관 */
     const editorRef = useRef();
+
+    /** 선택한 파일들을 보관하는 상태 */
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     /** 작성한 게시글 내용 저장하는 핸들러 */
     const handleChange = () => {
@@ -31,8 +34,14 @@ const EditorBoxComponent = () => {
       console.log(data);
     };
 
+     /**  파일 선택 핸들러 */
+     const handleFileChange = (event) => {
+      const files = Array.from(event.target.files);
+      setSelectedFiles(files);
+  };
 
-    // Base64 문자열을 파일 객체로 변환하는 유틸리티 함수
+
+    /** Base64 문자열을 파일 객체로 변환하는 유틸리티 함수 */
     const base64ToFile = (base64String, fileName) => {
         const arr = base64String.split(',');
         const mime = arr[0].match(/:(.*?);/)[1];
@@ -56,9 +65,12 @@ const EditorBoxComponent = () => {
       try {
         const response = await ArticleWrite(formData);
         console.log(response);
+        alert('글이 성공적으로 작성되었습니다.');
+        navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
 
       }catch (err) {
         console.log(err);
+        alert('글 작성에 실패하였습니다.');
       }
 
     }
@@ -71,8 +83,13 @@ const EditorBoxComponent = () => {
       // img 태그 추출
       const imgTagPull = articleContents.match(matchImg);
 
-      // src 부분문 추출
+      // src 부분 추출
       const srcPull = articleContents.match(matchSrc);
+
+      if (!srcPull) {
+        console.error("No images found in the article content.");
+        return;
+      }
 
       const fileList = changeImageFile(srcPull);
 
@@ -107,6 +124,12 @@ const EditorBoxComponent = () => {
     /** base64이미지를 일반 file 객체로 변경하는 함수 */
     const changeImageFile = (srcPull) => {
       const fileList = []
+
+      if (!srcPull) {
+        console.error("srcPull is null or undefined.");
+        return fileList;
+      }
+
       for (let i=0 ; i < srcPull.length ; i++) {
 
         const base64 = srcPull[i].slice(5, -1);
@@ -125,7 +148,7 @@ const EditorBoxComponent = () => {
 
     /** 뒤로가기 */
     const cancelHandler = () => {
-      navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+      navigate(-1);
   };
 
     return (
@@ -133,14 +156,13 @@ const EditorBoxComponent = () => {
             <input className='writeTitle' type="text" value={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} placeholder='제목을 입력하세요.' />
 
             <div className='writeFile'>
-              <input type='file' multiple></input>
-              {/** 첨부파일이 없다면 fileList안의 span이 없으면됨
-               *   input file에 파일을 올리면 스크립트 처리로 이름 따올 수 있음!
-               */}
-              <div className='fileList'>
-                <span>첨부파일목록</span>
-                <span>2분기 실적보고서.txt</span>
-              </div>
+            <input type='file' multiple onChange={handleFileChange}></input>
+                <div className='fileList'>
+                    <span>첨부파일목록</span>
+                    {selectedFiles.map((file, index) => (
+                        <span key={index}>{file.name}</span>
+                    ))}
+                </div>
             </div>
 
             <Editor
