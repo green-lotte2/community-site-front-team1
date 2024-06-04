@@ -51,7 +51,7 @@ const UserModifyModal = ({ userData, rnkList, dptList, handleModalClose }) => {
                                 <img src={`${RootUrl()}/images/${userData.stfImg}`} alt="sft" name="stfImg" />
                             )}
                         </div>
-                        <div className="modalColumn">
+                        <div className="modalColumn" style={{border:"0"}}>
                             <div className="modalDouble" name="stfName">
                                 이름 : {userData.stfName}
                             </div>

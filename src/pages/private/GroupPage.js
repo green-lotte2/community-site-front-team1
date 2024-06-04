@@ -56,10 +56,21 @@ const GroupPage = () => {
                                     <p>연락처: {userInfo.stfPh}</p>
                                 </div>
                             </div>
-                            <div className="groupRow">
-                                <div>채팅하기</div>
+                            <div className="groupColumn">
+                                <div className='myPageRow'>
+                                    <p>올해 휴가 일수</p>
+                                    <p>사용한 휴가 일수</p>
+                                    <p>남은 휴가 일수</p>
+                                </div>
+                                <div className='myPageRow'>
+                                    <p>13</p>
+                                    <p>5</p>
+                                    <p>8</p>
+                                </div>
                             </div>
-                            아이디어가 없음..
+                            <div className="groupRow">
+                                <div className='memberBtn'>채팅하기</div>
+                            </div>
                         </div>
                     </div>
                 )}
