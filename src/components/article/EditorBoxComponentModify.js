@@ -20,6 +20,11 @@ const EditorBoxComponentModify = ({ articleTitle, setArticleTitle, articleCnt, s
 
   const editorRef = useRef();
 
+  let pg = queryParams.get('pg');
+    if (pg === null) {
+        pg = 1;
+    }
+
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
     console.log(data);
@@ -33,7 +38,7 @@ const EditorBoxComponentModify = ({ articleTitle, setArticleTitle, articleCnt, s
   
       if (response === 1) {
         alert('글이 성공적으로 수정되었습니다.');
-        navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
+        navigate(`/view?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=${pg}`);
       } else {
         alert('글 수정에 실패하였습니다.');
       }

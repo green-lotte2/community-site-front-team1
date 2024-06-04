@@ -6,6 +6,7 @@ import PagingComponent from '../../components/common/PagingComponent';
 import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import CreateCateModal from '../../components/modal/CreateCateModal';
 
 const ListPage = () => {
     // URL에서 파라미터값 추출
@@ -99,6 +100,10 @@ const ListPage = () => {
         }
     };
 
+    const handleCard = () => {
+        navigate(`/card?articleCateNo=${articleCateNo}&pg=1`);
+    };
+
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -109,7 +114,7 @@ const ListPage = () => {
                 <div className="contentColumn">
                     <div className="listType">
                         <span className="listOn">리스트</span>
-                        <span>카드형</span>
+                        <span onClick={handleCard}>카드형</span>
                     </div>
                 </div>
 

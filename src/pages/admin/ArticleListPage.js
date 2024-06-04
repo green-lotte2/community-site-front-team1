@@ -5,6 +5,7 @@ import SearchComponent from '../../components/article/SearchComponent';
 import MainLayout from '../../layout/MainLayout';
 import ArticleListComponent from '../../components/admin/ArticleListComponent';
 import { Link } from 'react-router-dom';
+import CreateCateModal from '../../components/modal/CreateCateModal';
 
 const ArticleListPage = () => {
     // pageNation 정보를 저장하는 useState
@@ -46,6 +47,17 @@ const ArticleListPage = () => {
         const newPageNation = { ...pageNation, pg: newPage };
     };
 
+    /** 게시판 생성 */
+    const [createCateModal, setCreateCateModal] = useState(false);
+
+    const openModal = () => {
+        setCreateCateModal(!createCateModal);
+    }
+
+    const handleModalClose = () => {
+        setCreateCateModal(false);
+    }
+
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -68,10 +80,13 @@ const ArticleListPage = () => {
                 <PagingComponent onPageChange={handlePageChange} />
                 <div className="contentColumn">
                     <div className="createRow">
-                        <Link to="">게시판 생성</Link>
+                        <Link to="" onClick={openModal}>게시판 생성</Link>
                     </div>
                 </div>
             </div>
+
+            {createCateModal && <CreateCateModal handleModalClose={handleModalClose}/>}
+            
         </MainLayout>
     );
 };

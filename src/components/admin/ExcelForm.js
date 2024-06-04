@@ -1,21 +1,12 @@
 import React from 'react';
 import XLSX from 'xlsx-js-style';
 
-/*
-const getStatusText = ({ stfStatus }) => {
-    console.log('stfStatus', stfStatus);
-    switch (stfStatus) {
-        case 'Break':
-            return '휴직';
-        case 'Active':
-            return '재직';
-        case 'Departed':
-            return '퇴직';
-        default:
-            return '';
-    }
+const statusMapping = {
+    Break: '휴직',
+    Active: '재직',
+    Departed: '퇴직',
 };
-*/
+
 // npm install xlsx-js-style --legacy-peer-deps 필요
 const ExcelForm = ({ userList }) => {
     const excelDown = () => {
@@ -49,7 +40,7 @@ const ExcelForm = ({ userList }) => {
             };
 
             // 열의 폭을 정의
-            const colWidths = [80, 120, 80, 80, 80, 130];
+            const colWidths = [80, 120, 80, 100, 80, 130];
 
             // cols 속성을 사용하여 각 열의 폭을 조절
             const cols = colWidths.map((width) => ({ wpx: width }));
@@ -67,7 +58,7 @@ const ExcelForm = ({ userList }) => {
             const dataRows = userList.dtoList.map((stf) => [
                 { v: stf.stfNo, t: 's', s: dataStyle }, // 사원번호
                 { v: stf.stfName, t: 's', s: dataStyle }, // 사원명
-                { v: stf.stfStatus, t: 's', s: dataStyle }, // 현황
+                { v: statusMapping[stf.stfStatus] || stf.stfStatus, t: 's', s: dataStyle }, // 현황
                 { v: stf.strDptName, t: 's', s: dataStyle }, // 부서
                 { v: stf.strRnkNo, t: 's', s: dataStyle }, // 직급
                 { v: stf.stfPh, t: 's', s: dataStyle }, // 전화번호
