@@ -12,6 +12,7 @@ const UserSearchComponent = ({ onSearch }) => {
         endDate: '',
         type: '',
         keyword: '',
+        size: '',
     });
 
     useEffect(() => {
@@ -100,6 +101,14 @@ const UserSearchComponent = ({ onSearch }) => {
                         ) : (
                             <option value="">부서를 선택하세요</option>
                         )}
+                    </select>
+
+                    <span className="space150" />
+                    <span className="searchTitle">목록 표시</span>
+                    <select name="size" onChange={handleInputChange}>
+                        <option value="10">10개</option>
+                        <option value="20">20개</option>
+                        <option value="50">50개</option>
                     </select>
                 </div>
 

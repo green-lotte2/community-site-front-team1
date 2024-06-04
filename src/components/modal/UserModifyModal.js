@@ -3,11 +3,16 @@ import { RootUrl } from '../../api/RootUrl';
 import { modifyUserLank } from '../../api/AdminApi';
 
 const UserModifyModal = ({ userData, rnkList, dptList, handleModalClose }) => {
+    const initialRnk = rnkList.find((rnk) => rnk.rnkName === userData.strRnkNo);
+    const initialDpt = dptList.find((dpt) => dpt.dptName === userData.strDptName);
+
     const [modalData, setModalData] = useState({
         stfName: userData.stfName,
         stfNo: userData.stfNo,
-        rnkNo: userData.rnkNo,
-        dptNo: userData.dptNo,
+        rnkNo: initialRnk ? initialRnk.rnkNo : userData.rnkNo,
+        strRnkNo: userData.strRnkNo,
+        dptNo: initialDpt ? initialDpt.dptNo : userData.dptNo,
+        strDptName: userData.strDptName,
         stfRole: userData.stfRole,
         stfStatus: userData.stfStatus,
         stfImg: userData.stfImg,
@@ -59,7 +64,7 @@ const UserModifyModal = ({ userData, rnkList, dptList, handleModalClose }) => {
                     <div className="modalRow">
                         <div className="maR30">직책</div>
                         <div>
-                            <select name="rnkNo" value={modalData.rnkNo} onChange={handleChange}>
+                            <select name="rnkNo" value={modalData.strRnkNo} onChange={handleChange}>
                                 {rnkList.map((rnk) => (
                                     <option key={rnk.rnkNo} value={rnk.rnkNo}>
                                         {rnk.rnkName}

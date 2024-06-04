@@ -98,7 +98,7 @@ const CsListPage = () => {
         <div className="contentBox boxStyle7">
             <div className="contentTitle font30 alignL">QnA 게시판</div>
 
-        <CsSearchComponent onSearch={handleSearch}></CsSearchComponent>{/**/}
+        <CsSearchComponent onSearch={handleSearch}></CsSearchComponent>
 
         <div className="contentColumn">
             <div className="articleRow">
