@@ -100,10 +100,6 @@ const ListPage = () => {
         }
     };
 
-    const handleCard = () => {
-        navigate(`/card?articleCateNo=${articleCateNo}&pg=1`);
-    };
-
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -114,7 +110,7 @@ const ListPage = () => {
                 <div className="contentColumn">
                     <div className="listType">
                         <span className="listOn">리스트</span>
-                        <span onClick={handleCard}>카드형</span>
+                        <span>카드형</span>
                     </div>
                 </div>
 
