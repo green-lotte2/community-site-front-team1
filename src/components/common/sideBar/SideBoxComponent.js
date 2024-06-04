@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import SideTabComponent from './SideTabComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faPhoneVolume, faUnlockKeyhole, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { getArticleCateList } from '../../../api/AdminApi';
 
 const SideBoxComponent = ({ sideBarCate }) => {
+    const articleListContext = createContext();
+
     const [accordion, setAccordion] = useState(true);
     const [articleCateList, setArticleCateList] = useState([]);
 
@@ -98,18 +100,21 @@ const SideBoxComponent = ({ sideBarCate }) => {
                             <SideTabComponent sideTabCate={'group'}></SideTabComponent>
                         </>
                     )}
-                    {sideBarCate === 'article' && (
-                        <>
-                            {articleCateList.map((articleCate, index) => (
-                                <SideTabComponent
-                                    key={index}
-                                    sideTabCate={`list?articleCateNo=${articleCate.articleCateNo}&pg=1`}
-                                    sideTabCateName={articleCate.articleCateName}
-                                    type={1}
-                                />
-                            ))}
-                        </>
-                    )}
+                    <articleListContext.Provider value={articleCateList}>
+                        {sideBarCate === 'article' && (
+                            <>
+                                {articleCateList.map((articleCate, index) => (
+                                    <SideTabComponent
+                                        key={index}
+                                        sideTabCate={`list?articleCateNo=${articleCate.articleCateNo}&pg=1`}
+                                        sideTabCateName={articleCate.articleCateName}
+                                        type={1}
+                                    />
+                                ))}
+                            </>
+                        )}
+                    </articleListContext.Provider>
+
                     {sideBarCate === 'cs' && (
                         <>
                             <SideTabComponent sideTabCate={'csList'}></SideTabComponent>
