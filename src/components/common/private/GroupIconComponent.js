@@ -3,8 +3,15 @@ import {
     faBriefcase,
     faCircleInfo,
     faCode,
+    faComments,
+    faEnvelope,
+    faGears,
+    faGlobe,
+    faHeadset,
     faLightbulb,
+    faMicrochip,
     faNetworkWired,
+    faUser,
     faUserGear,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +25,13 @@ const iconMap = {
     faCode: faCode,
     faCircleInfo: faCircleInfo,
     faLightbulb: faLightbulb,
+    faComments: faComments,
+    faEnvelope: faEnvelope,
+    faGears: faGears,
+    faGlobe: faGlobe,
+    faHeadset: faHeadset,
+    faMicrochip: faMicrochip,
+    faUser: faUser,
 };
 
 const GroupIconComponent = ({ iconName }) => {

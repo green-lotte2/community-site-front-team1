@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import DptConfigComponent from '../../components/admin/DptConfigComponent';
 import RankConfigComponent from '../../components/admin/RankConfigComponent';
+import { getDptList, getRnkList } from '../../api/AdminApi';
 
 const ConfigPage = () => {
-
-    const [dptValue, setDptValue] = useState('');
-    const [rankValue, setRankValue] = useState('');
+    const [dptValue, setDptValue] = useState([]);
+    const [rankValue, setRankValue] = useState([]);
 
     // 부서 내용 변경 핸들러
     const handleChangeDpt = (event) => {
@@ -18,17 +18,30 @@ const ConfigPage = () => {
         setRankValue(event.target.value);
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const rnkResponse = await getRnkList();
+                const detResponse = await getDptList();
 
-  return (
-    <MainLayout>
-        <div className='chatBox'>
+                setRankValue(rnkResponse);
+                setDptValue(detResponse);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
 
-            <DptConfigComponent handleChangeDpt={handleChangeDpt} dptValue={dptValue}/>
+    return (
+        <MainLayout>
+            <div className="chatBox">
+                <DptConfigComponent handleChangeDpt={handleChangeDpt} dptValue={dptValue} />
 
-            <RankConfigComponent handleChangeRank={handleChangeRank} rankValue={rankValue}/>
-        </div>
-    </MainLayout>
-  )
-}
+                <RankConfigComponent handleChangeRank={handleChangeRank} rankValue={rankValue} />
+            </div>
+        </MainLayout>
+    );
+};
 
 export default ConfigPage;

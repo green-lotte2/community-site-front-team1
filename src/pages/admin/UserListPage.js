@@ -35,6 +35,7 @@ const UserListPage = () => {
         status: null,
         rank: null,
         department: null,
+        size: 10,
     });
 
     useEffect(() => {
