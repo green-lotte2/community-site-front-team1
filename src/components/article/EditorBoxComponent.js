@@ -86,6 +86,21 @@ const EditorBoxComponent = () => {
       // src 부분 추출
       const srcPull = articleContents.match(matchSrc);
 
+      let fileList = [];
+      let imageNames = [];
+
+      if (srcPull) {
+        fileList = changeImageFile(srcPull);
+
+        // 입력한 내용에서 img 태그 안의 src 내용 치환
+        imageNames = fileList.map((file) => `${file.name}.${file.type.split('/')[1]}`);
+
+        imageNames.forEach((name, i) => {
+          articleContents = articleContents.replace(srcPull[i].slice(5, -1), `${RootUrl()}/images/${name}`);
+        });
+      }
+
+      /*
       if (!srcPull) {
         console.error("No images found in the article content.");
         return;
@@ -102,8 +117,10 @@ const EditorBoxComponent = () => {
       for (let i=0 ; i < srcPull.length ; i++) {
         articleContents = articleContents.replace(srcPull[i].slice(5, -1), RootUrl() + "/images/" + imageNames[i]);
       }
+      */
       console.log(imageNames)
       console.log(articleContents);
+      
 
       // 내용과 file을 formdata에 담아서 리턴
       const formData = new FormData();
