@@ -48,6 +48,7 @@ const RegisterPage = () => {
         stfAddr1: "",
         stfAddr2: "",
         stfEmail: "",
+        stfBirth: "",
         stfEnt: "",
         stfRole: type,
         strDptNo: "",
@@ -301,7 +302,7 @@ const RegisterPage = () => {
             <div className='memberBack registerBack'>
                 <form className="registerBox" onSubmit={submitHandler}>
                     
-                    <div className="memberTitle" style={{marginBottom:"0"}}>회원가입</div>
+                    <div className="memberTitle" style={{margin:"10px 0 0 0"}}>회원가입</div>
 
                     <div className="registerPack">
                         <div className="registerRow">
@@ -422,6 +423,24 @@ const RegisterPage = () => {
 
                     <div className="registerPack">
                         <div className="registerRow">
+                            <div>휴대폰</div>
+                            <div>
+                                <input
+                                    type="tel"
+                                    name="stfPh"
+                                    value={stf.stfPh}
+                                    onChange={onChangePhone}
+                                    required
+                                />
+                            </div>
+                            {phoneMessage ? (
+                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
+                            ) : (
+                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
+                            )}
+                        </div>
+
+                        <div className="registerRow">
                             <div>이메일</div>
                             <div>
                                 <input
@@ -436,14 +455,29 @@ const RegisterPage = () => {
                                     
                                 </button>
                             </div>
-
-
-                             {emailMessage ? (
+                            {emailMessage ? (
                                 <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
                             ) : (
                                 <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
                             )}
+                        </div>
+                    </div>
 
+                    <div className="registerPack">
+                        <div className="registerRow">
+                            <div>생년월일</div>
+                            <div>
+                                <input
+                                    type="date"
+                                    name="stfBirth"
+                                    value={stf.stfBirth}
+                                    onChange={changeHandler}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="registerRow">
                             {showVerification && (
                                 <div className="registerRow" style={{margin: "4px 0"}}>
                                     <div>인증 코드</div>
@@ -465,31 +499,11 @@ const RegisterPage = () => {
                                 </div>
                             )}
                         </div>
-
-
-                        <div className="registerRow">
-                            <div>휴대폰</div>
-                            <div>
-                                <input
-                                    type="tel"
-                                    name="stfPh"
-                                    value={stf.stfPh}
-                                    onChange={onChangePhone}
-                                    required
-                                />
-                            </div>
-                            {phoneMessage ? (
-                                <span style={{color: "rgb(152, 198, 163)"}}>사용가능</span>
-                            ) : (
-                                <span style={{color: "rgb(255, 181, 181)"}}>사용 불가능</span>
-                            )}
-
-                        </div>
                     </div>
 
                     <div className="registerRow" style={{marginTop: "4px"}}>
-                        <div style={{paddingLeft:"40px"}}>주소</div>
-                        <div style={{paddingLeft:"40px"}}>
+                        <div style={{paddingLeft:"20px"}}>주소</div>
+                        <div style={{paddingLeft:"20px"}}>
                             <input
                                 type="text"
                                 name="stfZip"
@@ -500,9 +514,9 @@ const RegisterPage = () => {
                             <button onClick={handlePostcode}>검색</button>
                         </div>
                         <div className='registerPack' style={{paddingLeft:"0"}}>
-                            <div style={{paddingLeft:"40px"}}>
+                            <div style={{paddingLeft:"20px"}}>
                                 <input
-                                    style={{width: "396px"}}
+                                    style={{width: "366px"}}
                                     type="text"
                                     name="stfAddr1"
                                     value={stf.stfAddr1}
@@ -521,6 +535,7 @@ const RegisterPage = () => {
                             </div>
                         </div>
                     </div>
+                    
                     <div className='memberRow'>
                         <Link className='registerBtn' to="/">취소</Link>
                         <input className='registerBtn' type="submit" value="회원가입" disabled={!isFormValid} />

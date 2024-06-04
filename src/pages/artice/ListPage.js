@@ -6,6 +6,7 @@ import PagingComponent from '../../components/common/PagingComponent';
 import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import CreateCateModal from '../../components/modal/CreateCateModal';
 
 const ListPage = () => {
     // URL에서 파라미터값 추출
@@ -98,6 +99,7 @@ const ListPage = () => {
             console.log(error);
         }
     };
+
 
     return (
         <MainLayout>
