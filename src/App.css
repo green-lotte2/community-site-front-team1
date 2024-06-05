@@ -627,6 +627,14 @@ section {
     padding: 20px;
     box-sizing: border-box;
 }
+/*가로:50% 세로 자동*/
+.boxStyle10 {
+    width: 780px; 
+    height: auto;
+    margin: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
 .contentTitle {
     display: flex;
@@ -2573,4 +2581,134 @@ section {
 }
 .planDetail > h3 {
     padding: 4px 0;
+}
+.planOrderBack {
+    /*background-image: url(../public/images/loginBack.jpg);*/
+    background-color: #ffffff;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.planOrderBox {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+    z-index: 20;
+    width: 800px;
+    height: 700px;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+.planOrder {
+    display: flex;
+    flex-direction: column;
+}
+.planOrder > p {
+    font-size: 26px;
+    font-weight: bolder;
+    color: black;
+    margin: 10px 0;
+}
+.planOrder > div {
+    margin: 10px 0;
+}
+.planOrder > div > p {
+    font-size: 18px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+    color: black;
+}
+.planOrder > div > input {
+    width: 400px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 4px;
+    background-color: transparent;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: black;
+    padding: 0 10px;
+}
+.planOrder > select {
+    width: 400px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 4px;
+    background-color: transparent;
+    color: black;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+.planOrder > select > option {
+    color: black;
+    font-size: 16px;
+}
+.planOrder > div > div > input {
+    width: 90px;
+    height: 40px;
+    margin-right: 10px;
+    border: 2px solid black;
+    border-radius: 4px;
+    background-color: transparent;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: black;
+    padding: 0 10px;
+}
+.orderInfo {
+    height: 390px;
+    padding: 0 10px;
+    align-items: center;
+    border: 2px solid #7c7c7c;
+    border-radius: 10px;
+}
+.orderInfo > p:nth-child(3) {
+    font-size: 16px;
+    margin-top: 1px;
+}
+.orderInfo > p:nth-child(3) > span {
+    font-size: 26px;
+    margin: 0 4px;
+}
+.orderInfo > div {
+    margin-top: 20px;
+}
+.orderInfo > div > p:nth-child(1) {
+    font-size: 30px;
+}
+.orderInfo > div > p:nth-child(2) {
+    font-size: 24px;
+}
+.orderInfo > div > p:nth-child(2) > span {
+    font-size: 24px;
+}
+.orderInfo > div > p:nth-child(3) {
+    font-size: 24px;
+}
+.orderInfo > button {
+    width: 300px;
+    height: 50px;
+    background-color: #007bff;
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    font-size: 24px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.todoRow {
+    display: flex;
+}
+.todoColumn {
+    display: flex;
+    flex-direction: column;
+}
+.todoBox {
+    display: flex;
+    border: 1px solid red;
 }
