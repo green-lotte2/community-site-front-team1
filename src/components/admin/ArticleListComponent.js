@@ -4,7 +4,7 @@ import PagingComponent from '../common/PagingComponent';
 import { delArticleCateList, getArticleCateList } from '../../api/AdminApi';
 import { RootUrl } from '../../api/RootUrl';
 
-const ArticleListComponent = () => {
+const ArticleListComponent = (articleList) => {
     // 모달창 활성화 여부 저장하는 useState
     const [modalOpen, setModalOpen] = useState({});
     const [articleCateList, setArticleCateList] = useState(null);
@@ -38,7 +38,7 @@ const ArticleListComponent = () => {
         );
         if (confirmed) {
             try {
-                const delItem = await delArticleCateList(articleCateList[index].articleCateNo);
+                await delArticleCateList(articleCateList[index].articleCateNo);
                 const newList = articleCateList.filter((item, i) => i !== index);
                 setArticleCateList(newList);
             } catch (err) {
@@ -57,7 +57,7 @@ const ArticleListComponent = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [articleList]);
 
     return (
         <>
