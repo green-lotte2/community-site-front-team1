@@ -26,6 +26,8 @@ import ChatPage from '../pages/private/ChatPage';
 import ProjectPage from '../pages/private/ProjectPage';
 import CalendarPage from '../pages/private/CalendarPage';
 import MyPage from '../pages/private/MyPage';
+import PlanOrderPage from '../pages/member/PlanOrderPage';
+import ToDoPage from '../pages/private/ToDoPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -41,6 +43,7 @@ const root = createBrowserRouter([
     { path: '/findPw', element: <FindPwPage /> },
     { path: '/updatePw', element: <UpdatePwPage /> },
     { path: '/groupPlan', element: <GroupPlanPage /> },
+    { path: '/planOrder', element: <PlanOrderPage /> },
 
     // main
     { path: '/main', element: <MainPage /> },
@@ -51,6 +54,7 @@ const root = createBrowserRouter([
     { path: '/project', element: <ProjectPage /> },
     { path: '/calendar', element: <CalendarPage /> },
     { path: '/mypage', element: <MyPage /> },
+    { path: '/toDo', element: <ToDoPage /> },
 
     // article
     { path: '/list', element: <ListPage /> },
