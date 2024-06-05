@@ -51,8 +51,8 @@ const RegisterPage = () => {
         stfBirth: "",
         stfEnt: "",
         stfRole: type,
-        strDptNo: "",
-        strRnkNo: "",
+        dptNo: "",
+        rnkNo: "",
         thumbFile: null,
     });
 
@@ -60,8 +60,7 @@ const RegisterPage = () => {
     const [positions, setPositions] = useState([]);
     const [deps, setDeps] = useState([]);
     const [showVerification, setShowVerification] = useState(false); // 인증 코드 입력 필드 표시 여부
-    const [verificationCode, setVerificationCode] = useState(""); // 인증 코드 입력 값
-    const [verificationMessage, setVerificationMessage] = useState(""); // 인증 결과 메시지
+    const [verificationCode, setVerificationCode] = useState(""); // 인증 코드 입력 값   
     const [isFormValid, setIsFormValid] = useState(false); // 폼 유효성 상태
     const [savedCode , setsavedCode] = useState(null);
 
@@ -69,6 +68,7 @@ const RegisterPage = () => {
     const [passwordMessage, setPasswordMessage] = useState(false);
     const [emailMessage, setEmailMessage] = useState("");
     const [phoneMessage, setPhoneMessage] = useState("");
+    const [verificationMessage, setVerificationMessage] = useState(""); // 인증 결과 메시지
     const [passMatchMessage,setPassMatchMessage] = useState(false);
     
     //이메일 스피너
@@ -112,7 +112,7 @@ const RegisterPage = () => {
         axios.get(`${rootURL}/findRnk`)
             .then((data) => {
                 setDeps(data.data.result)
-                console.log(data.data.result)
+                console.log("어떤 값이 있는지 찍어봅시다 : ",data.data.result)
             }).catch((err) => {
                 console.log(err);
             });
@@ -227,8 +227,13 @@ const RegisterPage = () => {
         // 파일 필드 추가
         formData.append("file", file);
 
+        console.log("직급 찍어보기 : ",stf.rnkNo);
+        console.log("부서 찍어보기 : ",stf.dptNo);
+
         console.log("formData에 있는것들 찍어보기 : ", formData);
 
+
+       
         axios
             .post(`${rootURL}/upload`, formData, {
                 headers: {
@@ -242,6 +247,7 @@ const RegisterPage = () => {
             .catch((err) => {
                 console.log(err);
             });
+            
 
     };
 
@@ -396,14 +402,14 @@ const RegisterPage = () => {
                             <div>부서</div>
                             <div>
                                 <select
-                                    name="strDptNo"
+                                    name="dptNo"
                                     id="department"
-                                    value={stf.strDptNo}
+                                    value={stf.dptNo}
                                     onChange={changeHandler}
                                 >
                                     <option value="">부서 선택</option>
                                     {positions.map((data, index) => (
-                                        <option key={index}>{data.dptName}</option>
+                                        <option value={data.dptNo}key={index}>{data.dptName}</option>
                                     ))}
                                 </select>
                             </div>
@@ -411,11 +417,14 @@ const RegisterPage = () => {
                         <div className="registerRow">
                             <div>직급</div>
                             <div>
-                                <select name="strRnkNo" id="grade" value={stf.strRnkNo} onChange={changeHandler}>
+                                <select name="rnkNo" id="grade" value={stf.rnkNo} onChange={changeHandler}>
                                     <option value="">직급 선택</option>
+                                    
                                     {deps.map((data, index) => (
-                                        <option key={index}>{data.rnkName}</option>
+                                        <option value={data.rnkNo} key={index}>{data.rnkName}</option>
                                     ))}
+                                    
+                
                                 </select>
                             </div>
                         </div>

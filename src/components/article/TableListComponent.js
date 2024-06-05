@@ -16,7 +16,7 @@ const TableListComponent = ({ articleList }) => {
             <div>{articleList.startNo - index}</div>
             <div>
             {article.articleThumb ? (
-                <img src={article.articleThumb} alt="Thumbnail" style={{ width: '100px', height: '100px' }} /> /*<img src={article.articleThumb} alt="Thumbnail" />*/ // 이미지 썸네일 렌더링
+                <img src={article.articleThumb} alt="Thumbnail" style={{ width: '100px', height: '100px' }} />
             ) : (
                 <img src="../images/iconSample5.PNG" alt="Thumbnail" />
             )}

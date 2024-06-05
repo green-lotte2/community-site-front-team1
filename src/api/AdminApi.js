@@ -5,7 +5,6 @@ const rootURL = RootUrl() + '/admin';
 
 export const postUserList = async (data) => {
     try {
-        
         const response = await axios.post(`${rootURL}/user/list`, data);
         return response.data;
     } catch (err) {
@@ -26,11 +25,15 @@ export const getDptList = async () => {
     return response.data;
 };
 
-export const getUserInfo = async (data) => {
-    
-    const response = await axios.get(`${rootURL}/user/detail?stfNo=${data}`)
+export const postDpt = async (data) => {
+    const response = await axios.post(`${rootURL}/dpt/insert`, data);
     return response.data;
-}
+};
+
+export const getUserInfo = async (data) => {
+    const response = await axios.get(`${rootURL}/user/detail?stfNo=${data}`);
+    return response.data;
+};
 
 export const getDptAndStfList = async () => {
     const response = await axios.get(`${rootURL}/user/dptAndStfList`);
@@ -51,6 +54,11 @@ export const modifyUserLank = async (data) => {
 
 export const getArticleCateList = async () => {
     const response = await axios.get(`${rootURL}/articleCateList`);
+    return response.data;
+};
+
+export const postArticleCate = async (data) => {
+    const response = await axios.post(`${rootURL}/insertCate`, data);
     return response.data;
 };
 

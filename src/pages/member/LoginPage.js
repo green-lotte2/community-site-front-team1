@@ -37,11 +37,16 @@ const LoginPage = () => {
 
     const changePassStatus =  () =>{
 
+
       console.log("비밀번호 상태를 바꿔보자꾸나.");
 
       setShowPswd((prevShowPswd) => !prevShowPswd);
       setLockState((prevLockState) => !prevLockState);
 
+    }
+
+    const keyHandler = (e)=>{
+     e.preventDefault();
     }
    
     const submitHandler = (e) => {
@@ -85,7 +90,7 @@ const LoginPage = () => {
                 </label>
 
                 <label htmlFor="">
-                <input type={showPswd ? "text" : "password"} name="pass" placeholder='비밀번호입력' value={loginParam.pass} onChange={changeHandler}/>
+                <input type={showPswd ? "text" : "password"} name="pass" placeholder='비밀번호입력' value={loginParam.pass}  onKeyUp={keyHandler} onChange={changeHandler}/>
                 
                 {lockState ? (
                   <button onClick={changePassStatus}><FontAwesomeIcon icon={faLockOpen} /></button>                
