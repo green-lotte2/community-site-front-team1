@@ -20,10 +20,14 @@ const RankConfigComponent = ({ rankValue, handleChangeRank }) => {
 
             <div className="scrollBox">
                 {rankValue.map((rnk, index) => (
-                    <div key={rnk.id} className="scrollRow configRow">
+                    <div key={rnk.rnkNo} className="scrollRow configRow">
                         <div>{index + 1}</div>
                         <div>
-                            <input type="text" value={rnk.rnkName} onChange={(e) => handleChangeRank(e, rnk.id)} />
+                            <input
+                                type="text"
+                                value={rnk.rnkName}
+                                onChange={(event) => handleChangeRank(index, event)}
+                            />
                         </div>
                         <div className="configBtn">
                             <button>수정</button>

@@ -1,12 +1,8 @@
-import { faUsersViewfinder } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
-import DptIconOptionComponent from './DptIconOptionComponent';
+import React, { useState } from 'react';
 import CreateDtpModal from '../modal/CreateDtpModal';
-import { getDptList } from '../../api/AdminApi';
 import GroupIconComponent from '../common/private/GroupIconComponent';
 
-const DptConfigComponent = ({ dptValue, handleChangeDpt }) => {
+const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
     /** 부서 생서 모달 */
     const [createDpt, setCreateDpt] = useState(false);
 
@@ -14,8 +10,11 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt }) => {
         setCreateDpt(true);
     };
 
-    const handelColseModal = () => {
+    const handelCloseModal = (newDpt) => {
         setCreateDpt(false);
+        if (newDpt) {
+            addNewDpt(newDpt);
+        }
     };
 
     return (
@@ -31,7 +30,14 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt }) => {
                             <GroupIconComponent iconName={dpt.iconName} />
                         </div>
                         <div>
-                            <input type="text" value={dpt.dptName} onChange={handleChangeDpt} />
+                            <div className="dptCode">{dpt.dptCode}</div>
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                value={dpt.dptName}
+                                onChange={(event) => handleChangeDpt(index, event)}
+                            />
                         </div>
                         <div className="configBtn">
                             <button>수정</button>
@@ -45,7 +51,7 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt }) => {
                 <button onClick={handelOpenModal}>생성</button>
             </div>
 
-            {createDpt && <CreateDtpModal handelColseModal={handelColseModal} />}
+            {createDpt && <CreateDtpModal handelCloseModal={handelCloseModal} dptValue={dptValue} />}
         </div>
     );
 };

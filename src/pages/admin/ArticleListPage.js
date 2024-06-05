@@ -6,6 +6,7 @@ import MainLayout from '../../layout/MainLayout';
 import ArticleListComponent from '../../components/admin/ArticleListComponent';
 import { Link } from 'react-router-dom';
 import CreateCateModal from '../../components/modal/CreateCateModal';
+import { getArticleCateList } from '../../api/AdminApi';
 
 const ArticleListPage = () => {
     // pageNation 정보를 저장하는 useState
@@ -52,11 +53,12 @@ const ArticleListPage = () => {
 
     const openModal = () => {
         setCreateCateModal(!createCateModal);
-    }
+    };
 
     const handleModalClose = () => {
         setCreateCateModal(false);
-    }
+        window.location.reload();
+    };
 
     return (
         <MainLayout>
@@ -74,19 +76,20 @@ const ArticleListPage = () => {
                         <div>관리</div>
                     </div>
 
-                    {loading ? <div>Loading...</div> : <ArticleListComponent></ArticleListComponent>}
+                    {loading ? <div>Loading...</div> : <ArticleListComponent articleList={articleList} />}
                 </div>
 
                 <PagingComponent onPageChange={handlePageChange} />
                 <div className="contentColumn">
                     <div className="createRow">
-                        <Link to="" onClick={openModal}>게시판 생성</Link>
+                        <Link to="" onClick={openModal}>
+                            게시판 생성
+                        </Link>
                     </div>
                 </div>
             </div>
 
-            {createCateModal && <CreateCateModal handleModalClose={handleModalClose}/>}
-            
+            {createCateModal && <CreateCateModal handleModalClose={handleModalClose} />}
         </MainLayout>
     );
 };
