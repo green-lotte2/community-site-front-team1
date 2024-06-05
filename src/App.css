@@ -190,7 +190,7 @@ body {
     background-color: #f1f1f1;
 }
 .modalRow input {
-    width: 200px;
+    width: 250px;
     height: 40px;
     font-size: 16px;
     padding: 0 10px;
@@ -249,7 +249,7 @@ body {
     border-radius: 4px;
 }
 .modalGroup * {
-    font-size: 12px!important;
+    font-size: 12px !important;
 }
 
 .delBtn {
@@ -282,15 +282,13 @@ body {
     font-size: 14px;
     margin-left: 5px;
 }
-.outputCheck > input[type="radio"] {
+.outputCheck > input[type='radio'] {
     display: none;
 }
-.outputCheck > input[type="radio"]:checked + label {
+.outputCheck > input[type='radio']:checked + label {
     color: #649fff;
     border: 1px solid #649fff;
 }
-
-
 
 /*        모달 어드민 게시물 숨김 끝        */
 /* 버튼 */
@@ -621,7 +619,7 @@ section {
 }
 /*가로:25% 세로 자동*/
 .boxStyle9 {
-    width: 380px; 
+    width: 380px;
     height: auto;
     margin: 10px;
     padding: 20px;
@@ -1829,6 +1827,13 @@ section {
 .configRow {
     justify-content: space-between;
 }
+
+.dptCode {
+    font-size: 16px;
+    text-align: center;
+    width: 100px;
+}
+
 .configRow > div > input {
     width: 300px;
     height: 40px;
@@ -1852,9 +1857,9 @@ section {
     height: 44px;
     border: 1px solid #848484;
     margin: 0 10px;
-    padding: 10px!important;
-    align-content: center!important;
-    justify-content: space-between!important;
+    padding: 10px !important;
+    align-content: center !important;
+    justify-content: space-between !important;
     cursor: pointer;
 }
 .custSelect > span {
@@ -1884,7 +1889,7 @@ section {
     align-items: center;
     box-sizing: border-box;
 }
-.custOption> p:hover {
+.custOption > p:hover {
     background-color: #dddddd;
 }
 .configBtn > button {
@@ -2368,7 +2373,6 @@ section {
 }
 .cardinfo__editable {
     width: fit-content;
-
 }
 
 /* 엑셀 다운 버튼 */
@@ -2388,9 +2392,8 @@ section {
     background-color: #eeeeee; /* 호버 시 배경색 */
 }
 
-
-  /* 캘린더 */
-  .CalendarList {
+/* 캘린더 */
+.CalendarList {
     display: flex;
     width: 100%;
     font-size: 16px;
@@ -2436,9 +2439,16 @@ section {
 .myInfo > p {
     padding: 10px 0;
 }
-.myInfo > p:nth-child(1) {font-size: 30px; font-weight: bolder;}
-.myInfo > p:nth-child(2) {font-size: 20px;}
-.myInfo > p:nth-child(3) {font-size: 20px;}
+.myInfo > p:nth-child(1) {
+    font-size: 30px;
+    font-weight: bolder;
+}
+.myInfo > p:nth-child(2) {
+    font-size: 20px;
+}
+.myInfo > p:nth-child(3) {
+    font-size: 20px;
+}
 .myPage img {
     width: 200px;
 }
@@ -2493,8 +2503,8 @@ section {
     width: 300px;
     text-align: center;
     align-content: center;
-    font-size: 16px!important;
-    font-weight: normal!important;
+    font-size: 16px !important;
+    font-weight: normal !important;
     border: 1px solid #dddddd;
     box-sizing: border-box;
     padding: 10px;
@@ -2535,13 +2545,13 @@ section {
     color: #ff7825;
 }
 .BcolorG {
-    background-color: #00e673!important;
+    background-color: #00e673 !important;
 }
 .BcolorB {
-    background-color: #008ae6!important;
+    background-color: #008ae6 !important;
 }
 .BcolorR {
-    background-color: #ff7825!important;
+    background-color: #ff7825 !important;
 }
 .planBox > p {
     font-size: 50px;

@@ -9,13 +9,21 @@ const ConfigPage = () => {
     const [rankValue, setRankValue] = useState([]);
 
     // 부서 내용 변경 핸들러
-    const handleChangeDpt = (event) => {
-        setDptValue(event.target.value);
+    const handleChangeDpt = (index, event) => {
+        const newValue = [...dptValue];
+        newValue[index].dptName = event.target.value;
+        setDptValue(newValue);
+    };
+    // 부서 추가 핸들러
+    const addNewDpt = (newDpt) => {
+        setDptValue((prevState) => [...prevState, newDpt]);
     };
 
     // 직책 내용 변경 핸들러
-    const handleChangeRank = (event) => {
-        setRankValue(event.target.value);
+    const handleChangeRank = (index, event) => {
+        const newValue = [...rankValue];
+        newValue[index].rnkName = event.target.value;
+        setRankValue(newValue);
     };
 
     useEffect(() => {
@@ -23,7 +31,8 @@ const ConfigPage = () => {
             try {
                 const rnkResponse = await getRnkList();
                 const detResponse = await getDptList();
-
+                console.log(rnkResponse);
+                console.log(detResponse);
                 setRankValue(rnkResponse);
                 setDptValue(detResponse);
             } catch (err) {
@@ -36,7 +45,7 @@ const ConfigPage = () => {
     return (
         <MainLayout>
             <div className="chatBox">
-                <DptConfigComponent handleChangeDpt={handleChangeDpt} dptValue={dptValue} />
+                <DptConfigComponent handleChangeDpt={handleChangeDpt} dptValue={dptValue} addNewDpt={addNewDpt} />
 
                 <RankConfigComponent handleChangeRank={handleChangeRank} rankValue={rankValue} />
             </div>
