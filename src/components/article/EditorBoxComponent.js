@@ -6,7 +6,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import React, { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArticleWrite } from '../../api/ArticleApi';
+import { ArticleWrite, uploadArticleFiles, uploadArticleImages } from '../../api/ArticleApi';
 import { uploadImage } from '../../api/ImageApi'; // 이미지 업로드 API를 호출하는 함수
 import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ const EditorBoxComponent = () => {
     const editorRef = useRef();
 
     /** 선택한 파일들을 보관하는 상태 */
-    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState("");
 
     /** 작성한 게시글 내용 저장하는 핸들러 */
     const handleChange = () => {
@@ -61,7 +61,31 @@ const EditorBoxComponent = () => {
 
       const formData = pullBase64(articleContents);
 
-      // 게시글 내용과 파일을 서버에 저장하는 함수 호출
+      const formData2 = new FormData();
+       //선택한 파일도 formData에 추가
+       if (selectedFiles.length > 0 ) {
+        selectedFiles.forEach((file, index) => {
+          formData.append(`files`, file);
+          console.log("2")
+        });
+       }
+       
+/** 
+       try {
+        const response = await uploadArticleFiles(formData2);
+        
+       }catch(err) {
+        console.log("실패")
+       }
+
+       try {
+        const response = await uploadArticleImages(formData);
+        
+       }catch(err) {
+        console.log("실패")
+       }*/
+
+      //게시글 내용과 파일을 서버에 저장하는 함수 호출
       try {
         const response = await ArticleWrite(formData);
         console.log(response);
@@ -100,24 +124,6 @@ const EditorBoxComponent = () => {
         });
       }
 
-      /*
-      if (!srcPull) {
-        console.error("No images found in the article content.");
-        return;
-      }
-
-      const fileList = changeImageFile(srcPull);
-
-      // 입력한 내용에서 img 태그 안의 src 내용 치환
-      const imageNames = [];
-      Array.from(fileList).forEach(function(each) {
-        imageNames.push((each.name)+ '.' + each.type.split('/')[1]);
-      })
-      
-      for (let i=0 ; i < srcPull.length ; i++) {
-        articleContents = articleContents.replace(srcPull[i].slice(5, -1), RootUrl() + "/images/" + imageNames[i]);
-      }
-      */
       console.log(imageNames)
       console.log(articleContents);
       
@@ -130,11 +136,14 @@ const EditorBoxComponent = () => {
       formData.append("articleCateNo", articleCateNo);
       formData.append("articleThumb", imageNames[0]);
       formData.append("writer", loginSlice.username);
+      formData.append("image", fileList);
 
+      
       fileList.forEach((file, index) => {
-        formData.append(`file[${index}]`, file);
+        formData.append(`image`, file);
+        console.log("1")
       });
-
+      
       return formData;
     }
 
@@ -176,7 +185,7 @@ const EditorBoxComponent = () => {
             <input type='file' multiple onChange={handleFileChange}></input>
                 <div className='fileList'>
                     <span>첨부파일목록</span>
-                    {selectedFiles.map((file, index) => (
+                    {selectedFiles && selectedFiles.map((file, index) => (
                         <span key={index}>{file.name}</span>
                     ))}
                 </div>

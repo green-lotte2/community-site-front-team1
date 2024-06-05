@@ -31,7 +31,7 @@ export const ArticleWrite = async (formData) => {
   console.log('글 쓰기');
 
   const response = await axios.post(`${rootURL}/write`, formData, 
-  {header: {
+  {headers: {
     'Content-Type':'multipart/form-data'}
   })
 
