@@ -93,14 +93,14 @@ const handleInputChange = (e) => {
         <input type="date" name="endDate" value={searchParams.endDate} onChange={handleInputChange}/>
 
         <select style={{marginRight: "10px"}} name="csCate" value={searchParams.csCate} onChange={handleInputChange}>
-            <option value="" disabled hidden>카테고리</option>
+            <option value="">카테고리</option>
             <option value="결제관련">결재관련</option>
             <option value="일정관련">일정관련</option>
             <option value="기타">기타</option>
         </select>
 
         <select name ="csReply" value={searchParams.csReply} onChange={handleInputChange}>
-            <option  value="" disabled hidden>답변상태</option>
+            <option value="">답변상태</option>
             <option value="0">답변대기</option>
             <option value="1">답변완료</option>
         </select>

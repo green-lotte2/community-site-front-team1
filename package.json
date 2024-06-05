@@ -20,6 +20,8 @@
 
     "@reduxjs/toolkit": "^2.2.5",
 
+    "@stomp/stompjs": "^7.0.0",
+
     "@testing-library/jest-dom": "^5.17.0",
 
     "@testing-library/react": "^13.4.0",
@@ -63,6 +65,8 @@
     "react-router-dom": "^6.23.1",
 
     "react-scripts": "5.0.1",
+
+    "socket.io-client": "^4.7.5",
 
     "use-local-storage": "^3.0.0",
 
