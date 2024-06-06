@@ -23,7 +23,7 @@ const CsWritePage = () => {
         <MainLayout>
           <div className="contentBox boxStyle7">
             <div className="contentTitle font30" style={{justifyContent:"space-between"}}>
-                글쓰기
+                QnA글쓰기
                 <div className="CsSelect">
                     <input type="radio" id="public" name='secret' value="전체공개" checked={secret === '전체공개'} onChange={secretHandler} />
                     <label htmlFor="public">전체공개</label>

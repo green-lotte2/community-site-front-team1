@@ -110,7 +110,7 @@ const CsListPage = () => {
                 <div>답변상태</div>
             </div>
 
-            <CsListComponent dtoList={serverData.dtoList} totalItems={serverData.total}></CsListComponent>
+            <CsListComponent serverData={serverData}></CsListComponent>
 
             </div>
 

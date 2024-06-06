@@ -67,21 +67,13 @@ const handleInputChange = (e) => {
 
   const { name, value } = e.target;
 
-  setSearchParams((prevParams) => {
-    const newParams = {
+    setSearchParams((prevParams) => ({
       ...prevParams,
-      [name]: value,
-    };
-    console.log("한번 찍어봅시다1 : ", newParams.startDate);
-    console.log("한번 찍어봅시다2 : ", newParams.endDate);
-    console.log("한번 찍어봅시다3 : ", newParams.csCate);
-    console.log("한번 찍어봅시다4 : ", newParams.csReply);
-    console.log("한번 찍어봅시다5 : ",newParams.type);
-    console.log("한번 찍어봅시다6 : ",newParams.latest);
-    return newParams;
-  });
-
-};
+      //[name]: name === 'startDate' || name === 'endDate' ? new Date(value).toISOString() : value,
+    [name]: value,
+    }));
+  
+  };
 
   //console.log("글 내용 찍어보기 : "+searchParams.keyword);
 

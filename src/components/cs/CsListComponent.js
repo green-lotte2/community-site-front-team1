@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Moment from 'moment';
+import "moment/locale/ko";
 
 
 
-const CsListComponent = ({dtoList=[],totalItems}) => {
+const CsListComponent = ({serverData}) => {
 
   return (
     <>
-    {dtoList.map((item, index) => (
+    {serverData.dtoList.map((item, index) => (
         <div className="articleRow" key={index}>
-          <div>{totalItems--}</div>{/*키값이 아닌 일반 순번 출력 */}
+          <div>{serverData.startNo-index}</div>{/*키값이 아닌 일반 순번 출력 */}
           <div>{item.stfName}</div>
           <div>
             <Link to={`/csView?csNo=${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>
           </div>
-          <div style={{width: "150px"}}>{item.csRdate}</div>
+          <div style={{width: "150px"}}>    
+                    {Moment(item.csRdate).format('YYYY-MM-DD')}
+                    </div>
           <div>{item.csHit}</div>
 
           {(item.csReply > 0) ? (
