@@ -6,7 +6,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArticleWrite, uploadImage } from '../../api/ArticleApi';
+import { ArticleWrite, fileUploads, uploadImage } from '../../api/ArticleApi';
 import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
 
@@ -18,13 +18,15 @@ const EditorBoxComponent = ({ articleCateNo }) => {
     const editorRef = useRef();
 
     /** 선택한 파일들을 보관하는 상태 */
-    const [selectedFiles, setSelectedFiles] = useState("");
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     /**  파일 선택 핸들러 */
     const handleFileChange = (event) => {
-      const files = Array.from(event.target.files);
-      setSelectedFiles(files);
-  };
+        const files = Array.from(event.target.files);
+        setSelectedFiles(files);
+        //setSelectedFiles(Array.form(event.target.files));
+        console.log('고른파일' + selectedFiles);
+    };
 
     const handleChange = () => {
         const data = editorRef.current.getInstance().getHTML();
@@ -34,9 +36,12 @@ const EditorBoxComponent = ({ articleCateNo }) => {
     const submitHandler = async () => {
         let articleContents = editorRef.current.getInstance().getHTML();
         const formData = await prepareFormData(articleContents);
-
         try {
             const response = await ArticleWrite(formData);
+            const articleNo = response.articleNo;
+            //const uploadedFiles = uploadFiles(articleNo);
+            //const fileUpload = await fileUploads(uploadedFiles);
+
             console.log(response);
             alert('글이 성공적으로 작성되었습니다.');
             navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
@@ -45,6 +50,17 @@ const EditorBoxComponent = ({ articleCateNo }) => {
             alert('글 작성에 실패하였습니다.');
         }
     };
+    /*
+    const uploadFiles = (articleNo) => {
+        const fileData = new FormData();
+        selectedFiles.forEach((file) => {
+            fileData.append('multiFileNames', file);
+        });
+        fileData.append('articleNo', articleNo);
+        console.log(Array.from(fileData));
+        return fileData;
+    };
+    */
 
     const prepareFormData = async (articleContents) => {
         const matchSrc = /src="([^"]*)"/g;
@@ -62,12 +78,12 @@ const EditorBoxComponent = ({ articleCateNo }) => {
         }
 
         const formData = new FormData();
-        formData.append("stfNo", loginSlice.userId);
-        formData.append("articleTitle", articleTitle);
-        formData.append("articleCnt", articleContents);
-        formData.append("articleCateNo", articleCateNo);
-        formData.append("articleThumb", fileList.length ? fileList[0].name : '');
-        formData.append("writer", loginSlice.username);
+        formData.append('stfNo', loginSlice.userId);
+        formData.append('articleTitle', articleTitle);
+        formData.append('articleCnt', articleContents);
+        formData.append('articleCateNo', articleCateNo);
+        formData.append('articleThumb', fileList.length ? fileList[0].name : '');
+        formData.append('writer', loginSlice.username);
 
         fileList.forEach((file) => {
             formData.append('files', file);
@@ -114,17 +130,22 @@ const EditorBoxComponent = ({ articleCateNo }) => {
 
     return (
         <>
-            <input className='writeTitle' type="text" value={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} placeholder='제목을 입력하세요.' />
-
-            <div className='writeFile'>
-            <input type='file' multiple onChange={handleFileChange}></input>
-                <div className='fileList'>
-                    <span>첨부파일목록</span>
-                    {selectedFiles && selectedFiles.map((file, index) => (
-                        <span key={index}>{file.name}</span>
-                    ))}
+            <input
+                className="writeTitle"
+                type="text"
+                value={articleTitle}
+                onChange={(e) => setArticleTitle(e.target.value)}
+                placeholder="제목을 입력하세요."
+            />
+            <form>
+                <div className="writeFile">
+                    <input type="file" multiple onChange={handleFileChange}></input>
+                    <div className="fileList">
+                        <span>첨부파일목록</span>
+                        {selectedFiles && selectedFiles.map((file, index) => <span key={index}>{file.name}</span>)}
+                    </div>
                 </div>
-            </div>
+            </form>
             <Editor
                 initialValue=" "
                 previewStyle="vertical"
@@ -136,9 +157,9 @@ const EditorBoxComponent = ({ articleCateNo }) => {
                 ref={editorRef}
                 onChange={handleChange}
             />
-            <div className='wrtieBtnBox'>
-                <input type='button' value={"취소"} onClick={cancelHandler} />
-                <input type='submit' value={"작성"} onClick={submitHandler} />
+            <div className="wrtieBtnBox">
+                <input type="button" value={'취소'} onClick={cancelHandler} />
+                <input type="submit" value={'작성'} onClick={submitHandler} />
             </div>
         </>
     );
