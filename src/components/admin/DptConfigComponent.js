@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CreateDtpModal from '../modal/CreateDtpModal';
 import GroupIconComponent from '../common/private/GroupIconComponent';
+import { faUserGear } from '@fortawesome/free-solid-svg-icons';
 
 const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
     /** 부서 생서 모달 */
@@ -17,6 +18,19 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
         }
     };
 
+    console.log('dptValue:', dptValue);
+
+    const handleDptDelete = async (index) => {
+        if (dptValue[index].member.length > 0) {
+            alert('소속된 사원이 0명이어야 삭제 가능합니다.');
+            return;
+        }
+        const confirmDel = window.confirm('삭제하시겠습니까?');
+        if (confirmDel) {
+            console.log('삭제완료');
+        }
+    };
+
     return (
         <div className="contentBox boxStyle4">
             <div className="contentTitle font30 alignL">부서 설정</div>
@@ -27,7 +41,7 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
                     <div key={dpt.dptNo} className="scrollRow configRow">
                         <div>{index + 1}</div>
                         <div>
-                            <GroupIconComponent iconName={dpt.iconName} />
+                            <GroupIconComponent iconName={dpt.dptIcon} />
                         </div>
                         <div>
                             <div className="dptCode">{dpt.dptCode}</div>
@@ -38,10 +52,11 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
                                 value={dpt.dptName}
                                 onChange={(event) => handleChangeDpt(index, event)}
                             />
+                            <span> [사원 : {(dpt.member || []).length}]</span>
                         </div>
                         <div className="configBtn">
                             <button>수정</button>
-                            <button>삭제</button>
+                            <button onClick={() => handleDptDelete(index)}>삭제</button>
                         </div>
                     </div>
                 ))}
