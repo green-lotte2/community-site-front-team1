@@ -7,6 +7,7 @@ import { getPlan } from '../../api/MemberApi'
 const GroupPlanPage = () => {
 
   const [registerPlan,setRegisterPlan] = useState([]);
+  const [planType, setPlanType] = useState('');
 
 
   useEffect(() => { 
@@ -30,6 +31,21 @@ const GroupPlanPage = () => {
    }, []);
 
 
+   const submitOrder = (e)=>{
+
+    e.preventDefault();
+
+    const type = e.target.value; 
+
+    setPlanType(type);
+
+    console.log("클릭했을 때 타입 : ",type);
+
+    const url = "/planOrder?planType="+type;
+    window.location.href=url;
+   }
+
+
 console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
 
 
@@ -47,7 +63,7 @@ console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
         <div className="planBox">
          <p className='colorG'>{firstPlan && firstPlan.planName}</p>
           <h3 className='colorG'><span>멤버당</span>{firstPlan && firstPlan.planCost}<span>원/월</span></h3>
-          <button className='BcolorG' value={null}>가입하기</button>
+          <button type="button" className='BcolorG' value="BASIC" onClick={submitOrder}>가입하기</button>
           <div className='planDetail'>
             <p>{firstPlan && firstPlan.planInfo}</p>
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 페이지 협업자 등록 최대 5명</h3>
@@ -60,7 +76,7 @@ console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
         <div className="planBox">
           <p className='colorB'>{secondPlan && secondPlan.planName}</p>
           <h3 className='colorB'><span>멤버당</span>{secondPlan && secondPlan.planCost}<span>원/월</span></h3>
-          <button className='BcolorB'>가입하기</button>
+          <button type="button" value="STANDARD" onClick={submitOrder} className='BcolorB'>가입하기</button>
           <div className='planDetail'>
             <p>{secondPlan && secondPlan.planInfo}</p>
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 페이지 협업자 등록 최대 10명</h3>
@@ -73,7 +89,7 @@ console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
         <div className="planBox">
           <p className='colorR'>{thirdPlan && thirdPlan.planName}</p>
           <h3 className='colorR'><span>멤버당</span>{thirdPlan && thirdPlan.planCost}<span>원/월</span></h3>
-          <button className='BcolorR'>가입하기</button>
+          <button type="button" value="PREMIUM" onClick={submitOrder} className='BcolorR'>가입하기</button>
           <div className='planDetail'>
             <p>{thirdPlan && thirdPlan.planInfo}</p>
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 페이지 편집 협업자 등록 무제한</h3>

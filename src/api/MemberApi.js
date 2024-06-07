@@ -41,3 +41,10 @@ export const getPlan = async ()=>{
     const response = await axios.get(`${rootURL}/getPlan`);
     return response.data;
 }
+
+//플랜에 쓸 유저 정보가져오기
+export const getUserInfo = async (data)=>{
+    console.log("유저 아이디로 검색",data);
+    const response = await axios.get(`${rootURL}/getUserInfo?stfNo=${data}`);
+    return response.data;
+}
