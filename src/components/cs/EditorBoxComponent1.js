@@ -19,6 +19,7 @@ const EditorBoxComponent1 = ({csCate,secret}) => {
 
     // 게시글 제목 보관
     const [csTitle, setCsTitle] = useState('');
+    const [csContent,setcsContent] = useState('');
 
     // 게시글 내용 보관
     const editorRef = useRef();
@@ -28,12 +29,14 @@ const EditorBoxComponent1 = ({csCate,secret}) => {
     const name = auth?.username;
 
     const onChange = () => {
-      const data = editorRef.current.getInstance().getHTML();
-      console.log(data);
+      setcsContent(editorRef.current.getInstance().getHTML());
+      console.log(csContent);
     };
 
-    const submitHandler = async () => {
-    const csContent = editorRef.current.getInstance().getHTML();//글 내용과 함께 에디터가 저장이 됨
+
+    
+
+    const submitHandler = async () => {   
 
     console.log("아이디 출력 : "+id);
     console.log("이름 출력 : "+name);
@@ -41,12 +44,25 @@ const EditorBoxComponent1 = ({csCate,secret}) => {
       // UUID 생성
     const stfNo = id; 
 
+    if(csCate==null|| csCate==""){
+
+      alert("카테고리를 선택해주세요");
+
+    }else if(csTitle==null||csTitle==""){
+      alert("제목을 입력해주세요");
+    }else if(csContent==null|| csContent==""){
+      alert("내용을 입력해주세요");
+
+    }else if(secret==null || secret==""){
+      alert("전체글인지 비밀글인지 선택해주세요");
+    }else{
+
     try {
       const response = await postCsWrite({stfNo, csTitle, csContent,csCate,secret});
       if (response === 1) {
         alert('글이 성공적으로 작성되었습니다.');
         console.log("로그인한 사용자의 아이디 : "+id);
-        //navigate(`/csList`);
+        navigate(`/csList`);
       } else {
         alert('글 작성에 실패하였습니다.');
       }
@@ -54,6 +70,7 @@ const EditorBoxComponent1 = ({csCate,secret}) => {
       console.error('Failed to write article:', error);
       alert('글 작성 중 오류가 발생하였습니다.');
     }
+  }
   };
 
     const cancelHandler = () => {

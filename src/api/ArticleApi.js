@@ -26,17 +26,33 @@ export const ArticleView = async (data) => {
     return response.data;
 };
 
-// 게시글 작성
-export const ArticleWrite = async (formData) => {
-  console.log('글 쓰기');
+// 이미지 업로드 API
+export const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    console.log('이미지 업로드 호출');
+    const response = await axios.post(`${rootURL}/uploadImage`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 
-  const response = await axios.post(`${rootURL}/write`, formData, 
-  {headers: {
-    'Content-Type':'multipart/form-data'}
-  })
-
-  return response.data;
+    return response.data;
 };
+
+// 게시글 작성 API
+export const ArticleWrite = async (formData) => {
+    console.log('글 쓰기');
+
+    const response = await axios.post(`${rootURL}/write`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+
+    return response.data;
+};
+
 
 // 게시글 modify 폼
 export const ArticleModifyForm = async (data) => {

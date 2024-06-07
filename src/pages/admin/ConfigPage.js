@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import DptConfigComponent from '../../components/admin/DptConfigComponent';
 import RankConfigComponent from '../../components/admin/RankConfigComponent';
-import { getDptList, getRnkList } from '../../api/AdminApi';
+import { getDptAndStfList, getDptList, getRnkList } from '../../api/AdminApi';
 
 const ConfigPage = () => {
     const [dptValue, setDptValue] = useState([]);
@@ -30,7 +30,7 @@ const ConfigPage = () => {
         const fetchData = async () => {
             try {
                 const rnkResponse = await getRnkList();
-                const detResponse = await getDptList();
+                const detResponse = await getDptAndStfList();
                 console.log(rnkResponse);
                 console.log(detResponse);
                 setRankValue(rnkResponse);
