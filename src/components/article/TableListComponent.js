@@ -4,6 +4,7 @@ import React from 'react'
 import Moment from 'moment';
 import "moment/locale/ko";
 import { Link } from 'react-router-dom';
+import { RootUrl } from '../../api/RootUrl';
 
 const TableListComponent = ({ articleList }) => {
     console.log(articleList);
@@ -16,7 +17,7 @@ const TableListComponent = ({ articleList }) => {
             <div>{articleList.startNo - index}</div>
             <div>
             {article.articleThumb ? (
-                <img src={article.articleThumb} alt="Thumbnail" style={{ width: '100px', height: '100px' }} />
+                <img src={`${RootUrl()}/images/orgArtImage/${article.articleThumb}`} alt="Thumbnail" style={{ width: '100px', height: '100px' }} />
             ) : (
                 <img src="../images/iconSample5.PNG" alt="Thumbnail" />
             )}

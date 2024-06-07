@@ -33,8 +33,8 @@ export const uploadImage = async (file) => {
     console.log('이미지 업로드 호출');
     const response = await axios.post(`${rootURL}/uploadImage`, formData, {
         headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+            'Content-Type': 'multipart/form-data',
+        },
     });
 
     return response.data;
@@ -46,13 +46,23 @@ export const ArticleWrite = async (formData) => {
 
     const response = await axios.post(`${rootURL}/write`, formData, {
         headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+            'Content-Type': 'multipart/form-data',
+        },
     });
 
     return response.data;
 };
 
+// 파일 등록 API
+export const fileUploads = async (formData) => {
+    console.log('파일 등록');
+    const response = await axios.post(`${rootURL}/file/upload`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+};
 
 // 게시글 modify 폼
 export const ArticleModifyForm = async (data) => {
