@@ -48,3 +48,20 @@ export const getUserInfo = async (data)=>{
     const response = await axios.get(`${rootURL}/getUserInfo?stfNo=${data}`);
     return response.data;
 }
+
+
+//플랜결제에 필요한 유저 수 
+export const getCountUser = async ()=>{
+    console.log("유저 수 구하기");
+    const response = await axios.get(`${rootURL}/getCountUser`);
+    return response.data;
+}
+
+
+
+//플랜결제
+export const postPay= async (data)=>{
+    console.log("결제하기",data);
+    const response = await axios.post(`${rootURL}/postPay`,data);
+    return response.data;
+}

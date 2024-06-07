@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import MemberLayout from '../../layout/MemberLayout';
 import { useLocation } from 'react-router-dom';
-import { getPlan,getUserInfo } from '../../api/MemberApi'
+import { getPlan,getUserInfo,getCountUser,postPay} from '../../api/MemberApi'
 import { getCookie} from "../../util/cookieUtil";
 
 
 const PlanOrderPage = () => {
 
     const [outputCheck, setOutputCheck] = useState(0);
-    const [cost,setCost] = useState('');
+    const [beforecost,setBeforeCost] = useState('');
+    const [count,setCount] = useState(0);
     const [auth, setAuth] = useState(getCookie("auth"));
 
 
@@ -16,22 +17,28 @@ const PlanOrderPage = () => {
     //const id = auth?.userId;
     //const name = auth?.usename;
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const planType = queryParams.get('planType');
+
+
 
     const [stf, setStf] = useState({
         stfNo:'',
         stfName: '',
         stfEmail: '',
         stfPh: '',
-        card:''
+        paymentMethod:'',
+        cost:'',
+        type: planType
+
     });
 
-    const { stfNo, stfName, stfEmail, stfPh,card } = stf; //비구조화 할당????
+    const { stfNo, stfName, stfEmail, stfPh,paymentMethod,cost} = stf; //비구조화 할당????
 
 
 
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const planType = queryParams.get('planType');
+
     
     useEffect(()=>{
        
@@ -39,6 +46,8 @@ const PlanOrderPage = () => {
         //이름, 이메일, 연락처 먼저 띄우기
 
         //상품정보 불러오기(타입만 주소로 보냄)
+
+        //stf테이블에서 Break,Active 상태인 회원들 수를 세기
         const fetchData = async()=>{
   
             const response = await getPlan();
@@ -48,7 +57,7 @@ const PlanOrderPage = () => {
                 if(plan.planName==planType){
                     //맞는 타입에 들어왔으면 
                     const planCost = plan.planCost;
-                    setCost(planCost);
+                    setBeforeCost(planCost);
                 }
             })
 
@@ -74,21 +83,68 @@ const PlanOrderPage = () => {
                 stfPh:userInfo.stfPh
             })
 
+            const countUser = await getCountUser();
+            setCount(countUser);
+
+            console.log("총 몇명인가?",countUser);
+            
         }
         fetchData();
     },[planType]);
 
-    const countOutput = (e) => {
 
-        setOutputCheck(1)
-
-        setStf({ ...stf, [e.target.name]: e.target.value });
+    const countOutput = (e) => {//
+        changeHandler(e);
+        validHandler();
     }
-    const checkOutput = () => {
+    
+    const validHandler = ()=>{//유효성 검사(2자리 잘 입력이 되었는지 체크)
+        const valid = document.getElementsByClassName('valid');
+        const valid1 = document.getElementsByClassName('valid1');
+        let validResult = 0;
+
+        console.log("OutputCheck....1 : ",outputCheck);
+
+        Array.from(valid).forEach(function(each) {
+            if (each.value.length >= 2) {
+
+
+                validResult += 1;
+            }
+        })
+
+        console.log("OutputCheck....2 : ",outputCheck);
+
+        Array.from(valid1).forEach(function(each) {
+            if (each.value.length >= 2) {
+
+                validResult += 1;
+            }
+        })
+
+        console.log("OutputCheck....3 : ",outputCheck);
+    
+        if (validResult === 2) {
+
+            setOutputCheck(3);
+
+            console.log("OutputCheck.....4 : ",outputCheck);
+        } else {
+
+            setOutputCheck(2);
+
+            console.log("OutputCheck.....5 : ",outputCheck);
+        }
+
+
+    }
+
+    const checkOutput = () => {//카드유효성 검사(자릿수 잘 입력했는지만 체크)
+
         const checks = document.getElementsByClassName('check');
         let result = 0;
         Array.from(checks).forEach(function(each) {
-            if (each.value.length >= 4) {
+            if (each.value.length >= 4) {//몇개의 숫자를 입력하는지 체크
                 result += 1;
             }
         })
@@ -97,35 +153,40 @@ const PlanOrderPage = () => {
         } else {
             setOutputCheck(1);
         }
+        
     }
 
     /** 페이지 불러올때 사용자 정보 불러와서 이름 이메일 전화번호는 기입되게 해주세요 */
 
 
     //필요한 것 : 시작날짜(결제하는 당일의 날짜), 끝날짜(시작날짜+30일), 주문자 정보
-    const submitOrder = () =>{
+    const submitOrder = async () =>{
     
         console.log("내가 쓴 이름 : ",stf.stfName);
         console.log("내가 쓴 이메일 : ",stf.stfEmail);
         console.log("내가 쓴 핸드폰 : ",stf.stfPh);
-        console.log("내가 선택한 카드 : ",card);
+        console.log("내가 선택한 카드 : ",paymentMethod);
 
-        if(card==null|| card==''){
+        if(paymentMethod==null|| paymentMethod==''){
             alert("카드를 선택해주세요");
         }
-        else if(outputCheck==1){
+        else if(outputCheck===1){
 
             alert("카드번호를 입력해주세요");
             console.log("카드번보를 입력해주세요 칸 : ",outputCheck);
         }
-        else if(outputCheck==2){
+        else if(outputCheck===2){
             alert("유효기간을 입력해주세요");
             console.log("유효기간을 입력해주세요 칸 : ",outputCheck);
-        }else if(outputCheck==0){
-            alert("이제 됐다!")
-            console.log("이제됐다! 칸 : ",outputCheck);
-        }
 
+        }else if(outputCheck===3){
+            alert("결제가 완료되었습니다.")
+            console.log("이제됐다! 칸 : ",outputCheck);
+
+            const response = await postPay(stf);
+
+
+        }
     }
 
 
@@ -135,8 +196,13 @@ const PlanOrderPage = () => {
         setStf({ ...stf, [e.target.name]: e.target.value });
         
     };
-  
 
+    const calculatedTotal = beforecost*count;
+    stf.cost=calculatedTotal;//총 비용
+
+    console.log("총 합 : ",calculatedTotal);
+
+  
   return (
     <MemberLayout>
       <div className="memberBack planOrderBack">
@@ -161,7 +227,7 @@ const PlanOrderPage = () => {
 
                 <p>결제 정보</p>
 
-                <select name="card" id="card" onChange={countOutput}>
+                <select name="paymentMethod" id="paymentMethod" onChange={countOutput}>
                     <option value="">카드선택</option>
                     <option value="삼성카드">삼성카드</option>
                     <option value="신한카드">신한카드</option>
@@ -184,8 +250,8 @@ const PlanOrderPage = () => {
                     <div>
                         <p>유효기간</p>
                         <div>
-                            <input type="text" onChange={checkOutput}  />
-                            <input type="text" onChange={checkOutput} />
+                            <input type="text" className="valid" onChange={countOutput} />
+                            <input type="text" className="valid1" onChange={countOutput} />
                         </div>
                     </div>
                 )}
@@ -198,18 +264,15 @@ const PlanOrderPage = () => {
                 <p>상품 정보</p>
 
                 <p>{planType}</p>
-                <p>가격 <span>{cost}</span>원/월</p>
+                <p>가격 <span>{beforecost}</span>원/월</p>
                 <div>
                     <p>예상 청구 비용</p>
-                    <p>10,000 원 x <span>팀원수</span></p>
-                    <p>= 월 100,000원</p>
+                    <p>{beforecost} 원 x <span>{count}</span>명</p>
+                    <p>= 월 {stf.cost}</p>
                 </div>
 
                 <button type='button' onClick={submitOrder}>결제하기</button>
-
             </div>
-
-
         </div>
       </div>
     </MemberLayout>
