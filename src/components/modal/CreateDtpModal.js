@@ -13,9 +13,7 @@ const CreateDtpModal = ({ handelCloseModal, dptValue }) => {
     });
 
     const openOption = (event) => {
-        if (event.target.className === 'custOption') {
-            return;
-        } else if (event.target.className === 'option') {
+        if (event.target.className === 'custOption' || event.target.className === 'option') {
             return;
         } else {
             setOptionState(!optionState);
@@ -56,7 +54,7 @@ const CreateDtpModal = ({ handelCloseModal, dptValue }) => {
             <div className="modalBox">
                 <div className="modalHeader">
                     <p>부서 생성</p>
-                    <p className="modalClose" style={{ cursor: 'pointer' }} onClick={handelCloseModal}>
+                    <p className="modalClose" style={{ cursor: 'pointer' }} onClick={() => handelCloseModal(null)}>
                         X
                     </p>
                 </div>
@@ -103,7 +101,7 @@ const CreateDtpModal = ({ handelCloseModal, dptValue }) => {
                 </div>
 
                 <div className="modalRow">
-                    <button className="modalClose" onClick={handelCloseModal}>
+                    <button className="modalClose" onClick={() => handelCloseModal(null)}>
                         취소
                     </button>
                     <input type="submit" value="생성" onClick={handleSubmit} />
