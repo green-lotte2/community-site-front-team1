@@ -11,49 +11,53 @@ import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
 
 const EditorBoxComponent = ({ articleCateNo }) => {
-    const navigate = useNavigate();   // 페이지이동을 위한 hook 초기화
-    const loginSlice = useSelector((state) => state.loginSlice);    // Redux 상태에서 로그인 정보를 가져오기
+    const navigate = useNavigate();
+    const loginSlice = useSelector((state) => state.loginSlice);
 
-    const [articleTitle, setArticleTitle] = useState('');   // 게시글 제목을 관리하는 상태
-    const editorRef = useRef();   // 에디터의 참조 객체를 관리하는 hook
+    const [articleTitle, setArticleTitle] = useState('');
+    const editorRef = useRef();
 
-    // 에디터 내용이 변경될 때 호출되는 함수
+    /** 선택한 파일들을 보관하는 상태 */
+    const [selectedFiles, setSelectedFiles] = useState("");
+
+    /**  파일 선택 핸들러 */
+    const handleFileChange = (event) => {
+      const files = Array.from(event.target.files);
+      setSelectedFiles(files);
+  };
+
     const handleChange = () => {
         const data = editorRef.current.getInstance().getHTML();
-        console.log('Editor content changed:', data);
+        console.log(data);
     };
 
-     // 작성 버튼 클릭 시 호출되는 함수
     const submitHandler = async () => {
         let articleContents = editorRef.current.getInstance().getHTML();
-        console.log('Submit handler called with content:', articleContents);
-
-        const formData = await prepareFormData(articleContents);      // 폼 데이터를 준비
+        const formData = await prepareFormData(articleContents);
 
         try {
-            const response = await ArticleWrite(formData);          // 게시글 작성 API 호출
-            console.log('Article written successfully:', response);
+            const response = await ArticleWrite(formData);
+            console.log(response);
             alert('글이 성공적으로 작성되었습니다.');
             navigate(`/list?articleCateNo=${articleCateNo}&pg=1`);
         } catch (err) {
-            console.error('Error writing article:', err);
+            console.log(err);
             alert('글 작성에 실패하였습니다.');
         }
     };
 
-    // 에디터 내용에서 이미지를 추출하고 업로드된 이미지 URL로 대체하는 함수
     const prepareFormData = async (articleContents) => {
         const matchSrc = /src="([^"]*)"/g;
         const srcPull = articleContents.match(matchSrc);
-        console.log('Found images:', srcPull);
 
         let fileList = [];
         if (srcPull) {
-            fileList = await uploadImages(srcPull);   // 이미지 업로드
+            fileList = await uploadImages(srcPull);
 
             fileList.forEach((file, i) => {
-                const imageURL = `${RootUrl()}/uploads/orgArtImage/${file.name}`;
-                articleContents = articleContents.replace(srcPull[i].slice(5, -1), imageURL);   // 에디터 내용에서 이미지 URL 대체
+                const imageURL = `${RootUrl()}/images/orgArtImage/${file.name}`;
+                //const imageURL = `${RootUrl()}/uploads/orgArtImage/${file.name}`;
+                articleContents = articleContents.replace(srcPull[i].slice(5, -1), imageURL);
             });
         }
 
@@ -72,7 +76,6 @@ const EditorBoxComponent = ({ articleCateNo }) => {
         return formData;
     };
 
-    // base64 문자열을 파일로 변환하고 업로드하는 함수
     const uploadImages = async (srcPull) => {
         const fileList = [];
 
@@ -81,22 +84,18 @@ const EditorBoxComponent = ({ articleCateNo }) => {
             const mime = base64.match(/data:(.*?);/)[1];
             const extension = mime.split('/')[1];
             const fileName = `${btoa(base64).substring(0, 10)}.${extension}`;
-            console.log('Processing image with name:', fileName);
+            console.log(`Encoded Name: ${fileName}`);
 
             const file = base64ToFile(base64, fileName);
 
             // 업로드된 파일 URL 얻기
-            console.log('Uploading image:', file);
             const uploadedFile = await uploadImage(file);
-            console.log('Uploaded image with response:', uploadedFile);
-
             fileList.push(new File([file], uploadedFile.name, { type: file.type }));
         }
 
         return fileList;
     };
 
-    // base64 문자열을 파일 객체로 변환하는 함수
     const base64ToFile = (base64String, fileName) => {
         const arr = base64String.split(',');
         const mime = arr[0].match(/:(.*?);/)[1];
@@ -106,11 +105,9 @@ const EditorBoxComponent = ({ articleCateNo }) => {
         while (n--) {
             u8arr[n] = bstr.charCodeAt(n);
         }
-        console.log('Converting base64 to file with name:', fileName);
         return new File([u8arr], fileName, { type: mime });
     };
 
-    // 취소 버튼 클릭 시 호출되는 함수
     const cancelHandler = () => {
         navigate(-1);
     };
@@ -118,6 +115,16 @@ const EditorBoxComponent = ({ articleCateNo }) => {
     return (
         <>
             <input className='writeTitle' type="text" value={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} placeholder='제목을 입력하세요.' />
+
+            <div className='writeFile'>
+            <input type='file' multiple onChange={handleFileChange}></input>
+                <div className='fileList'>
+                    <span>첨부파일목록</span>
+                    {selectedFiles && selectedFiles.map((file, index) => (
+                        <span key={index}>{file.name}</span>
+                    ))}
+                </div>
+            </div>
             <Editor
                 initialValue=" "
                 previewStyle="vertical"
