@@ -1834,6 +1834,7 @@ section {
 }
 .configRow {
     justify-content: space-between;
+    align-items: center;
 }
 
 .dptCode {
@@ -2735,4 +2736,30 @@ section {
 .todoBox {
     display: flex;
     border: 1px solid red;
+}
+
+/*** 문서 ***/
+.docList {
+    display: flex;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 8px 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.docList:hover {
+    background-color: #dddddd;
+}
+.docList > div {
+    width: 100%;
+    padding: 0 10px;
+}
+.docList p {
+    width: 100%;
+    font-size: 14px;
+    font-weight: bolder;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

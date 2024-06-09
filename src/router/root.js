@@ -28,6 +28,7 @@ import CalendarPage from '../pages/private/CalendarPage';
 import MyPage from '../pages/private/MyPage';
 import PlanOrderPage from '../pages/member/PlanOrderPage';
 import ToDoPage from '../pages/private/ToDoPage';
+import DocPage from '../pages/private/DocPage';
 
 const root = createBrowserRouter([
     // Landing
@@ -55,6 +56,7 @@ const root = createBrowserRouter([
     { path: '/calendar', element: <CalendarPage /> },
     { path: '/mypage', element: <MyPage /> },
     { path: '/toDo', element: <ToDoPage /> },
+    { path: '/doc', element: <DocPage /> },
 
     // article
     { path: '/list', element: <ListPage /> },
