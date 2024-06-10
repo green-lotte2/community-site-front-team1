@@ -26,3 +26,14 @@ export const getRoomList = async () => {
 
     return response.data;
 };
+
+
+//리스트 목록 
+export const getUserInfo = async () => {
+
+    console.log('리스트 목록 띄우기');
+    const response = await axios.get(`${rootURL}/chat`);
+
+    return response.data;
+};
+
