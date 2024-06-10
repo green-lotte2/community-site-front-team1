@@ -93,10 +93,10 @@ const ChatPage = () => {
     <MainLayout>
         <div className='chatBox'>
             
-            {/** 채팅 목록 */}
+            {/** 채팅 목록 - 내가 들어가 있는 채팅목록을 띄워야 함... */}
             <ChatListComponent></ChatListComponent>
 
-            {/** 채팅방 */}
+            {/** 채팅방 - 제일처음 들어갔을 땐 이 페이지가 없어야함... */}
             <ChatRoomComponent></ChatRoomComponent>
             
         </div>

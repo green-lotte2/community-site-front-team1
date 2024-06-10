@@ -3,12 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import CreateChatRoomModal from '../../modal/CreateChatRoomModal'
 import { getRoomList,postCreateRoom } from '../../../api/ChatApi'
+import { getCookie} from "../../../util/cookieUtil";
+import { getUserInfo } from '../../../api/MemberApi'
+
 
 const ChatListComponent = () => {
+
+    const auth = getCookie("auth");
+
+    //로그인한 사용자의 아이디
+    const id = auth?.userId;
+    const name = auth?.username;
 
     /** 채팅방 생성 모달 관리 */
     const [openCreateChatRoom, setOpenCreateChatRoom] = useState(false);
     const [roomList, setRoomList] = useState([]);
+    const [email,setEmail] = useState('');
 
     const handelOpenModal = () => {
         setOpenCreateChatRoom(true);
@@ -28,9 +38,24 @@ const ChatListComponent = () => {
                 console.error('Error fetching room list:', error);
             }
     };
+
+    const findUser = async()=>{
+
+        const response = await getUserInfo(id);
+
+        setEmail(response.stfEmail);
+
+        console.log("유저 정보 받아오기 - 채팅왼쪽 상단에 쓰임",response.stfEmail);
+            
+    }
+
     useEffect(() => {
 
         fetchRoomList();
+
+        findUser();
+
+
 
     }, []);
 
@@ -51,8 +76,8 @@ const ChatListComponent = () => {
         <div className="chatInfo">
             <img src="../images/iconSample3.png" alt="pro" />
             <div>
-                <p>홍길동</p>
-                <p>abcd1234@gmail.com</p>
+                <p>{name}</p>
+                <p>{email}</p>
             </div>
         </div>
 
