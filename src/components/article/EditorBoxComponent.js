@@ -23,8 +23,8 @@ const EditorBoxComponent = ({ articleCateNo }) => {
     /**  파일 선택 핸들러 */
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files);
-        setSelectedFiles(files);
-        //setSelectedFiles(Array.form(event.target.files));
+        setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+
         console.log('고른파일' + selectedFiles);
     };
 
@@ -38,9 +38,11 @@ const EditorBoxComponent = ({ articleCateNo }) => {
         const formData = await prepareFormData(articleContents);
         try {
             const response = await ArticleWrite(formData);
-            const articleNo = response.articleNo;
-            //const uploadedFiles = uploadFiles(articleNo);
-            //const fileUpload = await fileUploads(uploadedFiles);
+            const articleNo = response;
+            if (selectedFiles.length > 0) {
+                const uploadedFiles = uploadFiles(articleNo);
+                const fileUpload = await fileUploads(uploadedFiles);
+            }
 
             console.log(response);
             alert('글이 성공적으로 작성되었습니다.');
@@ -50,7 +52,7 @@ const EditorBoxComponent = ({ articleCateNo }) => {
             alert('글 작성에 실패하였습니다.');
         }
     };
-    /*
+
     const uploadFiles = (articleNo) => {
         const fileData = new FormData();
         selectedFiles.forEach((file) => {
@@ -60,7 +62,6 @@ const EditorBoxComponent = ({ articleCateNo }) => {
         console.log(Array.from(fileData));
         return fileData;
     };
-    */
 
     const prepareFormData = async (articleContents) => {
         const matchSrc = /src="([^"]*)"/g;

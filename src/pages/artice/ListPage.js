@@ -16,6 +16,7 @@ const ListPage = () => {
 
     // 게시판 제목 상태 저장을 위한 스테이트
     const [articleCateName, setArticleCateName] = useState(null);
+    const [articleOutPut, setArticleOutPut] = useState(null);
 
     const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const ListPage = () => {
             try {
                 const response = await getArticleCate(articleCateNo);
                 setArticleCateName(response.articleCateName);
+                setArticleOutPut(response.articleCateOutput);
                 setPageRequest((prev) => ({ ...prev, articleCateNo: articleCateNo }));
             } catch (error) {
                 console.error('Failed to fetch article category:', error);
@@ -49,10 +51,6 @@ const ListPage = () => {
         sort: 'default',
     });
 
-    
-
- 
-
     // 서버에서 받아온 articleList 정보 저장하는 useState
     const [articleList, setArticleList] = useState(null);
 
@@ -74,16 +72,14 @@ const ListPage = () => {
 
     // pg변경 함수 (페이징 버튼 클릭시)
     const changePage = (newPg) => {
-        setPageRequest(prevPageRequest => {
+        setPageRequest((prevPageRequest) => {
             const updatedRequest = { ...prevPageRequest, pg: newPg };
-            const newParam = {pg : newPg};
+            const newParam = { pg: newPg };
             const searchParams = new URLSearchParams(newParam).toString();
             navigate(`?articleCateNo=${articleCateNo}&${searchParams}`);
             return updatedRequest;
         });
     };
-
-    
 
     const handleSearch = async (searchParams) => {
         const newPageNation = { ...pageRequest, ...searchParams, pg: 1 };
@@ -100,6 +96,9 @@ const ListPage = () => {
         }
     };
 
+    const contentClassName = articleOutPut === 'list' ? 'contentColumn' : 'contentCard';
+    const articleRowClassName = articleOutPut === 'list' ? 'articleRow' : 'articleCard';
+
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -114,7 +113,7 @@ const ListPage = () => {
                     </div>
                 </div>
 
-                <div className="contentColumn">
+                <div className={contentClassName}>
                     <div className="articleRow">
                         <div>NO</div>
                         <div>이미지</div>
@@ -124,7 +123,7 @@ const ListPage = () => {
                         <div>날짜</div>
                     </div>
 
-                    <TableListComponent articleList={articleList} />
+                    <TableListComponent articleList={articleList} articleRowClassName={articleRowClassName} />
                 </div>
 
                 <PagingComponent articleList={articleList} changePage={changePage}></PagingComponent>

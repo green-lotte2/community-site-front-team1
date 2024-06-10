@@ -26,6 +26,15 @@ export const ArticleView = async (data) => {
     return response.data;
 };
 
+// 파일 다운로드
+export const FileDownload = async (data) => {
+    const response = await axios.get(`${rootURL}/file/download?fileNo=${data}`, {
+        responseType: 'blob',
+    });
+
+    return response;
+};
+
 // 이미지 업로드 API
 export const uploadImage = async (file) => {
     const formData = new FormData();
