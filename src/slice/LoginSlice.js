@@ -14,7 +14,7 @@ const loadStateFromCookie = () => {
   const accessToken = auth?.accessToken;
   //console.log("loginSlice...5 : " + accessToken);
 
-  return { username, userId, userImg, userRole, accessToken };
+  return { username, userId, userImg, userRole, accessToken};
 };
 
 const initState = {
@@ -44,7 +44,6 @@ const loginSlice = createSlice({
       state.userImg = data.userImg;
       state.userRole = data.userRole;
       state.accessToken = data.accessToken;
-
       // 쿠키 저장
       setCookie("auth", data, 1);
     },

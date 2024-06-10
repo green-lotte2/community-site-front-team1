@@ -7,7 +7,6 @@ import { getPlan } from '../../api/MemberApi'
 const GroupPlanPage = () => {
 
   const [registerPlan,setRegisterPlan] = useState([]);
-  const [planType, setPlanType] = useState('');
 
 
   useEffect(() => { 
@@ -31,17 +30,16 @@ const GroupPlanPage = () => {
    }, []);
 
 
-   const submitOrder = (e)=>{
+   const submitOrder =(type,planNo)=> (e)=>{
 
     e.preventDefault();
 
-    const type = e.target.value; 
+  
+    console.log("타입이 잘 들어오나?",type);
+    console.log("타입에 대한 planNo는?",planNo);
 
-    setPlanType(type);
 
-    console.log("클릭했을 때 타입 : ",type);
-
-    const url = "/planOrder?planType="+type;
+    const url = `/planOrder?planType=${type}&planNo=${planNo}`;
     window.location.href=url;
    }
 
@@ -60,23 +58,27 @@ console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
   return (
     <MemberLayout>
       <div className="memberBack planBack">
+
+      {firstPlan && (
         <div className="planBox">
-         <p className='colorG'>{firstPlan && firstPlan.planName}</p>
-          <h3 className='colorG'><span>멤버당</span>{firstPlan && firstPlan.planCost}<span>원/월</span></h3>
-          <button type="button" className='BcolorG' value="BASIC" onClick={submitOrder}>가입하기</button>
+          <p className='colorG'>{firstPlan.planName}</p>
+          <h3 className='colorG'><span>멤버당</span>{firstPlan.planCost}<span>원/월</span></h3>
+          <button type="button" className='BcolorG' onClick={submitOrder("BASIC", firstPlan.planNo)}>가입하기</button>
           <div className='planDetail'>
-            <p>{firstPlan && firstPlan.planInfo}</p>
-            <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 페이지 협업자 등록 최대 5명</h3>
-            <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 프로젝트 협업자 등록 최대 5명</h3>
-            <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 그룹채팅 회원 초대 최대 5명</h3>
-            <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 왕밤빵 무제한 제공</h3>
+            <p>{firstPlan.planInfo}</p>
+            <h3><FontAwesomeIcon icon={faSquareCheck} style={{ color: "#00a51e" }} /> 페이지 협업자 등록 최대 5명</h3>
+            <h3><FontAwesomeIcon icon={faSquareCheck} style={{ color: "#00a51e" }} /> 프로젝트 협업자 등록 최대 5명</h3>
+            <h3><FontAwesomeIcon icon={faSquareCheck} style={{ color: "#00a51e" }} /> 그룹채팅 회원 초대 최대 5명</h3>
+            <h3><FontAwesomeIcon icon={faSquareCheck} style={{ color: "#00a51e" }} /> 왕밤빵 무제한 제공</h3>
           </div>
         </div>
+      )}
 
+      {secondPlan && (
         <div className="planBox">
           <p className='colorB'>{secondPlan && secondPlan.planName}</p>
           <h3 className='colorB'><span>멤버당</span>{secondPlan && secondPlan.planCost}<span>원/월</span></h3>
-          <button type="button" value="STANDARD" onClick={submitOrder} className='BcolorB'>가입하기</button>
+          <button type="button" onClick={submitOrder("STANDARD",secondPlan.planNo)} className='BcolorB'>가입하기</button>
           <div className='planDetail'>
             <p>{secondPlan && secondPlan.planInfo}</p>
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 페이지 협업자 등록 최대 10명</h3>
@@ -85,11 +87,14 @@ console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 1일 1피자 무제한 제공</h3>
           </div>
         </div>
+        )}
 
+
+      {thirdPlan && (
         <div className="planBox">
           <p className='colorR'>{thirdPlan && thirdPlan.planName}</p>
           <h3 className='colorR'><span>멤버당</span>{thirdPlan && thirdPlan.planCost}<span>원/월</span></h3>
-          <button type="button" value="PREMIUM" onClick={submitOrder} className='BcolorR'>가입하기</button>
+          <button type="button" onClick={submitOrder("PREMIUM",thirdPlan.planNo)} className='BcolorR'>가입하기</button>
           <div className='planDetail'>
             <p>{thirdPlan && thirdPlan.planInfo}</p>
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 페이지 편집 협업자 등록 무제한</h3>
@@ -98,6 +103,8 @@ console.log("첫번째 플랜 집어넣기전에 꺼내기",registerPlan[0]);
             <h3><FontAwesomeIcon icon={faSquareCheck} style={{color:"#00a51e"}}/> 1일 1치킨 제공</h3>
           </div>
         </div>
+        )}
+
       </div>
     </MemberLayout>
   )

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MemberLayout from '../../layout/MemberLayout';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { getPlan,getUserInfo,getCountUser,postPay} from '../../api/MemberApi'
 import { getCookie} from "../../util/cookieUtil";
 
@@ -21,6 +21,8 @@ const PlanOrderPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const planType = queryParams.get('planType');
 
+    const navigate = useNavigate();
+
 
 
     const [stf, setStf] = useState({
@@ -30,13 +32,11 @@ const PlanOrderPage = () => {
         stfPh: '',
         paymentMethod:'',
         cost:'',
-        type: planType
+        planNo:''
 
     });
 
-    const { stfNo, stfName, stfEmail, stfPh,paymentMethod,cost} = stf; //비구조화 할당????
-
-
+    const { stfNo, stfName, stfEmail, stfPh,paymentMethod,cost,planNo} = stf; //비구조화 할당????
 
 
     
@@ -80,7 +80,8 @@ const PlanOrderPage = () => {
             setStf({
                 stfName:userInfo.stfName,
                 stfEmail:userInfo.stfEmail,
-                stfPh:userInfo.stfPh
+                stfPh:userInfo.stfPh,
+                planNo:queryParams.get('planNo')
             })
 
             const countUser = await getCountUser();
@@ -95,7 +96,12 @@ const PlanOrderPage = () => {
 
     const countOutput = (e) => {//
         changeHandler(e);
-        validHandler();
+
+        checkOutput();
+
+        if(outputCheck>=2){
+            validHandler();
+        }
     }
     
     const validHandler = ()=>{//유효성 검사(2자리 잘 입력이 되었는지 체크)
@@ -156,9 +162,6 @@ const PlanOrderPage = () => {
         
     }
 
-    /** 페이지 불러올때 사용자 정보 불러와서 이름 이메일 전화번호는 기입되게 해주세요 */
-
-
     //필요한 것 : 시작날짜(결제하는 당일의 날짜), 끝날짜(시작날짜+30일), 주문자 정보
     const submitOrder = async () =>{
     
@@ -180,11 +183,14 @@ const PlanOrderPage = () => {
             console.log("유효기간을 입력해주세요 칸 : ",outputCheck);
 
         }else if(outputCheck===3){
+
             alert("결제가 완료되었습니다.")
             console.log("이제됐다! 칸 : ",outputCheck);
+            
 
-            const response = await postPay(stf);
+            await postPay(stf);
 
+            navigate('/main');
 
         }
     }

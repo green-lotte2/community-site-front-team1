@@ -1405,13 +1405,14 @@ section {
 .contentCard {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 .articleCard {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     width: 370px;
     padding: 10px 20px;
+    margin: 10px 6px;
     box-sizing: border-box;
     border: 1px solid #808080;
     cursor: pointer;
@@ -1531,10 +1532,15 @@ section {
     color: white;
     font-size: 14px;
     border-radius: 4px;
+    margin-left: 5px;
     cursor: pointer;
     padding: 0 4px 2px 4px;
 }
-.fileList > a {
+
+.fileList > span > span:hover {
+    background-color: darkred;
+}
+.fileList > div > a {
     width: 200px;
     border: 1px solid #dddddd;
     border-radius: 4px;
@@ -1834,6 +1840,7 @@ section {
 }
 .configRow {
     justify-content: space-between;
+    align-items: center;
 }
 
 .dptCode {
@@ -2433,7 +2440,7 @@ section {
 .fc-day-sun a {
     color: red;
 }
-  
+
 /* 토요일 날짜: 파란색 */
 .fc-day-sat a {
     color: blue;
@@ -2735,4 +2742,30 @@ section {
 .todoBox {
     display: flex;
     border: 1px solid red;
+}
+
+/*** 문서 ***/
+.docList {
+    display: flex;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 8px 10px;
+    align-items: center;
+    cursor: pointer;
+}
+.docList:hover {
+    background-color: #dddddd;
+}
+.docList > div {
+    width: 100%;
+    padding: 0 10px;
+}
+.docList p {
+    width: 100%;
+    font-size: 14px;
+    font-weight: bolder;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
