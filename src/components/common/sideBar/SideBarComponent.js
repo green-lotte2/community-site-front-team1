@@ -7,7 +7,7 @@ const SideBarComponent = () => {
     return (
         <ArticleListProvider>
             <section id="sideBar">
-                <Link to="/main" className="boxTitle">
+                <Link to="/" className="boxTitle">
                     <img src="../images/zeroPie2.png" alt="" />
                     <div>
                         <p>ZeroPie</p>

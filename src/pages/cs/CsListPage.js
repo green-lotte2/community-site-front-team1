@@ -116,7 +116,7 @@ const CsListPage = () => {
 
             <PagingComponent articleList={serverData} changePage={changePage}></PagingComponent>
             <div style={{alignSelf:"end"}}>
-              <Link className='btn' to="/main">뒤로</Link>
+              <Link className='btn' to="/">뒤로</Link>
               <Link className='btn' to="/csWrite" >글쓰기</Link>
             </div>
         </div>

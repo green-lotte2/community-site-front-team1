@@ -190,7 +190,7 @@ const PlanOrderPage = () => {
 
             await postPay(stf);
 
-            navigate('/main');
+            navigate('/');
 
         }
     }
