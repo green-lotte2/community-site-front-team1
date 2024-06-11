@@ -2769,3 +2769,14 @@ section {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.accordion-content.show {
+    max-height: 200px; /* 필요한 만큼의 최대 높이 설정 */
+    overflow-y: auto;
+}
