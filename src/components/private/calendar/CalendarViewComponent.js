@@ -27,7 +27,7 @@ const getRandomColor = () => {
   return color;
 };
 
-const CalendarViewComponent = () => {
+const CalendarViewComponent = ({ selectedCalendar }) => {
   const calendarRef = useRef(null);
   const calendarInstance = useRef(null);
   const [currentMonth, setCurrentMonth] = useState("");
@@ -35,9 +35,12 @@ const CalendarViewComponent = () => {
   const [error, setError] = useState("");
   const loginSlice = useSelector((state) => state.loginSlice) || {}; // 안전한 접근 방법
   const stfNo = loginSlice.userId || "";
-  // formData.append('stfNo', loginSlice.userId); << stfNo는 왼쪽꺼 보고 참고
 
   useEffect(() => {
+    if (!selectedCalendar) return;
+
+    console.log("Selected calendar:", selectedCalendar);
+
     const container = calendarRef.current;
     const options = {
       defaultView: "month",
@@ -73,24 +76,19 @@ const CalendarViewComponent = () => {
     const url = globalPath.path;
     /** 일정 조회 */
     axios
-      .post(`${url}/calendar/selects`, { stfNo: stfNo }) // stfNo를 포함하여 요청
+      .post(`${url}/events/selects`, { stfNo: stfNo, calendarId: selectedCalendar.calendarId }) // calendarId 포함
       .then((response) => {
+        console.log("Events fetched:", response.data); // 이벤트 데이터 로그 출력
         response.data.forEach((event) => {
           const isReadOnly = event.isReadOnly === "false" ? false : true;
           const isAllDay = event.isAllDay === "false" ? false : true;
-          const selectedCalendar = options.calendars.find(
-            (cal) => cal.id === event.calendarId
-          );
           const newEvent = {
             id: event.id,
             calendarId: event.calendarId,
+            eventId: event.eventId, // 이벤트 종류 ID 포함
             title: event.title,
-            start: Moment(event.start)
-              .subtract(1, "months")
-              .format("YYYY-MM-DD[T]HH:mm:ss"),
-            end: Moment(event.end)
-              .subtract(1, "months")
-              .format("YYYY-MM-DD[T]HH:mm:ss"),
+            start: Moment(event.start).format("YYYY-MM-DD[T]HH:mm:ss"),
+            end: Moment(event.end).format("YYYY-MM-DD[T]HH:mm:ss"),
             location: event.location,
             state: event.state,
             isReadOnly: isReadOnly,
@@ -100,95 +98,96 @@ const CalendarViewComponent = () => {
             stfNo: stfNo
           };
 
+          console.log("Adding event:", newEvent);
+
           calendar.createEvents([newEvent]);
         });
       })
       .catch((err) => {
+        console.error("Failed to fetch events:", err); // 에러 로그 출력
         setError("일정을 불러오지 못했습니다.");
       });
 
     calendar.on("beforeCreateEvent", (event) => {
-      const selectedCalendar = options.calendars.find(
-        (cal) => cal.id === event.calendarId
-      );
+      const calendarId = selectedCalendar.calendarId; // 선택된 캘린더의 ID 사용
+      const eventId = options.calendars.find(cal => cal.id === event.calendarId)?.id || "defaultEventId";
 
       const newEvent = {
-        id: `${event.calendarId}-${Date.now()}`, // 고유 ID 생성
-        calendarId: event.calendarId,
-        title: event.title,
-        start: Moment(event.start.toDate())
-          .utcOffset(9)
-          .format("YYYY-MM-DD[T]HH:mm:ss"),
-        end: Moment(event.end.toDate())
-          .utcOffset(9)
-          .format("YYYY-MM-DD[T]HH:mm:ss"),
-        location: event.location,
-        state: event.state,
-        isReadOnly: false,
-        isAllDay: event.isAllday,
-        backgroundColor: getRandomColor(),
-        color: "#FFFFFF",
-        stfNo: stfNo
+          id: `${calendarId}-${Date.now()}`, // 고유 ID 생성
+          calendarId, // calendarId 추가
+          eventId, // 이벤트 종류 ID
+          title: event.title,
+          start: Moment(event.start.toDate()).format("YYYY-MM-DD[T]HH:mm:ss"),
+          end: Moment(event.end.toDate()).format("YYYY-MM-DD[T]HH:mm:ss"),
+          location: event.location,
+          state: event.state,
+          isReadOnly: false,
+          isAllDay: event.isAllday,
+          backgroundColor: getRandomColor(),
+          color: "#FFFFFF",
+          stfNo: stfNo
       };
+      console.log("Creating new event:", newEvent); // 이벤트 로그 출력
       calendar.createEvents([newEvent]);
 
       /** 등록 */
       axios
-        .post(`${url}/calendar/insert`, newEvent)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((err) => {
-          setError("일정이 저장되지 않았습니다.");
-        });
+          .post(`${url}/events/insert`, newEvent)
+          .then((response) => {
+              console.log(response.data);
+          })
+          .catch((err) => {
+              console.error("Failed to insert event:", err); // 에러 로그 출력
+              setError("일정이 저장되지 않았습니다.");
+          });
     });
 
     calendar.on("beforeUpdateEvent", ({ event, changes }) => {
-      calendar.updateEvent(event.id, event.calendarId, changes);
+      const calendarId = changes.calendarId || event.calendarId;
+      const eventId = options.calendars.find(cal => cal.id === calendarId)?.id || "defaultEventId";
 
-      const start =
-        changes.start === undefined
-          ? null
-          : Moment(changes.start.toDate()).format("YYYY-MM-DD[T]HH:mm:ss");
-      const end =
-        changes.end === undefined
-          ? null
-          : Moment(changes.end.toDate()).format("YYYY-MM-DD[T]HH:mm:ss");
+      calendar.updateEvent(event.id, calendarId, changes);
+
+      const start = changes.start ? Moment(changes.start.toDate()).format("YYYY-MM-DD[T]HH:mm:ss") : event.start;
+      const end = changes.end ? Moment(changes.end.toDate()).format("YYYY-MM-DD[T]HH:mm:ss") : event.end;
 
       const updatedEvent = {
-        calendarId: changes.calendarId,
-        title: changes.title,
-        location: changes.location,
-        start: start,
-        end: end,
-        state: changes.state,
-        isAllDay: changes.isAllday,
-        isReadOnly: changes.isReadOnly,
-        backgroundColor: changes.backgroundColor || getRandomColor(),
-        color: changes.color || "#FFFFFF",
-        stfNo: stfNo
+          calendarId, // calendarId 추가
+          eventId, // eventId 추가
+          title: changes.title || event.title,
+          location: changes.location || event.location,
+          start,
+          end,
+          state: changes.state || event.state,
+          isAllDay: changes.isAllDay !== undefined ? changes.isAllDay : event.isAllDay,
+          isReadOnly: changes.isReadOnly !== undefined ? changes.isReadOnly : event.isReadOnly,
+          backgroundColor: changes.backgroundColor || event.backgroundColor || getRandomColor(),
+          color: changes.color || event.color || "#FFFFFF",
+          stfNo: stfNo
       };
 
+      console.log("Updating event:", updatedEvent); // 업데이트 로그 출력
+
       axios
-        .post(`${url}/calendar/modify/${event.id}`, updatedEvent)
-        .then((response) => {
-          console.log(response.data);
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          .post(`${url}/events/modify/${event.id}`, updatedEvent)
+          .then((response) => {
+              console.log(response.data);
+              window.location.reload();
+          })
+          .catch((err) => {
+              console.error("Failed to update event:", err); // 에러 로그 출력
+          });
     });
 
     calendar.on("beforeDeleteEvent", (event) => {
       calendar.deleteEvent(event.id, event.calendarId);
       axios
-        .get(`${url}/calendar/delete?id=${event.id}`)
+        .get(`${url}/events/delete?id=${event.id}`)
         .then((response) => {
           console.log(response.data);
         })
         .catch((err) => {
-          console.log(err);
+          console.error("Failed to delete event:", err); // 에러 로그 출력
         });
     });
 
@@ -220,11 +219,11 @@ const CalendarViewComponent = () => {
     setCurrentYear(calendar.getDate().getFullYear());
 
     return () => {
-      if (calendar) {
-        calendar.destroy();
+      if (calendarInstance.current) {
+        calendarInstance.current.destroy();
       }
     };
-  }, [stfNo]);
+  }, [stfNo, selectedCalendar]);
 
   const handleClickNextButton = () => {
     calendarInstance.current.next();
@@ -289,7 +288,7 @@ const CalendarViewComponent = () => {
   return (
     <div className="contentBox boxStyle8">
       <div className="chatInfo" style={{ justifyContent: "space-between", padding: "20px 0" }}>
-        <div>ㅇㅇㅇ 채팅방 이름</div>
+        <div>{selectedCalendar.title} 채팅방</div> {/* 채팅방 이름을 선택된 캘린더의 제목으로 설정 */}
         <label htmlFor="" style={{ display: "flex" }}>
           <span>
             <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { RootUrl } from './RootUrl';
+import { dark } from '@mui/material/styles/createPalette';
 const rootURL = RootUrl() + '/article';
 
 // 게시글 목록 출력 (전체) - list
@@ -73,6 +74,12 @@ export const fileUploads = async (formData) => {
     return response.data;
 };
 
+/** 파일 삭제 */
+export const fileDelete = async (formData) => {
+    const response = await axios.delete(`${rootURL}/file/delete?fileNo=${formData}`);
+    return response.data;
+};
+
 // 게시글 modify 폼
 export const ArticleModifyForm = async (data) => {
     console.log('글 수정(폼)', data);
@@ -103,4 +110,14 @@ export const ArticleDelete = async (data) => {
         console.error('Failed to delete article:', error);
         throw error;
     }
+};
+
+export const postComment = async (data) => {
+    const response = await axios.post(`${rootURL}/comment`, data);
+    return response.data;
+};
+
+export const getArticleComment = async (data) => {
+    const response = await axios.get(`${rootURL}/comment?articleNo=${data}`);
+    return response.data;
 };

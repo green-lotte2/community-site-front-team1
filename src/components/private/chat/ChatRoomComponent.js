@@ -2,18 +2,32 @@ import { faFaceSmile, faGear, faImage, faPaperPlane, faSquarePlus } from '@forta
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useRef, useState } from 'react'
 import EmojiBoxComponent from './EmojiBoxComponent';
+import { getCookie} from "../../../util/cookieUtil";
+import { RootUrl } from '../../../api/RootUrl';
 
-const ChatRoomComponent = () => {
+
+const ChatRoomComponent = ({socket}) => {
+
+    const [chat, setChat] = useState([]);
+    const [ws, setWs] = useState(null);
+
+    const auth = getCookie("auth");
+
+
+    //로그인한 사용자의 아이디
+    const id = auth?.userId;
+    const name = auth?.username;
+    const img = auth?.userImg;
 
     /** 커서 깜박이기 */
     const textareaRef = useRef(null);
 
-    /** 커서 깜박이기 useEffect */
+    /** 커서 깜박이기 useEffect 
     useEffect(() => {
         if (textareaRef.current) {
             textareaRef.current.focus();
         }
-    }, []); 
+    }, []); */
 
     /** 이모티콘 박스 오픈 */
     const [emojiBoxOpne, setEmojiBoxOpen] = useState(false);
@@ -40,6 +54,34 @@ const ChatRoomComponent = () => {
         }
     }
 
+    socket.onmessage = (event) => {
+        const receivedMessage = JSON.parse(event.data);
+        setChat((prevChat) => [...prevChat, receivedMessage]);
+    };
+    
+
+    const sendMessage = () => {
+        if (ws&& chatMsg.trim() !== '') {
+            const chatMessage = {
+                roomId: '1dcef523-b731-48cd-9501-30a6aadd5349', 
+                sender: auth?.username,
+                message: chatMsg,
+                type: 'TALK' 
+            };
+            if(!ws.onopen){
+                ws = new WebSocket("ws://localhost:8080/onepie/ws");
+            }
+            ws.send(JSON.stringify(chatMessage));
+            setChatMsg(''); 
+        }
+
+    };
+
+    useEffect(() => {
+        setWs(socket);
+    }, [socket]);
+
+
   return (
     <div className="contentBox boxStyle8">
         <div className="chatInfo" style={{justifyContent:"space-between", padding:"20px 0"}}>
@@ -54,31 +96,21 @@ const ChatRoomComponent = () => {
             </label>
         </div>
 
+        {/*key 속성이 있으므로 React가 리스트 요소의 변경 사항을 효율적으로 감지하고 업데이트할 수 있습니다.
+            불필요한 리렌더링을 방지하여 성능이 최적화됩니다. */}
+
         <div className='chatRoom'>
-            <div className='chat'>
-                <img src="../images/iconSample3.png" alt="" />
+            {chat.map((msg,index)=>(
+            <div className='chat' key={index}>
+                {auth?.userImg?(<img src={`${RootUrl()}/images/${auth?.userImg}`} alt='image from spring'/> ):(<img src="../images/iconSample3.png" alt="" />)}
+                           
                 <div>
-                    <p>홍길동 <span>오후 12:24</span></p>
-                    <p>오늘 점심 뭐먹어요?</p>
+                    <p>{msg.sender} <span>오후 12:24</span></p>
+                    <p>{msg.message}</p>
                 </div>
             </div>
-
-            <div className='chat'>
-                <img src="../images/iconSample3.png" alt="" />
-                <div>
-                    <p>김유신 <span>오후 12:25</span></p>
-                    <p>돈가스 국밥</p>
-                </div>
-            </div>
-
-            <div className='chat'>
-                <img src="../images/iconSample3.png" alt="" />
-                <div>
-                    <p>홍길동 <span>오후 12:26</span></p>
-                    <p>어제 먹었잔슴..</p>
-                </div>
-            </div>
-        </div>
+            ))}
+         </div>
         
 
         <div className='inputChatBox'>
@@ -95,6 +127,7 @@ const ChatRoomComponent = () => {
                         {emojiBoxOpne && <EmojiBoxComponent choseEmoji={choseEmoji}/>}
                 </span>
 
+                {/*여기가 채팅을 치는 곳 */}
                 <textarea name="" id="" value={chatMsg}
                     ref={textareaRef}
                     onChange={updateMsg}
@@ -102,7 +135,7 @@ const ChatRoomComponent = () => {
 
                 <span style={{alignSelf:"center"}}>
                     <FontAwesomeIcon icon={faPaperPlane} 
-                        style={{color:"rgb(19, 168, 174)", padding:"20px", cursor:"pointer"}} />
+                        style={{color:"rgb(19, 168, 174)", padding:"20px", cursor:"pointer"}} onClick={sendMessage}/>
                 </span>
             </div>
         </div>

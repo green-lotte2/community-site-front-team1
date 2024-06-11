@@ -13,30 +13,30 @@ const TableListComponent = ({ articleList, articleRowClassName }) => {
         <>
             {articleList && articleList.dtoList.length > 0 ? (
                 articleList.dtoList.map((article, index) => (
-                    <div key={index} className={articleRowClassName}>
-                        <div>{articleList.startNo - index}</div>
-                        <div>
-                            {article.articleThumb ? (
-                                <img src={`${RootUrl()}/images/orgArtImage/${article.articleThumb}`} alt="Thumbnail" />
-                            ) : (
-                                <img src="../images/iconSample5.PNG" alt="Thumbnail" />
-                            )}
+                    <Link
+                        to={`/view?articleNo=${article.articleNo}&articleCateNo=${article.articleCateNo}&pg=${articleList.pg}`}
+                    >
+                        <div key={index} className={articleRowClassName}>
+                            <div>{articleList.startNo - index}</div>
+                            <div>
+                                {article.articleThumb ? (
+                                    <img
+                                        src={`${RootUrl()}/images/orgArtImage/${article.articleThumb}`}
+                                        alt="Thumbnail"
+                                    />
+                                ) : (
+                                    <img src="../images/iconSample5.PNG" alt="Thumbnail" />
+                                )}
+                            </div>
+                            <div>{article.articleTitle}</div>
+                            <div>{article.articleHit}</div>
+                            <div>{article.writer}</div>
+                            <div>
+                                {/* 날짜 포맷(import 수동) / npm install moment --save */}
+                                {Moment(article.articleRdate).format('YY-MM-DD')}
+                            </div>
                         </div>
-
-                        <div>
-                            <Link
-                                to={`/view?articleNo=${article.articleNo}&articleCateNo=${article.articleCateNo}&pg=${articleList.pg}`}
-                            >
-                                {article.articleTitle}
-                            </Link>
-                        </div>
-                        <div>{article.articleHit}</div>
-                        <div>{article.writer}</div>
-                        <div>
-                            {/* 날짜 포맷(import 수동) / npm install moment --save */}
-                            {Moment(article.articleRdate).format('YY-MM-DD')}
-                        </div>
-                    </div>
+                    </Link>
                 ))
             ) : (
                 <div className="articleRow">게시글이 없습니다.</div>

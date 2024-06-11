@@ -1,8 +1,38 @@
 import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid';
+import DocEditor from './DocEditor';
 
 const DocWriteComponent = () => {
+
+    const [rows, setRows] = useState([{ id: uuidv4(), value: '' }]);
+    const inputRefs = useRef([]);
+
+    useEffect(() => {
+        // 마지막 입력 필드에 포커스를 맞춥니다.
+        if (inputRefs.current.length > 0) {
+        inputRefs.current[inputRefs.current.length - 1].focus();
+        }
+    }, [rows]);
+
+    const handleKeyPress = (event, index) => {
+        if (event.key === 'Enter') {
+        setRows([...rows, { id: uuidv4(), value: '' }]);
+        }
+    };
+
+    const handleChange = (event, index) => {
+        const updatedRows = rows.map((row, i) => {
+        if (i === index) {
+            return { ...row, value: event.target.value };
+        }
+        return row;
+        });
+        setRows(updatedRows);
+    };
+
+
   return (
     <div className="contentBox boxStyle8">
         <div className="chatInfo" style={{justifyContent:"space-between", padding:"20px 0"}}>
@@ -17,8 +47,9 @@ const DocWriteComponent = () => {
             </label>
         </div>
 
-        <div>
-            
+        <div className='docEditor'>
+            {/** 여기 */}
+            <DocEditor/>
         </div>
 
     </div>

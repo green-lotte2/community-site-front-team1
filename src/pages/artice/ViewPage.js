@@ -3,16 +3,22 @@ import { Viewer } from '@toast-ui/react-editor';
 
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import MainLayout from '../../layout/MainLayout';
-import { getArticleCate, ArticleDelete, ArticleView, FileDownload } from '../../api/ArticleApi';
+import {
+    getArticleCate,
+    ArticleDelete,
+    ArticleView,
+    FileDownload,
+    postComment,
+    getArticleComment,
+} from '../../api/ArticleApi';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { identity } from '@fullcalendar/core/internal';
 import { RootUrl } from '../../api/RootUrl';
+import { getCookie } from '../../util/cookieUtil';
+import moment from 'moment';
 
 const ViewPage = () => {
     const navigate = useNavigate();
@@ -135,6 +141,50 @@ const ViewPage = () => {
         }
     };
 
+    /** 댓글 */
+    const [commentMessage, setCommentMessage] = useState('');
+    const [comment, setComment] = useState([]);
+    const auth = getCookie('auth');
+    const id = auth?.userId;
+    const commentChange = (e) => {
+        const Message = e.target.value;
+        setCommentMessage({ ...commentMessage, commentCnt: Message });
+        console.log(commentMessage);
+    };
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+
+        const newComment = {
+            articleNo: articleNo,
+            stfNo: id,
+            commentCnt: commentMessage.commentCnt,
+        };
+
+        try {
+            const response = await postComment(newComment);
+            console.log('저장 완료' + response);
+            setCommentMessage('');
+            fetchData();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const fetchData = async () => {
+        try {
+            const CommentList = await getArticleComment(articleNo);
+            console.log(CommentList);
+            setComment(CommentList);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -162,6 +212,60 @@ const ViewPage = () => {
                         <input type="submit" value={'삭제'} onClick={deleteHandler} />
                         <input type="button" value={'목록'} onClick={listHandler} />
                     </div>
+                </div>
+
+                {/* 댓글 */}
+                <div className="commentColumn">
+                    <p>답변 </p>
+                    {/* 댓글 작성 */}
+                    <div className="commentRow commentColumn">
+                        <div>
+                            <img src="../images/iconSample3.png" alt="" />
+                            <textarea
+                                name="commentCnt"
+                                id="commentCnt"
+                                placeholder="답글입력"
+                                value={commentMessage.commentCnt || ''}
+                                onChange={commentChange}
+                            ></textarea>
+                        </div>
+                        <div style={{ alignSelf: 'self-end' }}>
+                            <button onClick={submitHandler}>답글등록</button>
+                        </div>
+                    </div>
+
+                    {/* 댓글 목록 */}
+                    {comment ? (
+                        comment.map((each, index) => (
+                            <div className="commentRow commentColumn" key={index}>
+                                <div>
+                                    <div>
+                                        <img src={`${RootUrl()}/images/${each.stfImg}`} alt="img" name="stfImg" />
+                                    </div>
+                                    <div className="commentContent">
+                                        <div className="commentTitle">
+                                            <p>{each.stfName}</p>
+                                            <p>
+                                                {/* 날짜 포맷(import 수동) / npm install moment --save */}
+                                                {moment(each.commentRdate).format('YYYY-MM-DD HH:MM:DD')}
+                                            </p>
+                                        </div>
+                                        <textarea readOnly name="" id="" value={each.commentCnt}></textarea>
+                                    </div>
+                                </div>
+
+                                <div style={{ alignSelf: 'self-end' }}>
+                                    <button data-id={each.commentNo} onClick={deleteHandler}>
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="commentRow commentColumn">
+                            <div>등록된 댓글이 없습니다.</div>
+                        </div>
+                    )}
                 </div>
             </div>
         </MainLayout>

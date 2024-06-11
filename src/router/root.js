@@ -1,11 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import MainPage from '../pages/main/MainPage';
 import CompletePage from '../pages/member/CompletePage';
 import RegisterPage from '../pages/member/RegisterPage';
 import TermsPage from '../pages/member/TermsPage';
 import SignupPage from '../pages/member/SignupPage';
 import LoginPage from '../pages/member/LoginPage';
-import LandingPage from '../pages/main/LandingPage ';
 import ListPage from '../pages/artice/ListPage';
 import WritePage from '../pages/artice/WritePage';
 import ViewPage from '../pages/artice/ViewPage';
@@ -29,10 +28,9 @@ import MyPage from '../pages/private/MyPage';
 import PlanOrderPage from '../pages/member/PlanOrderPage';
 import ToDoPage from '../pages/private/ToDoPage';
 import DocPage from '../pages/private/DocPage';
+import PrivateRoute from './PrivateRoute';
 
 const root = createBrowserRouter([
-    // Landing
-    { path: '/', element: <LandingPage /> },
 
     // member
     { path: '/login', element: <LoginPage /> },
@@ -47,33 +45,144 @@ const root = createBrowserRouter([
     { path: '/planOrder', element: <PlanOrderPage /> },
 
     // main
-    { path: '/main', element: <MainPage /> },
+    { path: '/', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <MainPage />
+        </PrivateRoute>
+        ),
+    },
 
     // private
-    { path: '/group', element: <GroupPage /> },
-    { path: '/chat', element: <ChatPage /> },
-    { path: '/project', element: <ProjectPage /> },
-    { path: '/calendar', element: <CalendarPage /> },
-    { path: '/mypage', element: <MyPage /> },
-    { path: '/toDo', element: <ToDoPage /> },
-    { path: '/doc', element: <DocPage /> },
-
+    { path: '/group', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <GroupPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/chat', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <ChatPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/project', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <ProjectPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/calendar', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <CalendarPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/mypage', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <MyPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/toDo', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <ToDoPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/doc', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <DocPage />
+        </PrivateRoute>
+        ),
+    },
+        
     // article
-    { path: '/list', element: <ListPage /> },
-    { path: '/write', element: <WritePage /> },
-    { path: '/view', element: <ViewPage /> },
-    { path: '/modify', element: <ModifyPage /> },
-
+    { path: '/list', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <ListPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/write', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <WritePage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/view', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <ViewPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/modify', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <ModifyPage />
+        </PrivateRoute>
+        ),
+    },
+        
     // admin
-    { path: '/config', element: <ConfigPage /> },
-    { path: '/userList', element: <UserListPage /> },
-    { path: '/articleList', element: <ArticleListPage /> },
-    { path: '/articleModify', element: <ArticleModifyPage /> },
+    { path: '/config', element: (
+        <PrivateRoute allowedRoles={['ADMIN']}>
+            <ConfigPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/userList', element: (
+        <PrivateRoute allowedRoles={['ADMIN']}>
+            <UserListPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/articleList', element: (
+        <PrivateRoute allowedRoles={['ADMIN']}>
+            <ArticleListPage />
+        </PrivateRoute>
+        ),
+    },
+        
+        
+    { path: '/articleModify', element: (
+        <PrivateRoute allowedRoles={['ADMIN']}>
+            <ArticleModifyPage />
+        </PrivateRoute>
+        ),
+    },
 
     // cs
-    { path: '/csList', element: <CsListPage /> },
-    { path: '/csWrite', element: <CsWritePage /> },
-    { path: '/csView', element: <CsViewPage /> },
+    { path: '/csList', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <CsListPage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/csWrite', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <CsWritePage />
+        </PrivateRoute>
+        ),
+    },
+        
+    { path: '/csView', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <CsViewPage />
+        </PrivateRoute>
+        ),
+    },
+        
     //{ path: '/csModify', element: <CsModifyPage /> },
 
 ]);

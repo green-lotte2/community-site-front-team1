@@ -7,7 +7,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArticleModify } from '../../api/ArticleApi';
+import { ArticleModify, fileDelete, fileUploads } from '../../api/ArticleApi';
 
 const EditorBoxComponentModify = ({
     articleTitle,
@@ -31,6 +31,10 @@ const EditorBoxComponentModify = ({
         pg = 1;
     }
 
+    /** 선택한 파일들을 보관하는 상태 */
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [delFileList, setDelFileList] = useState([]);
+
     const onChange = () => {
         const data = editorRef.current.getInstance().getHTML();
         console.log(data);
@@ -38,10 +42,19 @@ const EditorBoxComponentModify = ({
 
     const submitHandler = async () => {
         const articleCnt = editorRef.current.getInstance().getHTML();
-
+        console.log('파일업로드 스테이트 확인', selectedFiles);
+        console.log('파일삭제 스테이트 확인', delFileList);
         try {
+            if (selectedFiles.length > 0) {
+                console.log('파일업로드', selectedFiles);
+                const uploadedFiles = uploadFiles(articleNo);
+                await fileUploads(uploadedFiles);
+            }
+            if (delFileList.length > 0) {
+                console.log('파일삭제', delFileList);
+                await fileDelete(delFileList);
+            }
             const response = await ArticleModify({ articleTitle, articleCnt, articleCateNo, articleNo });
-
             if (response === 1) {
                 alert('글이 성공적으로 수정되었습니다.');
                 navigate(`/view?articleNo=${articleNo}&articleCateNo=${articleCateNo}&pg=${pg}`);
@@ -58,10 +71,6 @@ const EditorBoxComponentModify = ({
         navigate(-1);
     };
 
-    /** 선택한 파일들을 보관하는 상태 */
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [delFileList, setDelFileList] = useState([]);
-
     /**  파일 선택 핸들러 */
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files);
@@ -73,13 +82,8 @@ const EditorBoxComponentModify = ({
         if (confirmed) {
             if (type === 'fileList') {
                 const fileNo = fileList[index].fileNo;
+                setDelFileList((prevFiles) => [...prevFiles, fileNo]);
                 removeItemAtIndex(index);
-                fileList[index] = setDelFileList((prevFiles) => {
-                    const newFiles = [...prevFiles];
-                    newFiles.splice(index, 1);
-                    return newFiles;
-                });
-                return fileNo;
             } else {
                 setSelectedFiles((prevFiles) => {
                     const newFiles = [...prevFiles];
