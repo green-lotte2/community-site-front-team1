@@ -26,26 +26,32 @@ const ConfigPage = () => {
         setRankValue(newValue);
     };
 
+    const fetchData = async () => {
+        try {
+            const rnkResponse = await getRnkList();
+            const detResponse = await getDptAndStfList();
+            console.log(rnkResponse);
+            console.log(detResponse);
+            setRankValue(rnkResponse);
+            setDptValue(detResponse);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const rnkResponse = await getRnkList();
-                const detResponse = await getDptAndStfList();
-                console.log(rnkResponse);
-                console.log(detResponse);
-                setRankValue(rnkResponse);
-                setDptValue(detResponse);
-            } catch (err) {
-                console.log(err);
-            }
-        };
         fetchData();
     }, []);
 
     return (
         <MainLayout>
             <div className="chatBox">
-                <DptConfigComponent handleChangeDpt={handleChangeDpt} dptValue={dptValue} addNewDpt={addNewDpt} />
+                <DptConfigComponent
+                    handleChangeDpt={handleChangeDpt}
+                    dptValue={dptValue}
+                    addNewDpt={addNewDpt}
+                    fetchData={fetchData}
+                />
 
                 <RankConfigComponent handleChangeRank={handleChangeRank} rankValue={rankValue} />
             </div>

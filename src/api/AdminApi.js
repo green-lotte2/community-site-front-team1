@@ -71,3 +71,13 @@ export const delArticleCateList = async (data) => {
     const response = await axios.delete(`${rootURL}/deleteCate?articleCateNo=${data}`);
     return response.data;
 };
+
+export const deleteDpt = async (data) => {
+    const response = await axios.delete(`${rootURL}/deleteDpt?dptNo=${data}`);
+    return response.data;
+};
+
+export const updateDpt = async (data) => {
+    const response = await axios.put(`${rootURL}/updateDpt`, data);
+    return response.data;
+};
