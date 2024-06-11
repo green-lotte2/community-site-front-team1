@@ -3,14 +3,22 @@ import { Viewer } from '@toast-ui/react-editor';
 
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import MainLayout from '../../layout/MainLayout';
-import { getArticleCate, ArticleDelete, ArticleView } from '../../api/ArticleApi';
+import {
+    getArticleCate,
+    ArticleDelete,
+    ArticleView,
+    FileDownload,
+    postComment,
+    getArticleComment,
+} from '../../api/ArticleApi';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
+import { RootUrl } from '../../api/RootUrl';
+import { getCookie } from '../../util/cookieUtil';
+import moment from 'moment';
 
 const ViewPage = () => {
     const navigate = useNavigate();
@@ -56,6 +64,9 @@ const ViewPage = () => {
     const [isCateFetched, setIsCateFetched] = useState(false);
     const [isArticleFetched, setIsArticleFetched] = useState(false);
 
+    /** 파일 목록 저장 */
+    const [fileList, setFileList] = useState([]);
+
     // 페이지 랜더링 될 때 호출(게시판 카테고리)
     useEffect(() => {
         const fetchData = async () => {
@@ -80,6 +91,8 @@ const ViewPage = () => {
             try {
                 const response = await ArticleView(articleNo);
                 setArticleView(response);
+                setFileList(response.fileList);
+                console.log('글', response);
 
                 // 이미지 저장?
                 saveArticleThumb(response.articleCnt);
@@ -95,6 +108,25 @@ const ViewPage = () => {
         }
     }, [articleNo, isArticleFetched]);
 
+    /** 파일 다운로드 핸들러 */
+    const handFileDownload = async (fileNo, fileOname) => {
+        try {
+            const response = await FileDownload(fileNo);
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.setAttribute('download', fileOname);
+            document.body.appendChild(a);
+            a.click();
+            // window.URL.revokeObjectURL(url);
+            // document.body.removeChild(a);
+            a.remove();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     // articleThumb에 이미지 저장하는 함수
     const saveArticleThumb = (articleCnt) => {
         const parser = new DOMParser();
@@ -109,6 +141,50 @@ const ViewPage = () => {
         }
     };
 
+    /** 댓글 */
+    const [commentMessage, setCommentMessage] = useState('');
+    const [comment, setComment] = useState([]);
+    const auth = getCookie('auth');
+    const id = auth?.userId;
+    const commentChange = (e) => {
+        const Message = e.target.value;
+        setCommentMessage({ ...commentMessage, commentCnt: Message });
+        console.log(commentMessage);
+    };
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+
+        const newComment = {
+            articleNo: articleNo,
+            stfNo: id,
+            commentCnt: commentMessage.commentCnt,
+        };
+
+        try {
+            const response = await postComment(newComment);
+            console.log('저장 완료' + response);
+            setCommentMessage('');
+            fetchData();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const fetchData = async () => {
+        try {
+            const CommentList = await getArticleComment(articleNo);
+            console.log(CommentList);
+            setComment(CommentList);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <MainLayout>
             <div className="contentBox boxStyle7">
@@ -116,11 +192,17 @@ const ViewPage = () => {
                 <div className="viewRow">
                     <p>{articleView.articleTitle}</p>
                     {articleView.articleCnt ? <Viewer initialValue={articleView.articleCnt} /> : <p>Loading...</p>}
-                </div>               
-                <div className='writeFile'>
-                    <div className='fileList'>
-                        <Link to="">첨부파일목록</Link>
-                        <Link to="">2분기 실적보고서.txt</Link>
+                </div>
+                <div className="writeFile">
+                    <div className="fileList">
+                        <p>첨부파일목록</p>
+                        {fileList.map((file, index) => (
+                            <div key={index}>
+                                <Link to="#" onClick={() => handFileDownload(file.fileNo, file.fileOname)}>
+                                    {file.fileOname}
+                                </Link>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -130,6 +212,60 @@ const ViewPage = () => {
                         <input type="submit" value={'삭제'} onClick={deleteHandler} />
                         <input type="button" value={'목록'} onClick={listHandler} />
                     </div>
+                </div>
+
+                {/* 댓글 */}
+                <div className="commentColumn">
+                    <p>답변 </p>
+                    {/* 댓글 작성 */}
+                    <div className="commentRow commentColumn">
+                        <div>
+                            <img src="../images/iconSample3.png" alt="" />
+                            <textarea
+                                name="commentCnt"
+                                id="commentCnt"
+                                placeholder="답글입력"
+                                value={commentMessage.commentCnt || ''}
+                                onChange={commentChange}
+                            ></textarea>
+                        </div>
+                        <div style={{ alignSelf: 'self-end' }}>
+                            <button onClick={submitHandler}>답글등록</button>
+                        </div>
+                    </div>
+
+                    {/* 댓글 목록 */}
+                    {comment ? (
+                        comment.map((each, index) => (
+                            <div className="commentRow commentColumn" key={index}>
+                                <div>
+                                    <div>
+                                        <img src={`${RootUrl()}/images/${each.stfImg}`} alt="img" name="stfImg" />
+                                    </div>
+                                    <div className="commentContent">
+                                        <div className="commentTitle">
+                                            <p>{each.stfName}</p>
+                                            <p>
+                                                {/* 날짜 포맷(import 수동) / npm install moment --save */}
+                                                {moment(each.commentRdate).format('YYYY-MM-DD HH:MM:DD')}
+                                            </p>
+                                        </div>
+                                        <textarea readOnly name="" id="" value={each.commentCnt}></textarea>
+                                    </div>
+                                </div>
+
+                                <div style={{ alignSelf: 'self-end' }}>
+                                    <button data-id={each.commentNo} onClick={deleteHandler}>
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="commentRow commentColumn">
+                            <div>등록된 댓글이 없습니다.</div>
+                        </div>
+                    )}
                 </div>
             </div>
         </MainLayout>

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import CreateDtpModal from '../modal/CreateDtpModal';
 import GroupIconComponent from '../common/private/GroupIconComponent';
 import { faUserGear } from '@fortawesome/free-solid-svg-icons';
+import { deleteDpt, updateDpt } from '../../api/AdminApi';
 
-const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
-    /** 부서 생서 모달 */
+const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt, fetchData }) => {
+    /** 부서 생성 모달 */
     const [createDpt, setCreateDpt] = useState(false);
 
     const handelOpenModal = () => {
@@ -27,7 +28,21 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
         }
         const confirmDel = window.confirm('삭제하시겠습니까?');
         if (confirmDel) {
-            console.log('삭제완료');
+            deleteDpt(dptValue[index].dptNo);
+        }
+        fetchData();
+    };
+
+    const handelUpdate = async (index) => {
+        console.log(dptValue[index]);
+        const confirm = window.confirm('수정 하시겠습니까?');
+        if (confirm) {
+            try {
+                updateDpt(dptValue[index]);
+                fetchData();
+            } catch (err) {
+                console.log(err);
+            }
         }
     };
 
@@ -55,7 +70,7 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt }) => {
                             <span> [사원 : {(dpt.member || []).length}]</span>
                         </div>
                         <div className="configBtn">
-                            <button>수정</button>
+                            <button onClick={() => handelUpdate(index)}>수정</button>
                             <button onClick={() => handleDptDelete(index)}>삭제</button>
                         </div>
                     </div>

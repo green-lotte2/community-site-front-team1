@@ -3,12 +3,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import CreateChatRoomModal from '../../modal/CreateChatRoomModal'
 import { getRoomList,postCreateRoom } from '../../../api/ChatApi'
+import { getCookie} from "../../../util/cookieUtil";
+import { getUserInfo } from '../../../api/MemberApi'
+import { RootUrl } from '../../../api/RootUrl';
 
 const ChatListComponent = () => {
+
+    const auth = getCookie("auth");
+
+    //로그인한 사용자의 아이디
+    const id = auth?.userId;
+    const name = auth?.username;
+    const img =auth?.userImg;
 
     /** 채팅방 생성 모달 관리 */
     const [openCreateChatRoom, setOpenCreateChatRoom] = useState(false);
     const [roomList, setRoomList] = useState([]);
+    const [email,setEmail] = useState('');
 
     const handelOpenModal = () => {
         setOpenCreateChatRoom(true);
@@ -28,9 +39,24 @@ const ChatListComponent = () => {
                 console.error('Error fetching room list:', error);
             }
     };
+
+    const findUser = async()=>{
+
+        const response = await getUserInfo(id);
+
+        setEmail(response.stfEmail);
+
+        console.log("유저 정보 받아오기 - 채팅왼쪽 상단에 쓰임",response.stfEmail);
+            
+    }
+
     useEffect(() => {
 
         fetchRoomList();
+
+        findUser();
+
+
 
     }, []);
 
@@ -45,14 +71,21 @@ const ChatListComponent = () => {
             console.error('Error creating chat room:', error);
         }
     };
+    const IntoRoom = ()=>{
+
+        alert("방 입장");
+
+
+
+    }
 
   return (
     <div className="contentBox boxStyle9">
         <div className="chatInfo">
-            <img src="../images/iconSample3.png" alt="pro" />
+            <img src={`${RootUrl()}/images/${auth?.userImg}`} alt='image from spring'/> 
             <div>
-                <p>홍길동</p>
-                <p>abcd1234@gmail.com</p>
+                <p>{name}</p>
+                <p>{email}</p>
             </div>
         </div>
 
@@ -63,13 +96,12 @@ const ChatListComponent = () => {
             </div>
         </div>
 
-{/*여기에 디비에 저장해둔 방 리스트들 출력 */}
-
+        {/*여기에 디비에 저장해둔 방 리스트들 출력 */}
         {roomList.map(room => (
                 <div key={room.roomId} className='chatRoomList'>
             <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
             <div>
-                <p>{room.name}</p>
+                <p onClick={IntoRoom}>{room.name}</p>
             </div>
             <span className='ballCount'>1</span>
         </div>
