@@ -3,22 +3,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import GroupBodyComponent from '../common/private/GroupBodyComponent';
 import { getDptAndStfList, getUserInfo } from '../../api/AdminApi';
+import axios from 'axios';
+import { RootUrl } from '../../api/RootUrl';
+import { useSelector } from 'react-redux';
 
 const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
-
-    /** 조직도 */
     const [groupInfo, setGroupInfo] = useState([]);
-    const [userInfo, setUserInfo] = useState(null);
     const [inviteList, setInviteList] = useState([]);
-    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
-    const [calendarTitle, setCalendarTitle] = useState(""); // 캘린더 제목 상태 추가
-    const [step, setStep] = useState(1); // 단계 관리 상태 추가
+    const [searchTerm, setSearchTerm] = useState("");
+    const [calendarTitle, setCalendarTitle] = useState("");
+    const [step, setStep] = useState(1);
+
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
+    const stfNo = loginSlice.userId || "";
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getDptAndStfList();
-                console.log('getDptList', response);
                 setGroupInfo(response);
             } catch (err) {
                 console.log(err);
@@ -27,27 +29,15 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
         fetchData();
     }, []);
 
-    // 초대 리스트 확인용 로그
-    useEffect(() => {
-        console.log('현재 초대 리스트:', inviteList.map(member => member.stfName || member.name));
-    }, [inviteList]);
-
     const handleMemberClick = async (member) => {
-        try {
-            console.log('Clicked member:', member);
-            const response = await getUserInfo(member.stfNo);
-            setUserInfo(response);
-            setInviteList((prevInviteList) => {
-                const isAlreadyInvited = prevInviteList.some(invite => invite.stfNo === member.stfNo);
-                if (isAlreadyInvited) {
-                    return prevInviteList.filter(invite => invite.stfNo !== member.stfNo);
-                } else {
-                    return [...prevInviteList, member];
-                }
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        setInviteList((prevInviteList) => {
+            const isAlreadyInvited = prevInviteList.some(invite => invite.stfNo === member.stfNo);
+            if (isAlreadyInvited) {
+                return prevInviteList.filter(invite => invite.stfNo !== member.stfNo);
+            } else {
+                return [...prevInviteList, member];
+            }
+        });
     };
 
     const handleRemoveInvite = (member) => {
@@ -91,10 +81,27 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
     const handleCreate = () => {
         const newCalendar = {
             title: calendarTitle,
-            members: inviteList
+            ownerStfNo: stfNo
         };
-        onCreate(newCalendar);
-        handelColseModal();
+
+        axios.post(`${RootUrl()}/calendars`, newCalendar)
+            .then(response => {
+                const createdCalendar = response.data;
+                const memberPromises = inviteList.map(member => {
+                    const newMember = {
+                        calendarId: createdCalendar.calendarId,
+                        stfNo: member.stfNo
+                    };
+                    return axios.post(`${RootUrl()}/calendarMembers`, newMember);
+                });
+                Promise.all(memberPromises).then(() => {
+                    onCreate(createdCalendar);
+                    handelColseModal();
+                });
+            })
+            .catch(error => {
+                console.error("There was an error creating the calendar!", error);
+            });
     };
 
     return (
@@ -129,7 +136,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                                         <div key={index}>
                                             <p onClick={() => handleAccordion(index)}>
                                                 {(group.dptName === "인사지원부") &&
-                                                    <FontAwesomeIcon icon={faUserGear} style={{ fontSize: '18px', marginRight: "4px" }} />
+                                                    <FontAwesomeIcon icon={faUserGear} style={{ fontSize: '18px', marginRight : "4px" }} />
                                                 }
                                                 {(group.dptName === "영업부") &&
                                                     <FontAwesomeIcon icon={faBriefcase} style={{ fontSize: '18px', marginRight: "4px" }} />

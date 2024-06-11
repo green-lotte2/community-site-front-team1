@@ -9,18 +9,20 @@ const loadStateFromCookie = () => {
   const username = auth?.username; // 옵셔널 체이닝 연산자를 이용해 안전하게 username 참조
   const userId = auth?.userId;
   const userImg = auth?.userImg;
+  const userEmail = auth?.userEmail;
   const userRole = auth?.userRole;
   //console.log("loginSlice...4 : " + username);
   const accessToken = auth?.accessToken;
   //console.log("loginSlice...5 : " + accessToken);
 
-  return { username, userId, userImg, userRole, accessToken};
+  return { username, userId, userImg, userEmail, userRole, accessToken};
 };
 
 const initState = {
   username: "",
   userId: "",
   userImg: "",
+  userEmail: "",
   userRole: "",
   accessToken: "",
 };
@@ -42,6 +44,7 @@ const loginSlice = createSlice({
       state.username = data.username;
       state.userId = data.userId;
       state.userImg = data.userImg;
+      state.userEmail = data.userEmail;
       state.userRole = data.userRole;
       state.accessToken = data.accessToken;
       // 쿠키 저장
