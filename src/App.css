@@ -2763,3 +2763,13 @@ section {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.ce-block__content {
+    max-width: 1100px!important;
+}
+.ce-toolbar__content {
+    max-width: 1100px!important;
+}
+.cdx-block {
+    font-size: 16px;
+}
