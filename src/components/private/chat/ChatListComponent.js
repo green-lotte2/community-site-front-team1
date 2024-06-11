@@ -5,7 +5,7 @@ import CreateChatRoomModal from '../../modal/CreateChatRoomModal'
 import { getRoomList,postCreateRoom } from '../../../api/ChatApi'
 import { getCookie} from "../../../util/cookieUtil";
 import { getUserInfo } from '../../../api/MemberApi'
-
+import { RootUrl } from '../../../api/RootUrl';
 
 const ChatListComponent = () => {
 
@@ -14,6 +14,7 @@ const ChatListComponent = () => {
     //로그인한 사용자의 아이디
     const id = auth?.userId;
     const name = auth?.username;
+    const img =auth?.userImg;
 
     /** 채팅방 생성 모달 관리 */
     const [openCreateChatRoom, setOpenCreateChatRoom] = useState(false);
@@ -70,11 +71,18 @@ const ChatListComponent = () => {
             console.error('Error creating chat room:', error);
         }
     };
+    const IntoRoom = ()=>{
+
+        alert("방 입장");
+
+
+
+    }
 
   return (
     <div className="contentBox boxStyle9">
         <div className="chatInfo">
-            <img src="../images/iconSample3.png" alt="pro" />
+            <img src={`${RootUrl()}/images/${auth?.userImg}`} alt='image from spring'/> 
             <div>
                 <p>{name}</p>
                 <p>{email}</p>
@@ -88,13 +96,12 @@ const ChatListComponent = () => {
             </div>
         </div>
 
-{/*여기에 디비에 저장해둔 방 리스트들 출력 */}
-
+        {/*여기에 디비에 저장해둔 방 리스트들 출력 */}
         {roomList.map(room => (
                 <div key={room.roomId} className='chatRoomList'>
             <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
             <div>
-                <p>{room.name}</p>
+                <p onClick={IntoRoom}>{room.name}</p>
             </div>
             <span className='ballCount'>1</span>
         </div>
