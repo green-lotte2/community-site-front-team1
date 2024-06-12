@@ -7,8 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import Editable from './Editable/Editable';
 import useLocalStorage from 'use-local-storage';
 import '../../../bootstrap.css';
+import { postBoard } from '../../../api/KanbanApi';
 
-const ProjectBoxComponent = () => {
+const ProjectBoxComponent = (kanbanName, kanbanNo) => {
     const [data, setData] = useState(
         localStorage.getItem('kanban-board') ? JSON.parse(localStorage.getItem('kanban-board')) : []
     );
@@ -70,14 +71,16 @@ const ProjectBoxComponent = () => {
         setData(tempData);
     };
 
-    const addBoard = (title) => {
-        const tempData = [...data];
-        tempData.push({
+    /** 보드 */
+    const addBoard = async (title) => {
+        const newBoard = {
             id: uuidv4(),
             boardName: title,
+            kanbanId: 12,
             card: [],
-        });
-        setData(tempData);
+        };
+        await postBoard(newBoard);
+        setData([...data, newBoard]);
     };
 
     const removeBoard = (bid) => {
@@ -119,7 +122,7 @@ const ProjectBoxComponent = () => {
         <div className="contentBox boxStyle8">
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className="App2" data-theme={theme}>
-                    <Navbar switchTheme={switchTheme} />
+                    <Navbar switchTheme={switchTheme} selectedKanbanName={kanbanName} />
                     <div className="app_outer">
                         <div className="app_boards">
                             {data.map((item) => (

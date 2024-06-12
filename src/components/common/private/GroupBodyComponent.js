@@ -10,7 +10,7 @@ const GroupBodyComponent = ({ index, member, onClick }) => {
     return (
         <div className="groupBody" onClick={handleMemberClick} style={{ padding: '0 10px 10px 20px' }}>
             <p key={index}>
-                <img src={`${RootUrl()}/images/${member.stfImg}`} alt="sft" name="stfImg" style={{ width: '30px' }} />
+                <img src={`${RootUrl()}/images/${member.stfImg}`} alt="sft" name="stfImg" />
                 {member.stfName} [{member.rankNo}]
             </p>
         </div>
