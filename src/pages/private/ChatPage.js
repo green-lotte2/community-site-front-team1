@@ -15,6 +15,15 @@ const ChatPage = () => {
   // 채팅 내용들을 저장할 변수
   const [socket, setSocket] = new useState(null);
 
+
+  // 선택된 방 ID를 저장할 상태 변수
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+
+    // 선택된 방 Name를 저장할 상태 변수
+    const [selectedRoomName, setSelectedRoomName] = useState(null);
+
+    const[userId,setUserId] = useState('');
+
   //연결 확인 boolean
 
   const [a , setA] = useState(false);
@@ -45,12 +54,18 @@ const ChatPage = () => {
       
   };
 
+  const handleRoomSelect = (roomId,name,id) => {
+
+    setSelectedRoomId(roomId);
+    setSelectedRoomName(name);
+    setUserId(id);
+
+  };
+
 
    useEffect(() => {
 
       connect();
-
-
 
   }, []);
 
@@ -66,10 +81,10 @@ const ChatPage = () => {
           <div className='chatBox'>
               
               {/** 채팅 목록 - 내가 들어가 있는 채팅목록을 띄워야 함... */}
-              <ChatListComponent></ChatListComponent>
+              <ChatListComponent onRoomSelect={handleRoomSelect} ></ChatListComponent>
   
               {/** 채팅방 - 제일처음 들어갔을 땐 이 페이지가 없어야함... */}
-              <ChatRoomComponent socket = {socket}></ChatRoomComponent>
+              <ChatRoomComponent socket = {socket} roomId={selectedRoomId} roomname={selectedRoomName} id={userId}></ChatRoomComponent>
               
           </div>
           
