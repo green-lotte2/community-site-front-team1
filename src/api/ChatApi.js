@@ -11,7 +11,7 @@ export const postCreateRoom = async (data) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: data  // JSON 문자열로 변환
+        body: data
     });
 
     return response.json();
@@ -26,6 +26,48 @@ export const getRoomList = async () => {
 
     return response.data;
 };
+
+
+//원래 룸에 있었던 유저인지 확인 
+export const findUser = async (data) => {
+
+    console.log('룸에 있었던 유저인가?');
+    const response = await fetch(`${rootURL}/findUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    const responseData = await response.json(); // JSON 형식으로 변환
+    let type=null;
+
+    console.log("룸에 있던 유저 결과값 : ",responseData);
+
+    if(responseData>=1){
+        type="TALK"
+    }else{
+        type="ENTER";
+    }
+
+    return type;
+};
+
+
+//원래 룸에 있었던 유저인지 확인 
+export const saveUser = async (data) => {
+
+    console.log('룸에 있었던 유저인가?',data);
+    const response = await axios.get(`${rootURL}/saveUser?id=${data.id}&roomId=${data.roomId}`);
+    console.log(response)
+    return response.data;
+};
+
+
+
+
+
 
 
 
