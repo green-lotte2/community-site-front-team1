@@ -2,7 +2,7 @@ import { faBolt, faBriefcase, faUserGear } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import GroupBodyComponent from '../common/private/GroupBodyComponent';
-import { getDptAndStfList, getUserInfo } from '../../api/AdminApi';
+import { getDptAndStfList } from '../../api/AdminApi';
 import axios from 'axios';
 import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
@@ -16,20 +16,37 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
 
     const loginSlice = useSelector((state) => state.loginSlice) || {};
     const stfNo = loginSlice.userId || "";
+    const stfName = loginSlice.username || "";
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getDptAndStfList();
                 setGroupInfo(response);
+
+                // 로그인한 사용자를 초대 목록에 자동으로 추가
+                setInviteList((prevInviteList) => {
+                    if (!prevInviteList.some(invite => invite.stfNo === stfNo)) {
+                        return [...prevInviteList, { stfNo, stfName }];
+                    }
+                    return prevInviteList;
+                });
+                console.log(`로그인 사용자: ${stfName} (ID: ${stfNo})`);
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [stfNo, stfName]);
 
-    const handleMemberClick = async (member) => {
+    const handleMemberClick = (member) => {
+        console.log(`선택된 멤버: ${member.stfName} (ID: ${member.stfNo})`);
+        // 로그인한 사용자가 선택되었을 때 경고 메시지 표시
+        if (member.stfNo === stfNo) {
+            alert('본인은 선택할 수 없습니다.');
+            return;
+        }
+
         setInviteList((prevInviteList) => {
             const isAlreadyInvited = prevInviteList.some(invite => invite.stfNo === member.stfNo);
             if (isAlreadyInvited) {
@@ -41,6 +58,10 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
     };
 
     const handleRemoveInvite = (member) => {
+        if (member.stfNo === stfNo) {
+            alert('본인은 초대 목록에서 제거할 수 없습니다.');
+            return;
+        }
         setInviteList((prevInviteList) => prevInviteList.filter(invite => invite.stfNo !== member.stfNo));
     };
 
@@ -81,23 +102,17 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
     const handleCreate = () => {
         const newCalendar = {
             title: calendarTitle,
-            ownerStfNo: stfNo
+            ownerStfNo: stfNo,
+            members: inviteList // 초대된 멤버 리스트
         };
 
+        // 캘린더를 생성하고, 생성된 캘린더를 calendars 상태에 추가하는 역할
+        // 즉, 생성된 캘린더를 상태에 추가하고 UI를 업데이트하는 역할
         axios.post(`${RootUrl()}/calendars`, newCalendar)
             .then(response => {
                 const createdCalendar = response.data;
-                const memberPromises = inviteList.map(member => {
-                    const newMember = {
-                        calendarId: createdCalendar.calendarId,
-                        stfNo: member.stfNo
-                    };
-                    return axios.post(`${RootUrl()}/calendarMembers`, newMember);
-                });
-                Promise.all(memberPromises).then(() => {
-                    onCreate(createdCalendar);
-                    handelColseModal();
-                });
+                onCreate(createdCalendar);
+                handelColseModal();
             })
             .catch(error => {
                 console.error("There was an error creating the calendar!", error);
@@ -158,7 +173,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                             </div>
                             <div className="modalRow">
                                 <div className='inviteList'>
-                                    {inviteList.map((member, index) => (
+                                    {inviteList.filter(member => member.stfNo !== stfNo).map((member, index) => ( // 로그인한 사용자 제외
                                         <span
                                             key={index}
                                             onClick={() => handleRemoveInvite(member)}
