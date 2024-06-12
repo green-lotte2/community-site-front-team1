@@ -30,7 +30,7 @@ console.log(loginSlice)
             <Link to={"/login"}>로그인</Link>
           ) : (
             <>
-              <Link to={"/main"}>{loginSlice.username}님</Link>
+              <Link to={"/"}>{loginSlice.username}님</Link>
               <Link to={"/login"} onClick={logoutHandler}>로그아웃</Link>
               <img src={`${RootUrl()}/images/${loginSlice.userImg}`} alt=""/>
             </>
