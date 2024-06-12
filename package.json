@@ -8,6 +8,12 @@
 
   "dependencies": {
 
+    "@blocknote/core": "^0.14.0",
+
+    "@blocknote/mantine": "^0.14.0",
+
+    "@blocknote/react": "^0.14.0",
+
     "@editorjs/code": "^2.9.0",
 
     "@editorjs/editorjs": "^2.29.1",
@@ -126,7 +132,9 @@
 
     "xlsx": "^0.18.5",
 
-    "xlsx-js-style": "^1.2.0"
+    "xlsx-js-style": "^1.2.0",
+
+    "y-webrtc": "^10.3.0"
 
   },
 
