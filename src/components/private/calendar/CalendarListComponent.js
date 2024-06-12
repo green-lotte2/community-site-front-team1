@@ -16,14 +16,19 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
     const stfImg = loginSlice.userImg || "";
 
     useEffect(() => {
-        axios.get(`${RootUrl()}/calendars`)
-            .then(response => {
-                setCalendars(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the calendars!", error);
-            });
-    }, []);
+        // 로그인된 사용자의 고유 캘린더 가져오기 또는 생성
+        if (stfNo) {
+            axios.get(`${RootUrl()}/calendars/user/${stfNo}`, { params: { username: stfName } })
+                .then(response => {
+                    const userCalendar = response.data;
+                    setCalendars([userCalendar]);
+                    onSelectCalendar(userCalendar); // 기본 캘린더 선택
+                })
+                .catch(error => {
+                    console.error("There was an error fetching the user calendar!", error);
+                });
+        }
+    }, []); // 빈 배열을 의존 배열로 설정하여 한 번만 실행
 
     const handelOpenModal = () => {
         setCreateCalendarRoom(true);
@@ -33,6 +38,9 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
         setCreateCalendarRoom(false);
     }
 
+    // CreateCalendarModal에서 CalendarListComponent로 데이터를 전달하기 위한 콜백 함수
+    // 캘린더를 생성하고, 생성된 캘린더를 calendars 상태에 추가하는 역할
+    // 즉, 생성된 캘린더를 상태에 추가하고 UI를 업데이트하는 역할
     const handleCreateCalendar = (newCalendar) => {
         axios.post(`${RootUrl()}/calendars`, newCalendar)
             .then(response => {
@@ -45,7 +53,6 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
     }
 
     const handleSelectCalendar = (calendar) => {
-        console.log('Selected Calendar:', calendar);
         onSelectCalendar(calendar);
     }
 
@@ -63,13 +70,6 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
                 <FontAwesomeIcon icon={faCalendarPlus} />
                 <div>
                     <p>캘린더 생성</p>
-                </div>
-            </div>
-
-            <div className='CalendarList' onClick={() => handleSelectCalendar({ title: '내 캘린더', stfNo })}>
-                <FontAwesomeIcon icon={faCalendar} style={{color: "#13a8ae"}} />
-                <div>
-                    <p>내 캘린더 ({stfNo})</p> {/* 로그인된 사용자의 고유 캘린더 */}
                 </div>
             </div>
 
