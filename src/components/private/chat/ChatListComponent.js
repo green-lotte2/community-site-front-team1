@@ -7,7 +7,7 @@ import { getCookie} from "../../../util/cookieUtil";
 import { getUserInfo } from '../../../api/MemberApi'
 import { RootUrl } from '../../../api/RootUrl';
 
-const ChatListComponent = () => {
+const ChatListComponent = ({onRoomSelect}) => {
 
     const auth = getCookie("auth");
 
@@ -56,8 +56,6 @@ const ChatListComponent = () => {
 
         findUser();
 
-
-
     }, []);
 
     const createChatRoom = async (name) => {
@@ -71,13 +69,7 @@ const ChatListComponent = () => {
             console.error('Error creating chat room:', error);
         }
     };
-    const IntoRoom = ()=>{
 
-        alert("방 입장");
-
-
-
-    }
 
   return (
     <div className="contentBox boxStyle9">
@@ -101,7 +93,7 @@ const ChatListComponent = () => {
                 <div key={room.roomId} className='chatRoomList'>
             <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
             <div>
-                <p onClick={IntoRoom}>{room.name}</p>
+                <p onClick={()=>onRoomSelect(room.roomId,room.name,id)}>{room.name}</p>
             </div>
             <span className='ballCount'>1</span>
         </div>
