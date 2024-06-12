@@ -146,7 +146,7 @@ body {
     padding: 4px 10px;
 }
 .modalRow > div:nth-child(1) {
-    width: 100px;
+    width: 150px;
 }
 .modalRow > div:nth-child(2) {
     width: 300px;
@@ -1985,25 +1985,20 @@ section {
 }
 .groupBody {
     display: flex;
-    flex-direction: column;
     padding: 0 10px 10px 40px;
 }
 .groupBody > p {
     font-size: 16px;
     padding: 4px 10px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
-.groupBody > p::before {
-    content: '';
-    display: inline-block;
-    background-image: url(../public/images/icon/user-regular.svg);
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    padding-right: 4px;
+.groupBody > p > img {
+    margin-right: 7px;
+    width: 30px;
 }
+
 .groupRow {
     display: flex;
     width: 100%;
@@ -2270,11 +2265,12 @@ section {
     flex-wrap: wrap;
 }
 .inviteList > span {
-    border: 1px solid red;
+    border: 1px solid #dddddd;
     border-radius: 4px;
     margin: 4px;
     padding: 4px;
     cursor: pointer;
+    height: 32px;
 }
 .emojiBox {
     position: absolute;
@@ -2771,10 +2767,10 @@ section {
 }
 
 .ce-block__content {
-    max-width: 1100px!important;
+    max-width: 1100px !important;
 }
 .ce-toolbar__content {
-    max-width: 1100px!important;
+    max-width: 1100px !important;
 }
 .cdx-block {
     font-size: 16px;
@@ -2790,4 +2786,3 @@ section {
     max-height: 200px; /* 필요한 만큼의 최대 높이 설정 */
     overflow-y: auto;
 }
-

@@ -1,66 +1,65 @@
-import { faClipboard, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import { faClipboard, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
 import CreateProjectModal from '../../modal/CreateProjectModal';
+import { useSelector } from 'react-redux';
+import { RootUrl } from '../../../api/RootUrl';
 
-const ProjectListComponent = () => {
-
+const ProjectListComponent = ({ kanbanList, onSelectKanban, kanbanData }) => {
     /** 프로젝트 생성 모달 관리 */
     const [openCreateProject, setOpenCreateProject] = useState(false);
 
     const handelOpenModal = () => {
         setOpenCreateProject(true);
-    }
+    };
 
     const handelColseModal = () => {
         setOpenCreateProject(false);
-    }
+    };
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
 
-  return (
-    <div className="contentBox boxStyle9">
-        <div className="chatInfo">
-            <img src="../images/iconSample3.png" alt="pro" />
-            <div>
-                <p>홍길동</p>
-                <p>abcd1234@gmail.com</p>
+    return (
+        <div className="contentBox boxStyle9">
+            <div className="chatInfo">
+                <img src={`${RootUrl()}/images/${loginSlice.userImg}`} alt="pro" />
+                <div>
+                    <p>{loginSlice.username}</p>
+                    <p>{loginSlice.userEmail}</p>
+                </div>
             </div>
-        </div>
 
-        <div className='projectList' onClick={handelOpenModal}>
-            <FontAwesomeIcon icon={faSquarePlus}/>
-            <div>
-                <p>프로젝트 생성</p>
+            <div className="projectList" onClick={handelOpenModal}>
+                <FontAwesomeIcon icon={faSquarePlus} />
+                <div>
+                    <p>프로젝트 생성</p>
+                </div>
             </div>
-        </div>
 
-        <div className='projectList'>
-            <FontAwesomeIcon icon={faClipboard} style={{color: "#13a8ae",}}/>
-            <div>
-                <p>롯데온 프로젝트</p>
-                <p>롯데온 쇼핑몰 만들기 프로젝트</p>
+            <div className="projectList">
+                <FontAwesomeIcon icon={faClipboard} style={{ color: '#13a8ae' }} />
+                <div>
+                    <p>롯데온 프로젝트</p>
+                    <p>롯데온 쇼핑몰 만들기 프로젝트</p>
+                </div>
             </div>
+
+            {kanbanList.map((kanban) => (
+                <div
+                    key={kanban.kanbanId}
+                    className="projectList"
+                    onClick={() => onSelectKanban(kanban.kanbanName, kanban.kanbanId)}
+                >
+                    <FontAwesomeIcon icon={faClipboard} style={{ color: '#13a8ae' }} />
+                    <div>
+                        <p>{kanban.kanbanName}</p>
+                        <p>{kanban.kanbanInfo}</p>
+                    </div>
+                </div>
+            ))}
+
+            {openCreateProject && <CreateProjectModal handelColseModal={handelColseModal} kanbanData={kanbanData} />}
         </div>
-            
-        <div className='projectList'>
-            <FontAwesomeIcon icon={faClipboard} style={{color: "#13a8ae",}}/>
-            <div>
-                <p>프로젝트 이름</p>
-                <p>프로젝트 간단 설명</p>
-            </div>
-        </div>
+    );
+};
 
-        <div className='projectList'>
-            <FontAwesomeIcon icon={faClipboard} style={{color: "#13a8ae",}}/>
-            <div>
-                <p>프로젝트 이름</p>
-                <p>프로젝트 간단 설명</p>
-            </div>
-        </div>
-
-        {openCreateProject && <CreateProjectModal handelColseModal={handelColseModal}/>}
-
-    </div>
-  )
-}
-
-export default ProjectListComponent
+export default ProjectListComponent;
