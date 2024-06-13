@@ -8,16 +8,18 @@ import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
 
 const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
-    const [groupInfo, setGroupInfo] = useState([]);
-    const [inviteList, setInviteList] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [calendarTitle, setCalendarTitle] = useState("");
-    const [step, setStep] = useState(1);
+    const [groupInfo, setGroupInfo] = useState([]); // 부서 및 직원 정보
+    const [inviteList, setInviteList] = useState([]); // 초대된 직원 목록
+    const [searchTerm, setSearchTerm] = useState(""); // 검색어
+    const [calendarTitle, setCalendarTitle] = useState(""); // 캘린더 제목
+    const [step, setStep] = useState(1); // 현재 단계 (1: 멤버 선택, 2: 캘린더 제목 입력)
 
+    // Redux에서 로그인된 사용자의 정보를 가져옴
     const loginSlice = useSelector((state) => state.loginSlice) || {};
     const stfNo = loginSlice.userId || "";
     const stfName = loginSlice.username || "";
 
+     // 부서 및 직원 정보를 서버에서 불러오는 함수
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -39,8 +41,10 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
         fetchData();
     }, [stfNo, stfName]);
 
+    // 멤버 클릭 시 초대 목록에 추가 또는 제거하는 함수
     const handleMemberClick = (member) => {
         console.log(`선택된 멤버: ${member.stfName} (ID: ${member.stfNo})`);
+
         // 로그인한 사용자가 선택되었을 때 경고 메시지 표시
         if (member.stfNo === stfNo) {
             alert('본인은 선택할 수 없습니다.');
@@ -57,6 +61,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
         });
     };
 
+    // 초대 목록에서 멤버 제거하는 함수
     const handleRemoveInvite = (member) => {
         if (member.stfNo === stfNo) {
             alert('본인은 초대 목록에서 제거할 수 없습니다.');
@@ -65,6 +70,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
         setInviteList((prevInviteList) => prevInviteList.filter(invite => invite.stfNo !== member.stfNo));
     };
 
+    // 아코디언 메뉴의 상태 관리
     const [accordions, setAccordions] = useState([]);
 
     const handleAccordion = (index) => {
@@ -80,10 +86,12 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
         });
     };
 
+    // 검색어 변경 처리
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
+    // 검색어에 맞게 필터링된 그룹 정보
     const filteredGroupInfo = groupInfo.map(group => ({
         ...group,
         member: group.member.filter(member => 
@@ -91,14 +99,17 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
         )
     }));
 
+    // 다음 단계로 이동
     const handleNext = () => {
         setStep(2);
     };
 
+    // 이전 단계로 이동
     const handlePrevious = () => {
         setStep(1);
     };
 
+    // 캘린더 생성 함수
     const handleCreate = () => {
         const newCalendar = {
             title: calendarTitle,
@@ -106,13 +117,12 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
             members: inviteList // 초대된 멤버 리스트
         };
 
-        // 캘린더를 생성하고, 생성된 캘린더를 calendars 상태에 추가하는 역할
-        // 즉, 생성된 캘린더를 상태에 추가하고 UI를 업데이트하는 역할
+        // 캘린더를 생성하고, 생성된 캘린더를 부모 컴포넌트에 전달
         axios.post(`${RootUrl()}/calendars`, newCalendar)
             .then(response => {
                 const createdCalendar = response.data;
-                onCreate(createdCalendar);
-                handelColseModal();
+                onCreate(createdCalendar); // 생성된 캘린더를 부모 컴포넌트에 전달
+                handelColseModal(); // 모달 닫기
             })
             .catch(error => {
                 console.error("There was an error creating the calendar!", error);
