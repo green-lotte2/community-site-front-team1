@@ -4,17 +4,20 @@ import React, { useEffect, useRef, useState } from 'react'
 import EmojiBoxComponent from './EmojiBoxComponent';
 import { getCookie} from "../../../util/cookieUtil";
 import { RootUrl } from '../../../api/RootUrl';
-import { findUser,saveUser } from '../../../api/ChatApi'
+import { findUser,saveUser,chatSave } from '../../../api/ChatApi'
 
 
 
-const ChatRoomComponent = ({socket,roomId,roomname,id}) => {
+const ChatRoomComponent = ({socket, roomId, roomname, id,beforeMessage}) => {
 
     const [chat, setChat] = useState([]);
     const [ws, setWs] = useState(null);
     const [type, setType] = useState('');
    
     const auth = getCookie("auth");
+
+    const now = new Date();
+    const localDateTime = now.toLocaleString();
 
     /** 커서 깜박이기 */
     const textareaRef = useRef(null);
@@ -51,7 +54,6 @@ const ChatRoomComponent = ({socket,roomId,roomname,id}) => {
         }
     }
 
-//여기가 원래 자리    
 
     const selectUserList = async (roomId,id)=>{
 
@@ -64,40 +66,37 @@ const ChatRoomComponent = ({socket,roomId,roomname,id}) => {
         }
 
         try {
-            var userType = await findUser(data);
+            const userType = await findUser(data);
+            console.log('제발1 : ' + userType);
+
             setType(userType);
 
-            console.log("제발1", userType);
-            console.log("제발2", type);
-            
-            console.log("타입 찍어보자 : ", userType);
-    
-            if (type === "TALK") {
-                console.log("지금 type의 상태", type);
-                setType("TALK");
+            //console.log('제발1 : ' + type);
+            //console.log('제발2 : ' + num);
+   
+            if (userType === "TALK") {
+               // console.log("지금 type의 상태", type);
+               setType("TALK");
                 
             } else { // type === "ENTER"
-                console.log("지금 type의 상태2", type);                
-                sendMessage("ENTER");
-                //들어온 유저 저장하기
-                const response = await saveUser({id:id,roomId:roomId});
-
+                //console.log("지금 type의 상태2", type);
+                //setType("ENTER");
+                sendMessage("ENTER");  
+                await saveUser({id:id,roomId:roomId});//들어온 유저 저장하기                    
             }
+
         } catch (error) {
             console.error("findUser 호출 중 오류 발생:", error);            
         }
-
     }
 
-    const sendMessage = (msgType) => {
-
-        console.log("msgType - ",msgType);
-
+    const sendMessage = async (msgType) => {
+        //console.log("msgType - ",msgType);
         console.log("roomId - ",roomId);
         console.log("sender - ",auth?.username);
         console.log("message - ",chatMsg);
         console.log("type - ",msgType);
-
+        
         const chatMessage = {
             roomId: roomId, 
             sender: auth?.username,
@@ -105,52 +104,19 @@ const ChatRoomComponent = ({socket,roomId,roomname,id}) => {
             type: msgType,
         };
 
+        const saveMessage = {
+            roomId: roomId,
+            stfNo:auth?.userId,
+            message:chatMsg  
+        }
+
+        await chatSave(saveMessage);
+
         ws.send(JSON.stringify(chatMessage));
-        setChatMsg(''); 
-        /*
-        if(msgType === "ENTER"){
-            if (ws) {//&& chatMsg.trim() !== ''
-                const chatMessage = {
-                    roomId: roomId, 
-                    sender: auth?.username,
-                    message: auth.username +'님이',
-                    type: 'ENTER',
-                };
-                console.log("들어옴?")
-      
-                if(!ws.onopen){
-                    ws = new WebSocket("ws://localhost:8080/onepie/ws");
-                }
-                    
-                ws.send(JSON.stringify(chatMessage));
-                setChatMsg(''); 
-            }
-            
-        }else{
-            if (ws) {//&& chatMsg.trim() !== ''
-                const chatMessage = {
-                    roomId: roomId, 
-                    sender: auth?.username,
-                    message: chatMsg,
-                    type: 'TALK',
-                };
-                console.log("들어옴?")
-      
-                if(!ws.onopen){
-                    ws = new WebSocket("ws://localhost:8080/onepie/ws");
-                }
-                    
-                ws.send(JSON.stringify(chatMessage));
-                setChatMsg(''); 
-            }
-        }*/
-     
+        setChatMsg('');      
     };
-
     
-
     useEffect(() => {
-
         if (socket) {
             setWs(socket);
             socket.onmessage = (event) => {
@@ -165,18 +131,12 @@ const ChatRoomComponent = ({socket,roomId,roomname,id}) => {
         console.log("roomName",roomname);
 
         if (roomId && id) {
-            selectUserList(roomId, id);
-        }        
-
-    },[roomId,id]);
-/*
-    useEffect(() => {
-        if (type === "ENTER" || type === '') {
-            sendMessage(type);
+            selectUserList(roomId, id);            
         }
-    }, [type]);
-*/
 
+    },[roomId, id]);
+
+   
   return (
     <div className="contentBox boxStyle8">
         <div className="chatInfo" style={{justifyContent:"space-between", padding:"20px 0"}}>
@@ -196,12 +156,32 @@ const ChatRoomComponent = ({socket,roomId,roomname,id}) => {
             {/*로그인한 객체가 본인이면 로그인한 이미지를 띄우고 본인이 아니면...? */}
 
         <div className='chatRoom'>
+        {beforeMessage.length > 0 ? (
+                beforeMessage.map((msg, index) => (
+                    <div className='chat' key={index}>
+                        {auth?.userImg ? (
+                            <img src={`${RootUrl()}/images/${auth?.userImg}`} alt='image from spring'/>
+                        ) : (
+                            <img src="../images/iconSample3.png" alt='' />
+                        )}
+                        <div>
+                            <p>
+                                {msg.sender} <span>{msg.rdate}</span>
+                            </p>
+                            <p>{msg.message}</p>
+                        </div>
+                    </div>
+                ))
+            ) : (<p>No messages available</p>)              
+            
+        }
+
             {chat.map((msg,index)=>(
             <div className='chat' key={index}>
                 {auth?.userImg?(<img src={`${RootUrl()}/images/${auth?.userImg}`} alt='image from spring'/> ):(<img src="../images/iconSample3.png" alt="" />)}
                            
                 <div>
-                    <p>{msg.sender} <span>오후 12:24</span></p>
+                    <p>{msg.sender} <span>{msg.rdate}</span></p>
                     <p>{msg.message}</p>
                 </div>
             </div>

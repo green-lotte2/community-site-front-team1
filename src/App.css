@@ -609,10 +609,10 @@ section {
     overflow: scroll;
     scrollbar-width: none;
 }
-/*가로:무한 세로:자동*/
+/*가로:무한 세로:900px - 스크롤 넣어야함*/
 .boxStyle8 {
     width: 1600px;
-    height: auto;
+    height: 900px;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;

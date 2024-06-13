@@ -51,18 +51,50 @@ export const findUser = async (data) => {
         type="ENTER";
     }
 
+    console.log("타입 출력해봅니다.",type);
+
     return type;
 };
 
 
-//원래 룸에 있었던 유저인지 확인 
+//유저 저장
 export const saveUser = async (data) => {
 
-    console.log('룸에 있었던 유저인가?',data);
+    console.log('유저 세이브?',data);
     const response = await axios.get(`${rootURL}/saveUser?id=${data.id}&roomId=${data.roomId}`);
     console.log(response)
     return response.data;
 };
+
+//메시지 내용 저장
+export const chatSave = async (data) => {
+
+    console.log('메시지 세이브',data);
+    
+    const response = await axios.post(`${rootURL}/chatSave`,data);
+
+    console.log(response)
+    
+    return response.data;
+};
+
+
+
+//룸에서 했던 대화 들고오기
+export const getMessage = async (data) => {
+
+    console.log('메시지 가져오기',data);
+    
+    const response = await axios.get(`${rootURL}/getMessage?roomId=${data}`);
+
+    console.log(response)
+    
+    return response.data;
+};
+
+
+
+
 
 
 
