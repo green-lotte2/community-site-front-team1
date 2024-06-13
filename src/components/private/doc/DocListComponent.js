@@ -2,7 +2,7 @@ import { faMessage, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 
-const DocListComponent = () => {
+const DocListComponent = ({docList, openDocument}) => {
 
     /** 문서 생성 모달 관리 */
     const [openCreateDoc, setOpenCreateDoc] = useState(false);
@@ -32,19 +32,14 @@ const DocListComponent = () => {
             </div>
         </div>
 
-        <div className='docList'>
-            <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
-            <div>
-                <p>문서 목록</p>
+        {docList && docList.map((doc, index) => (
+            <div className='docList' onClick={() => openDocument(doc.pno)}>
+                <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
+                <div>
+                    <p>{doc.title}</p>
+                </div>
             </div>
-        </div>
-            
-        <div className='docList'>
-            <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
-            <div>
-                <p>문서 목록</p>
-            </div>
-        </div>
+        ))}
 
         {/**{openCreateChatRoom && <CreateChatRoomModal handelColseModal={handelColseModal}/>} */}
 
