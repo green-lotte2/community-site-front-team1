@@ -9,26 +9,32 @@ import axios from 'axios';
 const CalendarListComponent = ({ onSelectCalendar }) => {
     const [createCalendarRoom, setCreateCalendarRoom] = useState(false);
     const [calendars, setCalendars] = useState([]);
+
     const loginSlice = useSelector((state) => state.loginSlice) || {};
     const stfNo = loginSlice.userId || "";
     const stfName = loginSlice.username || "";
     const stfEmail = loginSlice.userEmail || "";
     const stfImg = loginSlice.userImg || "";
 
-    useEffect(() => {
-        // 로그인된 사용자의 고유 캘린더 가져오기 또는 생성
-        if (stfNo) {
-            axios.get(`${RootUrl()}/calendars/user/${stfNo}`, { params: { username: stfName } })
-                .then(response => {
-                    const userCalendar = response.data;
-                    setCalendars([userCalendar]);
-                    onSelectCalendar(userCalendar); // 기본 캘린더 선택
-                })
-                .catch(error => {
-                    console.error("There was an error fetching the user calendar!", error);
-                });
+    const fetchCalendars = async () => {
+        try {
+            const response = await axios.get(`${RootUrl()}/calendars/all/${stfNo}`, { params: { username: stfName } });
+            const allCalendars = response.data;
+            console.log("Fetched Calendars:", allCalendars);
+            setCalendars(allCalendars);
+            if (allCalendars.length > 0) {
+                onSelectCalendar(allCalendars[0]);
+            }
+        } catch (error) {
+            console.error("There was an error fetching the calendars!", error);
         }
-    }, []); // 빈 배열을 의존 배열로 설정하여 한 번만 실행
+    };
+
+    useEffect(() => {
+        if (stfNo) {
+            fetchCalendars();
+        }
+    }, [stfNo, stfName]);
 
     const handelOpenModal = () => {
         setCreateCalendarRoom(true);
@@ -38,18 +44,15 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
         setCreateCalendarRoom(false);
     }
 
-    // CreateCalendarModal에서 CalendarListComponent로 데이터를 전달하기 위한 콜백 함수
-    // 캘린더를 생성하고, 생성된 캘린더를 calendars 상태에 추가하는 역할
-    // 즉, 생성된 캘린더를 상태에 추가하고 UI를 업데이트하는 역할
-    const handleCreateCalendar = (newCalendar) => {
-        axios.post(`${RootUrl()}/calendars`, newCalendar)
-            .then(response => {
-                setCalendars((prevCalendars) => [...prevCalendars, response.data]);
-                setCreateCalendarRoom(false);
-            })
-            .catch(error => {
-                console.error("There was an error creating the calendar!", error);
-            });
+    const handleCreate = (newCalendar) => {
+        setCalendars((prevCalendars) => {
+            const isAlreadyExist = prevCalendars.some(calendar => calendar.calendarId === newCalendar.calendarId);
+            if (!isAlreadyExist) {
+                return [...prevCalendars, newCalendar];
+            }
+            return prevCalendars;
+        });
+        onSelectCalendar(newCalendar);
     }
 
     const handleSelectCalendar = (calendar) => {
@@ -82,7 +85,7 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
                 </div>
             ))}
 
-            {createCalendarRoom && <CreateCalendarModal handelColseModal={handelColseModal} onCreate={handleCreateCalendar} />}
+            {createCalendarRoom && <CreateCalendarModal handelColseModal={handelColseModal} onCreate={handleCreate} />}
         </div>
     )
 }

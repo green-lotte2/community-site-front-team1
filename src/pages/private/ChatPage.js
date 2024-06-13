@@ -6,15 +6,21 @@ import ChatListComponent from '../../components/private/chat/ChatListComponent'
 import ChatRoomComponent from '../../components/private/chat/ChatRoomComponent'
 import {Stomp} from "@stomp/stompjs";
 import axios from 'axios';
+import { getCookie} from "../../util/cookieUtil";
+import {getMessage} from '../../api/ChatApi'
+
+
 
 const ChatPage = () => {
 
  const stompClient = useRef(null);
 
+ const auth = getCookie("auth");
+
+ const [chat, setChat] = useState([]);
  
   // 채팅 내용들을 저장할 변수
   const [socket, setSocket] = new useState(null);
-
 
   // 선택된 방 ID를 저장할 상태 변수
   const [selectedRoomId, setSelectedRoomId] = useState(null);
@@ -24,13 +30,17 @@ const ChatPage = () => {
 
     const[userId,setUserId] = useState('');
 
+    const [isChatting,setIsChatting] = useState(false);
+
   //연결 확인 boolean
 
   const [a , setA] = useState(false);
    // 웹소켓 연결 설정
-  const connect = async () => {
+  const connect =  () => {
 
-      const socket = await new WebSocket("ws://localhost:8080/onepie/ws");
+      console.log("userId : ",auth?.userId);
+
+      const socket = new WebSocket(`ws://localhost:8080/onepie/ws?userId=${auth?.userId}`);
       stompClient.current = socket;
       setSocket(socket);
       setA(true);
@@ -54,16 +64,24 @@ const ChatPage = () => {
       
   };
 
-  const handleRoomSelect = (roomId,name,id) => {
+  const handleRoomSelect = async(roomId,name,id) => {//채팅방을 선택했을 때
 
     setSelectedRoomId(roomId);
     setSelectedRoomName(name);
     setUserId(id);
+    setIsChatting(true);
+    const response = await getMessage(roomId);
+
+    console.log(response);
+
+    setChat((prevChat) => [...prevChat, response]);
 
   };
 
 
    useEffect(() => {
+
+    console.log("userId : ",auth?.userId);
 
       connect();
 
@@ -84,7 +102,7 @@ const ChatPage = () => {
               <ChatListComponent onRoomSelect={handleRoomSelect} ></ChatListComponent>
   
               {/** 채팅방 - 제일처음 들어갔을 땐 이 페이지가 없어야함... */}
-              <ChatRoomComponent socket = {socket} roomId={selectedRoomId} roomname={selectedRoomName} id={userId}></ChatRoomComponent>
+              {isChatting?(<ChatRoomComponent socket = {socket} roomId={selectedRoomId} roomname={selectedRoomName} id={userId} beforeMessage={chat}></ChatRoomComponent>):(<p>채팅방을 선택해주세요...</p>)}
               
           </div>
           

@@ -5,24 +5,21 @@ import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
+import { getDocContent, saveDoc } from "../../../api/DocApi";
 
 const DocEditor = () => {
 
     const doc = new Y.Doc();
     const provider = useRef(null);
-    const [ex, setEx] = useState([
-        {
-          type: "paragraph",
-          content: "Welcome to this demo!",
-        },
-      ],)
 
     /** 소켓 연결 useEffect */
     useEffect(() => {
         // 컴포넌트가 마운트될 때 WebrtcProvider를 생성합니다.
-        provider.current = new WebrtcProvider('test111111', doc, { signaling: ['ws://127.0.0.1:8080/onepie/testaa'] });
+        provider.current = new WebrtcProvider('test111111', doc, { signaling: ['ws://127.0.0.1:8080/onepie/doc'] });
         // 컴포넌트가 언마운트될 때 provider를 정리합니다.
+
         return () => {
+            submitDoc();
             provider.current.destroy();
         };
     }, []);
@@ -41,75 +38,61 @@ const DocEditor = () => {
         },
     });
 
-/** 저장 테스트 */
-    async function saveToStorage(jsonBlocks) {
-        // Save contents to local storage. You might want to debounce this or replace
-        // with a call to your API / database.
-        localStorage.setItem("editorContent", JSON.stringify(jsonBlocks));
-    }
+    /** 페이지 정보 보관하는 useState */
+    const [page, setPage] = useState({
+        pno: 1,
+        title: "",
+        owner: "",
+        rDate: "",
+        document: "",
+    });
 
-    async function loadFromStorage() {
-        // Gets the previously stored editor contents.
-        const storageString = localStorage.getItem("editorContent");
-        return storageString
-          ? JSON.parse(storageString)
-          : undefined;
-      }
-
-      /** 페이지 로드될 때 스토리지에서 꺼내와서 editor 업데이트 */
-      useEffect(() => {
-          loadFromStorage().then((data) => {
-            console.log(data)
+    /** 페이지 로드될 때 이터 불러오기 */
+    useEffect(() => {
+        const selectDoc = async () => {
+            console.log(page);
             try {
-                for(let i=0 ; i < 1; i++){
-                    console.log(data[i])
-                    console.log(data[i].id)
-                    editor.insertBlocks(data, data[i].id, "after");
-                    console.log("성공")
+                const response = await getDocContent(page);
+                console.log(response);
+
+                if (editor.document.length === 1) {
+                    setPage(response);
+                    for(let i=0 ; i < 1; i++){
+                        const docView = JSON.parse(response.document);
+                        console.log(docView)                    
+                        editor.insertBlocks(docView, docView[i].id, "after");
+                        console.log("성공");
+                    }
                 }
             } catch (error) {
-              console.error('Error inserting inline content:', error);
+                console.log(error);
             }
-          });
-      }, []);
-
-      
-/** 여기까지 */
-
-
-    /** 데이터 확인용 핸들러 2개 */
-    const [blocks, setBlocks] = useState([]);
-
-    const editorSelectHandler = () => {
-        const selection = editor.getSelection();
-        if (selection !== undefined) {
-            setBlocks(selection.blocks);
-        } else {
-            setBlocks([editor.getTextCursorPosition().block]);
         }
+        selectDoc();
+    }, []);
+
+    /** 서버로 데이터 전송 테스트 */
+    const submitDoc = async () => {
+        // 에디터에 입력한 내용 JSON으로 변환
+        const docContent  = JSON.stringify(editor.document);
+
+        try {
+            const response = await saveDoc({...page, document: docContent});
+            console.log(response);
+            setPage(response);
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
-    const check = () => {
-        console.log(editor.document)
-        console.log(doc)
-        console.log(editor)
-    }
-    /** 여기까지 */
+/** 여기까지 */
 
   return (
     <div className='pageMain'>
         <BlockNoteView
             editor={editor}
-            onSelectionChange={editorSelectHandler}
-            onChange={() => {
-                saveToStorage(editor.document)}}
         />
-        <div>Selection JSON:</div>
-        <div className={"item bordered"}>
-            <pre>
-                <code>{JSON.stringify(blocks, null, 2)}</code>
-            </pre>
-        </div>
-        <button onClick={check}>확인</button>
+        <button onClick={submitDoc}>저장</button>
     </div>
   )
 }
