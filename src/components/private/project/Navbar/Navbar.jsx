@@ -1,9 +1,9 @@
 import React from 'react';
 import './Navbar.css';
-export default function Navbar(switchTheme, selectedKanbanName) {
+export default function Navbar({switchTheme, selectedKanbanName}) {
     return (
         <div className="navbar">
-            <h2>{selectedKanbanName ? `${selectedKanbanName} Board` : 'Kanban Board'}</h2>
+            <h2>{selectedKanbanName ? `${selectedKanbanName}` : 'Kanban Board'}</h2>
             <div>
                 <input
                     type="checkbox"

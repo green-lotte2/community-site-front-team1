@@ -32,3 +32,9 @@ export const postBoard = async (data) => {
     const response = await axios.post(`${rootURL}/addBoard`, data);
     return response.data;
 };
+
+export const getKanbanDataById = async (kanbanId) => {
+    // Implement the API call to get kanban details by ID
+    const response = await axios.get(`${rootURL}/${kanbanId}`);
+    return response.data;
+};

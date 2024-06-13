@@ -7,12 +7,30 @@ import { v4 as uuidv4 } from 'uuid';
 import Editable from './Editable/Editable';
 import useLocalStorage from 'use-local-storage';
 import '../../../bootstrap.css';
-import { postBoard } from '../../../api/KanbanApi';
+import { getKanbanDataById, postBoard } from '../../../api/KanbanApi';
 
-const ProjectBoxComponent = (kanbanName, kanbanNo) => {
-    const [data, setData] = useState(
-        localStorage.getItem('kanban-board') ? JSON.parse(localStorage.getItem('kanban-board')) : []
-    );
+const ProjectBoxComponent = ({kanbanName, kanbanNo}) => {
+    console.log('여기', kanbanNo);
+    console.log('여기', kanbanName);
+    const [data, setData] = useState([]);
+
+    /** 칸반 아이디로 조회 */
+
+    const fetchKanbanData = async (kanbanId) => {
+        try {
+            const response = await getKanbanDataById(kanbanId); // Assume this is your API call
+            setData(response);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        if (kanbanNo) {
+            console.log('번호',kanbanNo);
+            fetchKanbanData(kanbanNo);
+        }
+    }, [kanbanNo]);
 
     const defaultDark = window.matchMedia('(prefers-colors-scheme: dark)').matches;
     const [theme, setTheme] = useLocalStorage('theme', defaultDark ? 'dark' : 'light');
@@ -30,25 +48,31 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
 
     const dragCardInBoard = (source, destination) => {
         let tempData = [...data];
-        const destinationBoardIdx = tempData.findIndex((item) => item.id.toString() === destination.droppableId);
-        const sourceBoardIdx = tempData.findIndex((item) => item.id.toString() === source.droppableId);
-        tempData[destinationBoardIdx].card.splice(destination.index, 0, tempData[sourceBoardIdx].card[source.index]);
+        const destinationBoardIdx = tempData.findIndex(
+          (item) => item.id.toString() === destination.droppableId
+        );
+        const sourceBoardIdx = tempData.findIndex(
+          (item) => item.id.toString() === source.droppableId
+        );
+        tempData[destinationBoardIdx].card.splice(
+          destination.index,
+          0,
+          tempData[sourceBoardIdx].card[source.index]
+        );
         tempData[sourceBoardIdx].card.splice(source.index, 1);
+    
+        return tempData;
+      };
 
+      const dragCardInSameBoard = (source, destination) => {
+        let tempData = [...data];
+        const boardIdx = tempData.findIndex(
+            (item) => item.id.toString() === source.droppableId
+        );
+        const [movedCard] = tempData[boardIdx].card.splice(source.index, 1);
+        tempData[boardIdx].card.splice(destination.index, 0, movedCard);
         return tempData;
     };
-
-    // const dragCardInSameBoard = (source, destination) => {
-    //   let tempData = Array.from(data);
-    //   console.log("Data", tempData);
-    //   const index = tempData.findIndex(
-    //     (item) => item.id.toString() === source.droppableId
-    //   );
-    //   console.log(tempData[index], index);
-    //   let [removedCard] = tempData[index].card.splice(source.index, 1);
-    //   tempData[index].card.splice(destination.index, 0, removedCard);
-    //   setData(tempData);
-    // };
 
     const addCard = (title, bid) => {
         const index = data.findIndex((item) => item.id === bid);
@@ -60,6 +84,7 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
             task: [],
         });
         setData(tempData);
+        fetchKanbanData();
     };
 
     const removeCard = (boardId, cardId) => {
@@ -93,11 +118,14 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
     const onDragEnd = (result) => {
         const { source, destination } = result;
         if (!destination) return;
-
-        if (source.droppableId === destination.droppableId) return;
-
-        setData(dragCardInBoard(source, destination));
-    };
+    
+        if (source.droppableId === destination.droppableId) {
+          setData(dragCardInSameBoard(source, destination));
+        }else{
+           setData(dragCardInBoard(source, destination));
+        }
+   
+      };
 
     const updateCard = (bid, cid, card) => {
         const index = data.findIndex((item) => item.id === bid);
