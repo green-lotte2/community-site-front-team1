@@ -1,58 +1,126 @@
 import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
-import DocEditor from './DocEditor';
+import { BlockNoteView } from "@blocknote/mantine";
+import { useCreateBlockNote } from "@blocknote/react";
+import { WebrtcProvider } from "y-webrtc";
+import * as Y from "yjs";
+import "@blocknote/core/fonts/inter.css";
+import "@blocknote/mantine/style.css";
+import { getDocContent, saveDoc } from "../../../api/DocApi";
 
-const DocWriteComponent = () => {
+const DocWriteComponent = ({eachDocView}) => {
 
-    const [rows, setRows] = useState([{ id: uuidv4(), value: '' }]);
-    const inputRefs = useRef([]);
+    const doc = new Y.Doc();
+    const provider = useRef(null);
+    const destory = {
+        id: "initialBlockId",
+        type: "paragraph",
+        content: "",
+        props : {
+          textColor: "default",
+          backgroundColor: "default",
+          textAlignment: "left",
+        }
+      }
 
+    /** 에디터 기본 설정 (collaboration) */
+    const editor = useCreateBlockNote({
+        defaultStyles: true,
+        uploadFile: (file) => Promise.resolve(''),
+        collaboration: {
+            provider: provider.current,
+            fragment: doc.getXmlFragment("document-store"),
+            user: {
+                name: "My Username",
+                color: "#ff0000",
+            },
+        },
+    });
+
+    /** 소켓 연결 useEffect */
     useEffect(() => {
-        // 마지막 입력 필드에 포커스를 맞춥니다.
-        if (inputRefs.current.length > 0) {
-        inputRefs.current[inputRefs.current.length - 1].focus();
-        }
-    }, [rows]);
+        let roomId = "docId" + eachDocView;
+        if (eachDocView) {
+            provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws://127.0.0.1:8080/onepie/doc'] });
 
-    const handleKeyPress = (event, index) => {
-        if (event.key === 'Enter') {
-        setRows([...rows, { id: uuidv4(), value: '' }]);
+            return () => {
+                //submitDoc();
+                provider.current.destroy();
+            };
         }
-    };
+    }, [eachDocView]);
 
-    const handleChange = (event, index) => {
-        const updatedRows = rows.map((row, i) => {
-        if (i === index) {
-            return { ...row, value: event.target.value };
+
+    /** 페이지 정보 보관하는 useState */
+    const [page, setPage] = useState({
+        pno: "",
+        title: "",
+        owner: "",
+        rDate: "",
+        document: "",
+    });
+
+    /** 페이지 로드될 때 이터 불러오기 */
+    useEffect(() => {
+        const selectDoc = async () => {
+            try {
+                const response = await getDocContent(eachDocView);
+                if (editor.document.length === 1) {
+                    setPage(response);
+                    for(let i=0 ; i < 1; i++){
+                        const docView = JSON.parse(response.document);
+                        console.log(typeof docView)
+                        
+                        editor.replaceBlocks(editor.document, docView); 
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
-        return row;
-        });
-        setRows(updatedRows);
-    };
+        selectDoc();
+    }, [eachDocView]);
+
+    /** 서버로 데이터 전송 테스트 */
+    const submitDoc = async () => {
+        // 에디터에 입력한 내용 JSON으로 변환
+        const docContent  = JSON.stringify(editor.document);
+
+        try {
+            const response = await saveDoc({...page, document: docContent});
+            setPage(response);
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }
+/** 여기까지 */
 
 
   return (
-    <div className="contentBox boxStyle8">
-        <div className="chatInfo" style={{justifyContent:"space-between", padding:"20px 0"}}>
-            <div>문서 이름</div>
-            <label htmlFor="" style={{display:"flex"}}>
-                <span>
-                    <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
-                </span>
-                <span>
-                    <FontAwesomeIcon icon={faGear} /> &nbsp;설정
-                </span>
-            </label>
-        </div>
-
-        <div className='docEditor'>
-            {/** 여기 */}
-            <DocEditor/>
-        </div>
-
+    <>
+    <div className="chatInfo" style={{justifyContent:"space-between", padding:"20px 0"}}>
+        <div>문서 이름 {eachDocView} </div>
+        <label htmlFor="" style={{display:"flex"}}>
+            <span>
+                <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
+            </span>
+            <span>
+                <FontAwesomeIcon icon={faGear} /> &nbsp;설정
+            </span>
+        </label>
     </div>
+
+    <div className='docEditor'>
+        {/** 여기 */}
+        <div className='pageMain'>
+            {page && <BlockNoteView editor={editor}/>}
+            
+            <button onClick={submitDoc}>저장</button>
+        </div>
+    </div>
+    </>
   )
 }
 
