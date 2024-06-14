@@ -198,7 +198,13 @@ const ViewPage = () => {
                         <p>첨부파일목록</p>
                         {fileList.map((file, index) => (
                             <div key={index}>
-                                <Link to="#" onClick={() => handFileDownload(file.fileNo, file.fileOname)}>
+                                <Link
+                                    to="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handFileDownload(file.fileNo, file.fileOname);
+                                    }}
+                                >
                                     {file.fileOname}
                                 </Link>
                             </div>

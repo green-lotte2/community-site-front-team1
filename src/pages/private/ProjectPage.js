@@ -4,6 +4,7 @@ import ProjectListComponent from '../../components/private/project/ProjectListCo
 import ProjectBoxComponent from '../../components/private/project/ProjectBoxComponent';
 import { getKanban } from '../../api/KanbanApi';
 import { useSelector } from 'react-redux';
+import '../../index.scss';
 
 const ProjectPage = () => {
     const [kanbanList, setKanbanList] = useState([]);
@@ -40,7 +41,11 @@ const ProjectPage = () => {
                     kanbanData={kanbanData}
                 />
 
-                <ProjectBoxComponent kanbanName={selectedKanbanName} kanbanNo={selectedKanbanNo} />
+                <div className="contentBox boxStyle8">
+                    {selectedKanbanNo && (
+                        <ProjectBoxComponent kanbanName={selectedKanbanName} kanbanNo={selectedKanbanNo} />
+                    )}
+                </div>
             </div>
         </MainLayout>
     );

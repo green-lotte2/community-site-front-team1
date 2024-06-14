@@ -24,8 +24,21 @@ export const postKanbanMember = async (data) => {
 };
 
 export const getKanban = async (data) => {
-    const response = await axios.get(`${rootURL}/list?kanbanStf=${data}`);
-    return response.data;
+    try {
+        const response = await axios.get(`${rootURL}/list?kanbanStf=${data}`);
+        return response.data;
+    } catch (err) {
+        console.log('fail to getKanban', err);
+    }
+};
+
+export const deleteBoard = async (id) => {
+    try {
+        const response = await axios.delete(`${rootURL}/${id}`);
+        return response.data;
+    } catch (err) {
+        console.log('fail to remove', err);
+    }
 };
 
 export const postBoard = async (data) => {
