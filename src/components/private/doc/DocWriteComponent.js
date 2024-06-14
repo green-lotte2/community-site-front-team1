@@ -9,20 +9,38 @@ import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import { getDocContent, saveDoc } from "../../../api/DocApi";
 
-const DocWriteComponent = ({eachDocView}) => {
+const DocWriteComponent = ({eachDocView, submitDoc}) => {
 
     const doc = new Y.Doc();
     const provider = useRef(null);
-    const destory = {
-        id: "initialBlockId",
-        type: "paragraph",
-        content: "",
-        props : {
-          textColor: "default",
-          backgroundColor: "default",
-          textAlignment: "left",
+
+    /** 제목 관리 */
+    const [docTitle, setDocTitle] = useState("");
+
+    /** 페이지 정보 보관하는 useRef */
+    const pageRef = useRef({
+        pno: "",
+        title: "",
+        owner: "",
+        rDate: "",
+        document: "",
+    });
+
+    /** 랜더링 시점 관리 useState */
+    const [loading, setLoading] = useState(false);
+
+    /** 소켓 연결 useEffect */
+    useEffect(() => {
+        let roomId = "docId" + eachDocView;
+        if (eachDocView) {
+            provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws://127.0.0.1:8080/onepie/doc'] });
+
+            return () => {
+                submitDoc(editor.document, pageRef.current);
+                provider.current.destroy();
+            };
         }
-      }
+    }, [eachDocView]);
 
     /** 에디터 기본 설정 (collaboration) */
     const editor = useCreateBlockNote({
@@ -38,70 +56,42 @@ const DocWriteComponent = ({eachDocView}) => {
         },
     });
 
-    /** 소켓 연결 useEffect */
-    useEffect(() => {
-        let roomId = "docId" + eachDocView;
-        if (eachDocView) {
-            provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws://127.0.0.1:8080/onepie/doc'] });
-
-            return () => {
-                //submitDoc();
-                provider.current.destroy();
-            };
-        }
-    }, [eachDocView]);
-
-
-    /** 페이지 정보 보관하는 useState */
-    const [page, setPage] = useState({
-        pno: "",
-        title: "",
-        owner: "",
-        rDate: "",
-        document: "",
-    });
-
-    /** 페이지 로드될 때 이터 불러오기 */
+    /** 페이지 로드될 때 데이터 불러오기 */
     useEffect(() => {
         const selectDoc = async () => {
             try {
                 const response = await getDocContent(eachDocView);
+                pageRef.current = response;
+                setDocTitle(response.title);
+                setLoading(true);
+                console.log(editor.document.length)
                 if (editor.document.length === 1) {
-                    setPage(response);
-                    for(let i=0 ; i < 1; i++){
-                        const docView = JSON.parse(response.document);
-                        console.log(typeof docView)
-                        
-                        editor.replaceBlocks(editor.document, docView); 
-                    }
+                    console.log(response.document)
+                    const docView = JSON.parse(response.document);
+                    editor.replaceBlocks(editor.document, docView); 
                 }
             } catch (error) {
                 console.log(error);
             }
         }
         selectDoc();
-    }, [eachDocView]);
+    }, []);
 
-    /** 서버로 데이터 전송 테스트 */
-    const submitDoc = async () => {
-        // 에디터에 입력한 내용 JSON으로 변환
-        const docContent  = JSON.stringify(editor.document);
-
-        try {
-            const response = await saveDoc({...page, document: docContent});
-            setPage(response);
-        } catch (error) {
-            console.log(error);
-        }
-        
-    }
+    const handleChange = (e) => {
+        setDocTitle(e.target.value);
+        pageRef.current.title = e.target.value;
+    };
 /** 여기까지 */
 
 
   return (
     <>
     <div className="chatInfo" style={{justifyContent:"space-between", padding:"20px 0"}}>
-        <div>문서 이름 {eachDocView} </div>
+        <div>
+            {loading &&  
+                <input type="text" value={docTitle} onChange={handleChange}/>
+            }
+        </div>
         <label htmlFor="" style={{display:"flex"}}>
             <span>
                 <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
@@ -115,9 +105,7 @@ const DocWriteComponent = ({eachDocView}) => {
     <div className='docEditor'>
         {/** 여기 */}
         <div className='pageMain'>
-            {page && <BlockNoteView editor={editor}/>}
-            
-            <button onClick={submitDoc}>저장</button>
+            {pageRef && <BlockNoteView editor={editor}/>}
         </div>
     </div>
     </>
