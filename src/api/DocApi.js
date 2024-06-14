@@ -7,7 +7,7 @@ export const getDocList = async (userId) =>{
     const response = await axios.post(`${rootURL}/doc/list`, userId, {
         headers: {
             'Content-Type': 'application/json'
-          },
+        },
     });
     return response.data;
 }
@@ -23,7 +23,17 @@ export const getDocContent = async (page) =>{
     const response = await axios.post(`${rootURL}/doc/view`, page, {
         headers: {
             'Content-Type': 'application/json'
-          },
+        },  
+    });
+    return response.data;
+}
+
+// 새 문서 생성
+export const setNewDoc = async (userId) =>{
+    const response = await axios.post(`${rootURL}/doc/create`, userId, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
     });
     return response.data;
 }
