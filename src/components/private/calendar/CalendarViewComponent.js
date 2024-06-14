@@ -56,7 +56,8 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         { id: "5", name: "미정" },
       ],
       useDetailPopup: true, // 이벤트 상세 팝업 사용
-      useFormPopup: true,
+      useFormPopup: true, // 폼 팝업 사용
+      
     };
 
     const calendar = new Calendar(container, options);
@@ -135,44 +136,59 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
   });
     
 
-    calendar.on("beforeUpdateEvent", async ({ event, changes }) => {
-      // 수정 권한 체크
-      if (selectedCalendar.ownerStfNo !== loginSlice.userId && 
-          !selectedCalendar.members.some(member => member.stfNo === loginSlice.userId)) {
-        alert("이벤트를 수정할 권한이 없습니다.");
-        return;
-      }
-
-      const calendarId = changes.calendarId || event.calendarId;
-      const start = changes.start ? Moment(changes.start.toDate()).format("YYYY-MM-DD[T]HH:mm:ss") : event.start;
-      const end = changes.end ? Moment(changes.end.toDate()).format("YYYY-MM-DD[T]HH:mm:ss") : event.end;
-
-      const updatedEvent = {
-        eventNo: event.id,  // 고유 식별자로 event.id 사용
-        calendarId,
-        title: changes.title || event.title,
-        location: changes.location || event.location,
-        start,
-        end,
-        state: changes.state || event.state,
-        isAllDay: changes.isAllDay !== undefined ? changes.isAllDay : event.isAllDay,
-        isReadOnly: changes.isReadOnly !== undefined ? changes.isReadOnly : event.isReadOnly,
-        backgroundColor: changes.backgroundColor || event.backgroundColor || getRandomColor(),
-        color: changes.color || event.color || "#FFFFFF",
-        stfNo: loginSlice.userId // 수정한 사람의 ID로 업데이트
-      };
-
-      console.log("Updating event:", updatedEvent);
-
-      try {
-        await axios.post(`${url}/events/modify/${event.id}`, updatedEvent);
-        console.log("Event updated successfully");
-        calendar.updateEvent(event.id, updatedEvent);
-      } catch (err) {
-        console.error("Failed to update event:", err);
-      }
-    });
-
+  calendar.on("beforeUpdateEvent", async ({ event, changes }) => {
+    // 수정 권한 체크
+    if (selectedCalendar.ownerStfNo !== loginSlice.userId && 
+        !selectedCalendar.members.some(member => member.stfNo === loginSlice.userId)) {
+      alert("이벤트를 수정할 권한이 없습니다.");
+      return;
+    }
+  
+    // 기존 calendarId를 유지하거나 변경된 값 설정
+    const calendarId = changes.calendarId || event.calendarId;
+  
+    // TZDate 객체를 처리하여 문자열로 변환
+    const start = changes.start ? Moment(changes.start.toDate()).format("YYYY-MM-DD[T]HH:mm:ss") : Moment(event.start.toDate()).format("YYYY-MM-DD[T]HH:mm:ss");
+    const end = changes.end ? Moment(changes.end.toDate()).format("YYYY-MM-DD[T]HH:mm:ss") : Moment(event.end.toDate()).format("YYYY-MM-DD[T]HH:mm:ss");
+  
+    // 모든 필드를 업데이트
+    const updatedEvent = {
+      eventNo: event.id,
+      calendarId,
+      eventId: changes.eventId !== undefined ? changes.eventId : event.eventId, // 변경된 eventId 또는 기존 eventId 유지
+      title: changes.title || event.title,
+      location: changes.location || event.location,
+      start,
+      end,
+      state: changes.state || event.state,
+      isAllDay: changes.isAllDay !== undefined ? changes.isAllDay : event.isAllDay,
+      isReadOnly: changes.isReadOnly !== undefined ? changes.isReadOnly : event.isReadOnly,
+      backgroundColor: changes.backgroundColor || event.backgroundColor || getRandomColor(),
+      color: changes.color || event.color || "#FFFFFF",
+      stfNo: loginSlice.userId // 수정한 사람의 ID로 업데이트
+    };
+  
+    console.log("Updating event:", updatedEvent);
+  
+    try {
+      await axios.post(`${url}/events/modify/${event.id}`, updatedEvent);
+      console.log("Event updated successfully");
+  
+      // 기존 이벤트 객체를 업데이트
+      calendar.updateEvent(event.id, event.calendarId, {
+        ...event,
+        ...changes,
+        start: new Date(start),
+        end: new Date(end),
+      });
+      
+    } catch (err) {
+      console.error("Failed to update event:", err);
+      setError("일정이 저장되지 않았습니다.");
+    }
+  });
+  
+ 
     calendar.on("beforeDeleteEvent", async (event) => {
       // 삭제 권한 체크
       if (selectedCalendar.ownerStfNo !== loginSlice.userId && 

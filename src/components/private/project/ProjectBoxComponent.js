@@ -7,12 +7,30 @@ import { v4 as uuidv4 } from 'uuid';
 import Editable from './Editable/Editable';
 import useLocalStorage from 'use-local-storage';
 import '../../../bootstrap.css';
-import { postBoard } from '../../../api/KanbanApi';
+import { getKanbanDataById, postBoard } from '../../../api/KanbanApi';
 
-const ProjectBoxComponent = (kanbanName, kanbanNo) => {
-    const [data, setData] = useState(
-        localStorage.getItem('kanban-board') ? JSON.parse(localStorage.getItem('kanban-board')) : []
-    );
+const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
+    console.log('여기', kanbanNo);
+    console.log('여기', kanbanName);
+    const [data, setData] = useState([]);
+
+    /** 칸반 아이디로 조회 */
+    const fetchKanbanData = async (kanbanId) => {
+        try {
+            const response = await getKanbanDataById(kanbanId);
+            setData(response);
+        } catch (err) {
+            console.log(err);
+            setData([]);
+        }
+    };
+
+    useEffect(() => {
+        if (kanbanNo) {
+            console.log('번호', kanbanNo);
+            fetchKanbanData(kanbanNo);
+        }
+    }, [kanbanNo]);
 
     const defaultDark = window.matchMedia('(prefers-colors-scheme: dark)').matches;
     const [theme, setTheme] = useLocalStorage('theme', defaultDark ? 'dark' : 'light');
@@ -21,11 +39,13 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
         setTheme(theme === 'light' ? 'dark' : 'light');
     };
 
-    const setName = (title, bid) => {
+    const setName = async (title, bid) => {
         const index = data.findIndex((item) => item.id === bid);
         const tempData = [...data];
         tempData[index].boardName = title;
         setData(tempData);
+        await postBoard(data);
+        fetchKanbanData(kanbanNo);
     };
 
     const dragCardInBoard = (source, destination) => {
@@ -38,19 +58,16 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
         return tempData;
     };
 
-    // const dragCardInSameBoard = (source, destination) => {
-    //   let tempData = Array.from(data);
-    //   console.log("Data", tempData);
-    //   const index = tempData.findIndex(
-    //     (item) => item.id.toString() === source.droppableId
-    //   );
-    //   console.log(tempData[index], index);
-    //   let [removedCard] = tempData[index].card.splice(source.index, 1);
-    //   tempData[index].card.splice(destination.index, 0, removedCard);
-    //   setData(tempData);
-    // };
+    const dragCardInSameBoard = (source, destination) => {
+        let tempData = [...data];
+        const boardIdx = tempData.findIndex((item) => item.id.toString() === source.droppableId);
+        const [movedCard] = tempData[boardIdx].card.splice(source.index, 1);
+        tempData[boardIdx].card.splice(destination.index, 0, movedCard);
+        return tempData;
+    };
 
-    const addCard = (title, bid) => {
+    /** 카드 */
+    const addCard = async (title, bid) => {
         const index = data.findIndex((item) => item.id === bid);
         const tempData = [...data];
         tempData[index].card.push({
@@ -60,46 +77,62 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
             task: [],
         });
         setData(tempData);
+
+        await postBoard(data);
+        fetchKanbanData(kanbanNo);
     };
 
-    const removeCard = (boardId, cardId) => {
+    const removeCard = async (boardId, cardId) => {
         const index = data.findIndex((item) => item.id === boardId);
         const tempData = [...data];
         const cardIndex = data[index].card.findIndex((item) => item.id === cardId);
 
         tempData[index].card.splice(cardIndex, 1);
+
         setData(tempData);
+        await postBoard(data);
+        fetchKanbanData(kanbanNo);
     };
 
     /** 보드 */
     const addBoard = async (title) => {
-        const newBoard = {
+        const tempData = [...data];
+        tempData.push({
             id: uuidv4(),
             boardName: title,
-            kanbanId: 12,
+            kanbanId: kanbanNo,
             card: [],
-        };
-        await postBoard(newBoard);
-        setData([...data, newBoard]);
+        });
+        setData(tempData);
+        console.log(tempData);
+        await postBoard(tempData);
+        fetchKanbanData(kanbanNo);
     };
 
-    const removeBoard = (bid) => {
+    const removeBoard = async (bid) => {
         const tempData = [...data];
         const index = data.findIndex((item) => item.id === bid);
         tempData.splice(index, 1);
         setData(tempData);
+        await postBoard(tempData);
+        fetchKanbanData(kanbanNo);
     };
 
-    const onDragEnd = (result) => {
+    const onDragEnd = async (result) => {
         const { source, destination } = result;
         if (!destination) return;
 
-        if (source.droppableId === destination.droppableId) return;
-
-        setData(dragCardInBoard(source, destination));
+        if (source.droppableId === destination.droppableId) {
+            setData(dragCardInSameBoard(source, destination));
+            await postBoard(data);
+        } else {
+            setData(dragCardInBoard(source, destination));
+            await postBoard(data);
+        }
+        fetchKanbanData(kanbanNo);
     };
 
-    const updateCard = (bid, cid, card) => {
+    const updateCard = async (bid, cid, card) => {
         const index = data.findIndex((item) => item.id === bid);
         if (index < 0) return;
 
@@ -112,6 +145,8 @@ const ProjectBoxComponent = (kanbanName, kanbanNo) => {
         tempBoards[index].card[cardIndex] = card;
         console.log(tempBoards);
         setData(tempBoards);
+        await postBoard(data);
+        fetchKanbanData(kanbanNo);
     };
 
     useEffect(() => {

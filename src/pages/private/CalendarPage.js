@@ -12,6 +12,7 @@ const CalendarPage = () => {
     const stfNo = loginSlice.userId || "";
     const stfName = loginSlice.username || "";
 
+    /** 캘린더 목록 */
     useEffect(() => {
         // 로그인된 사용자의 고유 캘린더 가져오기
         if (stfNo) {

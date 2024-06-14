@@ -63,6 +63,12 @@ const SideTabComponent = ({ sideTabCate, sideTabCateName, type }) => {
                         <p>프로젝트</p>
                     </>
                 )}
+                {sideTabCate === 'doc' && (
+                    <>
+                        <FontAwesomeIcon icon={faFileLines} />
+                        <p>문서</p>
+                    </>
+                )}
                 {sideTabCate === 'calendar' && (
                     <>
                         <FontAwesomeIcon icon={faCalendarDays} />
