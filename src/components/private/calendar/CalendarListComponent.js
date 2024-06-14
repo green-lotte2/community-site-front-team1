@@ -22,9 +22,6 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
             const allCalendars = response.data;
             console.log("Fetched Calendars:", allCalendars);
             setCalendars(allCalendars);
-            if (allCalendars.length > 0) {
-                onSelectCalendar(allCalendars[0]);
-            }
         } catch (error) {
             console.error("There was an error fetching the calendars!", error);
         }
@@ -38,11 +35,11 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
 
     const handelOpenModal = () => {
         setCreateCalendarRoom(true);
-    }
+    };
 
     const handelColseModal = () => {
         setCreateCalendarRoom(false);
-    }
+    };
 
     const handleCreate = (newCalendar) => {
         setCalendars((prevCalendars) => {
@@ -53,11 +50,11 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
             return prevCalendars;
         });
         onSelectCalendar(newCalendar);
-    }
+    };
 
     const handleSelectCalendar = (calendar) => {
         onSelectCalendar(calendar);
-    }
+    };
 
     return (
         <div className="contentBox boxStyle9">
@@ -87,7 +84,7 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
 
             {createCalendarRoom && <CreateCalendarModal handelColseModal={handelColseModal} onCreate={handleCreate} />}
         </div>
-    )
+    );
 }
 
 export default CalendarListComponent;
