@@ -29,7 +29,7 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
             console.error("There was an error fetching the calendars!", error);
         }
     };
-
+    
     useEffect(() => {
         if (stfNo) {
             fetchCalendars();
