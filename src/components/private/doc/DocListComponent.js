@@ -1,8 +1,9 @@
 import { faMessage, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { RootUrl } from '../../../api/RootUrl';
 
-const DocListComponent = ({docList, openDocument}) => {
+const DocListComponent = ({docList, openDocument, loginSlice}) => {
 
     /** 문서 생성 모달 관리 */
     const [openCreateDoc, setOpenCreateDoc] = useState(false);
@@ -18,10 +19,10 @@ const DocListComponent = ({docList, openDocument}) => {
   return (
     <div className="contentBox boxStyle9">
         <div className="chatInfo">
-            <img src="../images/iconSample3.png" alt="pro" />
+            <img src={`${RootUrl()}/images/${loginSlice.userImg}`} alt="pro" />
             <div>
-                <p>홍길동</p>
-                <p>abcd1234@gmail.com</p>
+                <p>{loginSlice.username}</p>
+                <p>{loginSlice.userEmail}</p>
             </div>
         </div>
 
