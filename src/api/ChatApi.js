@@ -61,7 +61,8 @@ export const findUser = async (data) => {
 export const saveUser = async (data) => {
 
     console.log('유저 세이브?',data);
-    const response = await axios.get(`${rootURL}/saveUser?id=${data.id}&roomId=${data.roomId}`);
+    console.log("유저 아이디",data.stfNo);
+    const response = await axios.get(`${rootURL}/saveUser?id=${data.stfNo}&roomId=${data.roomId}`);
     console.log(response)
     return response.data;
 };
