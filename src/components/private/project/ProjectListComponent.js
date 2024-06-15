@@ -35,14 +35,6 @@ const ProjectListComponent = ({ kanbanList, onSelectKanban, kanbanData }) => {
                 </div>
             </div>
 
-            <div className="projectList">
-                <FontAwesomeIcon icon={faClipboard} style={{ color: '#13a8ae' }} />
-                <div>
-                    <p>롯데온 프로젝트</p>
-                    <p>롯데온 쇼핑몰 만들기 프로젝트</p>
-                </div>
-            </div>
-
             {kanbanList.map((kanban) => (
                 <div
                     key={kanban.kanbanId}
