@@ -2275,10 +2275,35 @@ section {
     border: 1px solid #dddddd;
     border-radius: 4px;
     margin: 4px;
-    padding: 4px;
+    padding: 15px;
     cursor: pointer;
-    height: 32px;
+    height: 15px;
+    font-size: 18px;
+    color: #111;
 }
+
+.modalRow {
+    display: flex;
+    align-items: center;
+}
+
+.maR30 {
+    margin-right: 30px;
+}
+
+.inviteList span:hover,
+.inviteList span.selected {
+    background-color: lightgrey; /* 원하는 호버 색상으로 변경 */
+    color: white;
+}
+
+
+
+
+
+
+
+
 .emojiBox {
     position: absolute;
     display: flex;

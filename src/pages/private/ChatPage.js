@@ -24,25 +24,18 @@ const ChatPage = () => {
 
     const [isChatting,setIsChatting] = useState(false);
 
+    //방을 생성한 유저 아이디를 담음
+    const [createUser,setCreateUser] = useState(null);
+
    
-  const handleRoomSelect = async(roomId,name,id) => {//채팅방을 선택했을 때
+  const handleRoomSelect = async(roomId,name,id,create) => {//채팅방을 선택했을 때
     setIsChatting(false);
 
       setSelectedRoomId(roomId);
       setSelectedRoomName(name);
       setUserId(id);
+      setCreateUser(create);
       setIsChatting(true);  
-
-    
-    //const response = await getMessage(roomId);
-
-    //const messages = Array.isArray(response) ? response : [];
-    
-    //setChat(messages);
-
-    //console.log(response);
-
-   // setChat((prevChat) => [...prevChat, response]);
 
   };
 
@@ -58,8 +51,7 @@ const ChatPage = () => {
               <ChatListComponent onRoomSelect={handleRoomSelect} ></ChatListComponent>
   
               {/** 채팅방 - 제일처음 들어갔을 땐 이 페이지가 없어야함... */}
-              {isChatting?(<ChatRoomComponent roomId={selectedRoomId} roomname={selectedRoomName} id={userId} ></ChatRoomComponent>):(<p>채팅방을 선택해주세요...</p>)}{/*beforeMessage={chat} */}
-              
+              {isChatting?(<ChatRoomComponent roomId={selectedRoomId} roomname={selectedRoomName} id={userId} createUser={createUser} ></ChatRoomComponent>):(<p>채팅방을 선택해주세요...</p>)}{/*beforeMessage={chat} */}      
           </div>
           
       </MainLayout>

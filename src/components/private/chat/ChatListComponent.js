@@ -26,8 +26,10 @@ const ChatListComponent = ({ onRoomSelect }) => {
 
     const fetchRoomList = async () => {
         try {
-            const response = await getRoomList();
+            const response = await getRoomList(auth?.userId);
+
             setRoomList(response); 
+
             console.log(response);
         } catch (error) {
             console.error('방 목록 가져오기 오류:', error);
@@ -73,12 +75,12 @@ const ChatListComponent = ({ onRoomSelect }) => {
             </div>
 
             {roomList.map(room => (
-                <div key={room.roomId} className='chatRoomList'>
+                <div key={room.roomId} className='chatRoomList' onClick={() => onRoomSelect(room.roomId, room.name, id,room.stfNo)}>
                     <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae"}} />
                     <div>
-                        <p onClick={() => onRoomSelect(room.roomId, room.name, id)}>{room.name}</p>
+                        <p>{room.name}</p>
                     </div>
-                    <span className='ballCount'>1</span>
+                    {/*<span className='ballCount'>1</span>*/}
                 </div>
             ))}
             
