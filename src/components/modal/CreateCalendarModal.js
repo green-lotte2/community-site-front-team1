@@ -30,7 +30,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                 // 로그인한 사용자를 초대 목록에 자동으로 추가
                 setInviteList((prevInviteList) => {
                     if (!prevInviteList.some(invite => invite.stfNo === stfNo)) {
-                        return [...prevInviteList, { stfNo, stfName }];
+                        return [...prevInviteList, { stfNo, stfName, stfImg: loginSlice.userImg }];
                     }
                     return prevInviteList;
                 });
@@ -40,7 +40,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
             }
         };
         fetchData();
-    }, [stfNo, stfName]);
+    }, [stfNo, stfName, loginSlice.userImg]);
 
     // 멤버 클릭 시 초대 목록에 추가 또는 제거하는 함수
     const handleMemberClick = (member) => {
@@ -127,7 +127,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                 handelColseModal(); // 모달 닫기
             })
             .catch(error => {
-                console.error("There was an error creating the calendar!", error);
+                console.error("캘린더 생성 중 오류가 발생했습니다!", error);
             });
     };
 
@@ -218,8 +218,14 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                                         <span
                                             key={index}
                                             onClick={() => handleRemoveInvite(member)}
-                                            style={{ cursor: 'pointer' }}
+                                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                                         >
+                                            <img
+                                                src={`${RootUrl()}/images/${member.stfImg}`}
+                                                alt="sft"
+                                                name="stfImg"
+                                                style={{ width: '30px', borderRadius: '50%', marginRight: '5px' }}
+                                            />
                                             {member.stfName || member.name}
                                         </span>
                                     ))}
