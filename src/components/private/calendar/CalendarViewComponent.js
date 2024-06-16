@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import Moment from "moment";
 import "moment/locale/ko";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 import { FaCalendarAlt, FaCalendarWeek } from "react-icons/fa";
 import { MdNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
@@ -127,9 +127,10 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
       try {
         const response = await axios.post(`${url}/events/insert`, newEvent);
         const createdEvent = response.data;
-        newEvent.eventNo = createdEvent.eventNo; // 백엔드에서 생성된 eventNo를 받아서 설정
+        newEvent.id = createdEvent.eventNo; // 백엔드에서 생성된 eventNo를 받아서 설정
         calendar.createEvents([newEvent]);
         console.log("Event inserted successfully");
+
       } catch (err) {
         console.error("Failed to insert event:", err);
         setError("일정이 저장되지 않았습니다.");
@@ -173,15 +174,15 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
       try {
         await axios.post(`${url}/events/modify/${event.id}`, updatedEvent);
         console.log("Event updated successfully");
-    
-        // 기존 이벤트 객체를 업데이트
+
+        // Update the event in the calendar instance
         calendar.updateEvent(event.id, event.calendarId, {
           ...event,
           ...changes,
           start: new Date(start),
           end: new Date(end),
         });
-        
+
       } catch (err) {
         console.error("Failed to update event:", err);
         setError("일정이 저장되지 않았습니다.");
@@ -197,10 +198,12 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
       }
 
       const calendarId = event.calendarId;
-      calendar.deleteEvent(event.id, calendarId);
       try {
-        await axios.get(`${url}/events/delete?eventNo=${event.id}`); // 수정
-        console.log("Event deleted successfully");
+        const response = await axios.get(`${url}/events/delete?eventNo=${event.id}`); // 수정
+        if(response.status === 200){
+          calendar.deleteEvent(event.id, calendarId);
+          console.log("Event deleted successfully");
+        }
       } catch (err) {
         console.error("Failed to delete event:", err);
       }
@@ -313,8 +316,30 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
   // 모달에서 멤버 추가 후 핸들러
   const handleAddMembers = (newMembers) => {
     // 여기서 새로운 멤버를 처리하는 로직을 추가할 수 있습니다.
+    alert("멤버가 추가되었습니다."); // 멤버 추가 시 alert
     console.log("Added members:", newMembers);
     setIsModalOpen(false);
+  };
+
+  // 나가기 버튼 클릭 핸들러
+  const handleLeaveCalendar = async () => {
+    try {
+      const response = await axios.delete(`${RootUrl()}/calendarMembers/leave`, {
+        data: {
+          calendarId: selectedCalendar.calendarId,
+          stfNo: loginSlice.userId,
+        },
+      });
+
+      if (response.status === 200) {
+        alert("캘린더에서 나갔습니다."); // 나가기 시 alert
+        console.log("Successfully left the calendar");
+        // 필요한 경우 상위 컴포넌트에 알리기 위해 추가 로직을 작성할 수 있습니다.
+        window.location.reload(); // 화면 새로고침
+      }
+    } catch (err) {
+      console.error("Failed to leave the calendar:", err);
+    }
   };
 
   return (
@@ -323,9 +348,14 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         <div>{selectedCalendar.title}</div>
         <label htmlFor="" style={{ display: "flex" }}>
           {!selectedCalendar.title.startsWith('나의 캘린더') && (
-            <span onClick={handleAddMembersClick} style={{ cursor: 'pointer' }}>
-              <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
-            </span>
+            <>
+              <span onClick={handleAddMembersClick} style={{ cursor: 'pointer', marginRight: '10px' }}>
+                <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
+              </span>
+              <span onClick={handleLeaveCalendar} style={{ cursor: 'pointer' }}>
+                <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
+              </span>
+            </>
           )}
         </label>
       </div>

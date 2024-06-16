@@ -8,11 +8,11 @@
 
   "dependencies": {
 
-    "@blocknote/core": "^0.14.0",
+    "@blocknote/core": "^0.14.1",
 
-    "@blocknote/mantine": "^0.14.0",
+    "@blocknote/mantine": "^0.14.1",
 
-    "@blocknote/react": "^0.14.0",
+    "@blocknote/react": "^0.14.1",
 
     "@editorjs/code": "^2.9.0",
 
