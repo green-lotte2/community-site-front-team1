@@ -5,7 +5,7 @@ import GroupBodyComponent from '../common/private/GroupBodyComponent';
 import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
 
-const AddStfComponent = ({ onClose }) => {
+const AddStfComponent = ({ onClose, findStf, id }) => {
     /* 
     각자 페이지에서 협업자 목록 
     삭제된 사람 stfNo 저장 하는 스테이트
@@ -51,8 +51,29 @@ const AddStfComponent = ({ onClose }) => {
         fetchData();
 
         if (loginSlice.userId) {
-            setInviteList([{ stfNo: loginSlice.userId, stfName: loginSlice.username, stfImg: loginSlice.userImg }]);
+            setInviteList(prevList => [...prevList, { stfNo: loginSlice.userId, stfName: loginSlice.username, stfImg: loginSlice.userImg }]);
         }
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // stf 소속된 kanban pk
+                const response = await findStf(id);
+                console.log(response);
+                const updatedInviteList = response.map(kanbanStf => ({
+                    // response 에 stfNo, stfName, stfImg 가 있어야 함.(일단 stfNo 만 반환받아 만들어놓음)
+                    stfName : kanbanStf.stfNo
+                }));
+              
+                setInviteList(prevList => [...prevList, ...updatedInviteList]);
+            } catch (err) {
+                console.log(err);
+            }
+        
+        };
+
+        fetchData();
     }, []);
 
     const handleMemberClick = async (member) => {

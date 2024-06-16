@@ -47,7 +47,11 @@ export const postBoard = async (data) => {
 };
 
 export const getKanbanDataById = async (kanbanId) => {
-    // Implement the API call to get kanban details by ID
     const response = await axios.get(`${rootURL}/${kanbanId}`);
     return response.data;
 };
+
+export const getStfList = async(kanbanId) => {
+    const response = await axios.get(`${rootURL}/stfList/${kanbanId}`);
+    return response.data;
+}
