@@ -97,13 +97,14 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
           calendar.createEvents([newEvent]);
         });
       } catch (err) {
-        console.error("Failed to fetch events:", err);
+        console.error("이벤트를 불러오지 못했습니다.", err);
         setError("일정을 불러오지 못했습니다.");
       }
     };
 
     fetchEvents();
 
+    // 새로운 이벤트 생성 전에 호출되는 핸들러
     calendar.on("beforeCreateEvent", async (event) => {
       const calendarId = selectedCalendar.calendarId;
       const eventType = options.calendars.find(cal => cal.id === event.calendarId)?.id || "defaultEventId";
@@ -129,14 +130,15 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         const createdEvent = response.data;
         newEvent.id = createdEvent.eventNo; // 백엔드에서 생성된 eventNo를 받아서 설정
         calendar.createEvents([newEvent]);
-        console.log("Event inserted successfully");
+        console.log("이벤트가 성공적으로 추가되었습니다.");
 
       } catch (err) {
-        console.error("Failed to insert event:", err);
+        console.error("이벤트를 추가하지 못했습니다.", err);
         setError("일정이 저장되지 않았습니다.");
       }
     });
     
+    // 이벤트 수정 전에 호출되는 핸들러
     calendar.on("beforeUpdateEvent", async ({ event, changes }) => {
       // 수정 권한 체크
       if (selectedCalendar.ownerStfNo !== loginSlice.userId && 
@@ -173,9 +175,9 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
     
       try {
         await axios.post(`${url}/events/modify/${event.id}`, updatedEvent);
-        console.log("Event updated successfully");
+        console.log("이벤트가 성공적으로 업데이트되었습니다.");
 
-        // Update the event in the calendar instance
+        // 캘린더 인스턴스에서 이벤트 업데이트
         calendar.updateEvent(event.id, event.calendarId, {
           ...event,
           ...changes,
@@ -184,11 +186,12 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         });
 
       } catch (err) {
-        console.error("Failed to update event:", err);
+        console.error("이벤트를 업데이트하지 못했습니다.", err);
         setError("일정이 저장되지 않았습니다.");
       }
     });
     
+    // 이벤트 삭제 전에 호출되는 핸들러
     calendar.on("beforeDeleteEvent", async (event) => {
       // 삭제 권한 체크
       if (selectedCalendar.ownerStfNo !== loginSlice.userId && 
@@ -202,13 +205,14 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         const response = await axios.get(`${url}/events/delete?eventNo=${event.id}`); // 수정
         if(response.status === 200){
           calendar.deleteEvent(event.id, calendarId);
-          console.log("Event deleted successfully");
+          console.log("이벤트가 성공적으로 삭제되었습니다.");
         }
       } catch (err) {
-        console.error("Failed to delete event:", err);
+        console.error("이벤트를 삭제하지 못했습니다.", err);
       }
     });
 
+    // 캘린더 테마 설정
     calendar.setTheme({
       month: {
         startDayOfWeek: 0,
@@ -243,32 +247,38 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
     };
   }, [selectedCalendar]);
 
+  // 다음 달 버튼 클릭 핸들러
   const handleClickNextButton = () => {
     calendarInstance.current.next();
     setCurrentMonth(calendarInstance.current.getDate().getMonth() + 1);
     setCurrentYear(calendarInstance.current.getDate().getFullYear());
   };
 
+  // 이전 달 버튼 클릭 핸들러
   const handleClickPrevButton = () => {
     calendarInstance.current.prev();
     setCurrentMonth(calendarInstance.current.getDate().getMonth() + 1);
     setCurrentYear(calendarInstance.current.getDate().getFullYear());
   };
 
+  // 주간 보기로 변경
   const weekChangeButton = () => {
     calendarInstance.current.changeView("week");
   };
 
+  // 월간 보기로 변경
   const monthChangeButton = () => {
     calendarInstance.current.changeView("month");
   };
 
+  // 오늘 날짜로 이동
   const goToday = () => {
     calendarInstance.current.today();
     setCurrentMonth(calendarInstance.current.getDate().getMonth() + 1);
     setCurrentYear(calendarInstance.current.getDate().getFullYear());
   };
 
+  // 버튼 스타일 정의
   const buttonStyle = {
     borderRadius: "25px",
     border: "2px solid #ddd",
@@ -338,7 +348,7 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         window.location.reload(); // 화면 새로고침
       }
     } catch (err) {
-      console.error("Failed to leave the calendar:", err);
+      console.error("캘린더에서 나가는 데 실패했습니다.", err);
     }
   };
 
