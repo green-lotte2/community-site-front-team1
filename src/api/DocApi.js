@@ -37,3 +37,25 @@ export const setNewDoc = async (userId) =>{
     });
     return response.data;
 }
+
+// 문서 파일 저장
+export const saveDocFile = async (formData) =>{
+    const response = await axios.post(`${rootURL}/doc/file`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+    });
+    return response.data;
+}
+
+// 현재 문서의 공동 작업자 목록 조회
+export const selectMember = async (pno) =>{
+    const response = await axios.get(`${rootURL}/doc/member/${pno}`);
+    return response.data;
+}
+
+// 현재 문서 삭제
+export const deleteDocApi = async (pno) =>{
+    const response = await axios.get(`${rootURL}/doc/delete/${pno}`);
+    return response.data;
+}
