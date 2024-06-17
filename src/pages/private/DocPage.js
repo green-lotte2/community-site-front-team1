@@ -99,9 +99,6 @@ const DocPage = () => {
     try {
         const response = await setNewDoc(userId);
         setNewDocState(response);
-        console.log("새거",response)
-        console.log("과연?",docList.length)
-
         openDocument(response.pno, docList.length);
       } catch (error) {
         console.log(error)

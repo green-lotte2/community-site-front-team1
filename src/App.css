@@ -487,6 +487,7 @@ section {
 
 /* 상단바 */
 #navbar {
+    width: 100hv;
     display: flex;
     height: 50px;
     padding: 10px 0;
@@ -540,7 +541,6 @@ section {
     display: flex;
     flex-wrap: wrap;
     width: 1600px;
-    height: 100%;
     margin: 0 auto;
     justify-content: center;
 }
@@ -592,7 +592,7 @@ section {
     box-sizing: border-box;
 }
 .boxStyle6 {
-    width: 25%;
+    width: 380px;
     height: auto;
     margin: 10px;
     padding: 20px;
@@ -601,7 +601,7 @@ section {
 /*가로:무한 세로:무한 스크롤*/
 .boxStyle7 {
     width: 1600px;
-    height: 97%;
+    min-height: 840px;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
@@ -611,7 +611,7 @@ section {
 /*가로:무한 세로:900px - 스크롤 넣어야함*/
 .boxStyle8 {
     width: 1600px;
-    height: 900px;
+    height: auto;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
@@ -628,6 +628,22 @@ section {
 .boxStyle10 {
     width: 780px;
     height: auto;
+    margin: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+/*가로:50% 세로 20%*/
+.boxStyle11 {
+    width: 780px;
+    height: 300px;
+    margin: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+/*가로:33% 세로 25%*/
+.boxStyle12 {
+    width: 513px;
+    height: 380px;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
@@ -2115,7 +2131,7 @@ section {
 .chatBox {
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 840px;
 }
 .chatInfo {
     width: 100%;
@@ -2834,6 +2850,7 @@ section {
     scrollbar-width: none;
 }
 
+
 .disabled {
     display: flex;
     padding: 0 10px 10px 40px;
@@ -2853,3 +2870,53 @@ section {
     height: 30px;
     width: 30px;
 }
+
+
+
+/* cs 이용약관 */
+.csTerms {
+    margin: 10px;
+    padding: 10px;
+    height: 50%;
+}
+.csTerms > p {
+    font-size: 30px;
+    font-weight: bolder;
+    margin: 10px 0;
+}
+.csTerms > textarea {
+    height: 100%;
+    font-size: 14px;
+    resize: none;
+    padding: 10px;
+}
+
+/* 관리자 메인 */
+.adminMain {
+    display: flex;
+    margin: 0 30px;
+}
+.adminMain > img {
+    width: 200px;
+}
+.adminMain > p {
+    margin: 10px 0;
+    font-size: 30px;
+    font-weight: bolder;
+}
+.adminMain > span {
+    font-size: 20px;
+    margin: 4px 0;
+}
+.adminImg {
+    align-items: center;
+}
+.adminImg > a > p {
+    font-size: 30px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+.adminImg > a > img{
+    width: 250px;
+}
+
