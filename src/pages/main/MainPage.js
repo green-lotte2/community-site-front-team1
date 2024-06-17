@@ -1,28 +1,44 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from '../../layout/MainLayout';
 import { useDispatch, useSelector } from 'react-redux';
+import CalendarListComponent from '../../components/private/calendar/CalendarListComponent';
+import CalendarViewComponent from '../../components/private/calendar/CalendarViewComponent';
+import axios from 'axios';
+import { RootUrl } from '../../api/RootUrl';
 
 const MainPage = () => {
-
-  // 저장된 로그인 인증 정보를 불러오는 Hook
   const dispatch = useDispatch();
   const loginSlice = useSelector((state) => state.loginSlice);
-
+  const [myCalendar, setMyCalendar] = useState(null);
+  const [selectedCalendar, setSelectedCalendar] = useState(null);
 
   useEffect(() => {
+    const fetchMyCalendar = async () => {
+      try {
+        const response = await axios.get(`${RootUrl()}/calendars/user/${loginSlice.userId}`, { params: { username: loginSlice.username } });
+        const myCalendar = response.data;
+        setMyCalendar(myCalendar);
+        setSelectedCalendar((prevCalendar) => prevCalendar || myCalendar); // 기본 캘린더 설정
+      } catch (error) {
+        console.error("There was an error fetching the user calendar!", error);
+      }
+    };
 
-    
+    if (loginSlice.userId) {
+      fetchMyCalendar();
+    }
+
     if (loginSlice.userRole === "ADMIN") {
       setTimeout(() => {
         alert("플랜 가입 해야지?");
       }, 1000);
     }
-    
+  }, [loginSlice.userId, loginSlice.userRole, loginSlice.username]);
 
-  }, [])
-
-  
+  const handleSelectCalendar = (calendar) => {
+    setSelectedCalendar(calendar);
+  };
 
   return (
     <MainLayout>
@@ -104,8 +120,17 @@ const MainPage = () => {
         </div>
       </div>
 
-      <div className="contentBox boxStyle5">
-        <img src="../images/캘린더.PNG" alt=""/>
+      <div className="contentBox boxStyle5" style={{ display: 'flex' }}>
+        <div style={{ flex: 1, marginRight: '10px', visibility: 'hidden', height: 0 }}>
+          <CalendarListComponent onSelectCalendar={handleSelectCalendar} defaultCalendar={true} />
+        </div>
+        <div style={{ flex: 3 }}>
+          {selectedCalendar ? (
+            <CalendarViewComponent selectedCalendar={selectedCalendar} />
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
       </div>
 
       <div className="contentBox boxStyle6">
@@ -126,7 +151,7 @@ const MainPage = () => {
         </div>
       </div>
     </MainLayout>
-  )
-}
+  );
+};
 
 export default MainPage;

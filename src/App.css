@@ -2299,7 +2299,7 @@ section {
     height: 40px;
 }
 .inviteList {
-    width: auto!important;
+    width: auto !important;
     flex-wrap: wrap;
 }
 .inviteList > span {
@@ -2327,13 +2327,6 @@ section {
     background-color: lightgrey; /* 원하는 호버 색상으로 변경 */
     color: white;
 }
-
-
-
-
-
-
-
 
 .emojiBox {
     position: absolute;
@@ -2857,6 +2850,29 @@ section {
     scrollbar-width: none;
 }
 
+
+.disabled {
+    display: flex;
+    padding: 0 10px 10px 40px;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.disabled > p {
+    font-size: 16px;
+    padding: 4px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.disabled > p > img {
+    margin-right: 7px;
+    height: 30px;
+    width: 30px;
+}
+
+
+
 /* cs 이용약관 */
 .csTerms {
     margin: 10px;
@@ -2903,3 +2919,4 @@ section {
 .adminImg > a > img{
     width: 250px;
 }
+
