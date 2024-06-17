@@ -151,7 +151,6 @@ body {
 .modalRow > div:nth-child(2) {
     width: 300px;
 }
-
 .modalRow > div > select {
     width: 200px;
     height: 40px;
@@ -2156,11 +2155,26 @@ section {
     overflow: hidden;
 }
 .chatInfo span {
+    position: relative;
     display: flex;
     font-size: 16px;
     margin: 0 10px;
     align-self: center;
     cursor: pointer;
+}
+.settingBox {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #111;
+    padding: 5px 0;
+    width: 100px;
+    top: 30px;
+    right: -5px;
+    z-index: 30;
+}
+.settingBox > h3 {
+    font-size: 16px;
+    text-align: center;
 }
 .chatRoomList {
     display: flex;
@@ -2269,16 +2283,42 @@ section {
     height: 40px;
 }
 .inviteList {
+    width: auto!important;
     flex-wrap: wrap;
 }
 .inviteList > span {
     border: 1px solid #dddddd;
     border-radius: 4px;
     margin: 4px;
-    padding: 4px;
+    padding: 15px;
     cursor: pointer;
-    height: 32px;
+    height: 15px;
+    font-size: 18px;
+    color: #111;
 }
+
+.modalRow {
+    display: flex;
+    align-items: center;
+}
+
+.maR30 {
+    margin-right: 30px;
+}
+
+.inviteList span:hover,
+.inviteList span.selected {
+    background-color: lightgrey; /* 원하는 호버 색상으로 변경 */
+    color: white;
+}
+
+
+
+
+
+
+
+
 .emojiBox {
     position: absolute;
     display: flex;
@@ -2759,6 +2799,9 @@ section {
 }
 .docList:hover {
     background-color: #dddddd;
+}
+.docListOn {
+    background-color: #e6e6e6;
 }
 .docList > div {
     width: 100%;

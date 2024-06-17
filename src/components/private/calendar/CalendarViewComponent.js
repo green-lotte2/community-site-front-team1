@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import Moment from "moment";
 import "moment/locale/ko";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 import { FaCalendarAlt, FaCalendarWeek } from "react-icons/fa";
 import { MdNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
@@ -97,13 +97,14 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
           calendar.createEvents([newEvent]);
         });
       } catch (err) {
-        console.error("Failed to fetch events:", err);
+        console.error("이벤트를 불러오지 못했습니다.", err);
         setError("일정을 불러오지 못했습니다.");
       }
     };
 
     fetchEvents();
 
+    // 새로운 이벤트 생성 전에 호출되는 핸들러
     calendar.on("beforeCreateEvent", async (event) => {
       const calendarId = selectedCalendar.calendarId;
       const eventType = options.calendars.find(cal => cal.id === event.calendarId)?.id || "defaultEventId";
@@ -127,15 +128,17 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
       try {
         const response = await axios.post(`${url}/events/insert`, newEvent);
         const createdEvent = response.data;
-        newEvent.eventNo = createdEvent.eventNo; // 백엔드에서 생성된 eventNo를 받아서 설정
+        newEvent.id = createdEvent.eventNo; // 백엔드에서 생성된 eventNo를 받아서 설정
         calendar.createEvents([newEvent]);
-        console.log("Event inserted successfully");
+        console.log("이벤트가 성공적으로 추가되었습니다.");
+
       } catch (err) {
-        console.error("Failed to insert event:", err);
+        console.error("이벤트를 추가하지 못했습니다.", err);
         setError("일정이 저장되지 않았습니다.");
       }
     });
     
+    // 이벤트 수정 전에 호출되는 핸들러
     calendar.on("beforeUpdateEvent", async ({ event, changes }) => {
       // 수정 권한 체크
       if (selectedCalendar.ownerStfNo !== loginSlice.userId && 
@@ -172,22 +175,23 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
     
       try {
         await axios.post(`${url}/events/modify/${event.id}`, updatedEvent);
-        console.log("Event updated successfully");
-    
-        // 기존 이벤트 객체를 업데이트
+        console.log("이벤트가 성공적으로 업데이트되었습니다.");
+
+        // 캘린더 인스턴스에서 이벤트 업데이트
         calendar.updateEvent(event.id, event.calendarId, {
           ...event,
           ...changes,
           start: new Date(start),
           end: new Date(end),
         });
-        
+
       } catch (err) {
-        console.error("Failed to update event:", err);
+        console.error("이벤트를 업데이트하지 못했습니다.", err);
         setError("일정이 저장되지 않았습니다.");
       }
     });
     
+    // 이벤트 삭제 전에 호출되는 핸들러
     calendar.on("beforeDeleteEvent", async (event) => {
       // 삭제 권한 체크
       if (selectedCalendar.ownerStfNo !== loginSlice.userId && 
@@ -197,15 +201,18 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
       }
 
       const calendarId = event.calendarId;
-      calendar.deleteEvent(event.id, calendarId);
       try {
-        await axios.get(`${url}/events/delete?eventNo=${event.id}`); // 수정
-        console.log("Event deleted successfully");
+        const response = await axios.get(`${url}/events/delete?eventNo=${event.id}`); // 수정
+        if(response.status === 200){
+          calendar.deleteEvent(event.id, calendarId);
+          console.log("이벤트가 성공적으로 삭제되었습니다.");
+        }
       } catch (err) {
-        console.error("Failed to delete event:", err);
+        console.error("이벤트를 삭제하지 못했습니다.", err);
       }
     });
 
+    // 캘린더 테마 설정
     calendar.setTheme({
       month: {
         startDayOfWeek: 0,
@@ -240,32 +247,38 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
     };
   }, [selectedCalendar]);
 
+  // 다음 달 버튼 클릭 핸들러
   const handleClickNextButton = () => {
     calendarInstance.current.next();
     setCurrentMonth(calendarInstance.current.getDate().getMonth() + 1);
     setCurrentYear(calendarInstance.current.getDate().getFullYear());
   };
 
+  // 이전 달 버튼 클릭 핸들러
   const handleClickPrevButton = () => {
     calendarInstance.current.prev();
     setCurrentMonth(calendarInstance.current.getDate().getMonth() + 1);
     setCurrentYear(calendarInstance.current.getDate().getFullYear());
   };
 
+  // 주간 보기로 변경
   const weekChangeButton = () => {
     calendarInstance.current.changeView("week");
   };
 
+  // 월간 보기로 변경
   const monthChangeButton = () => {
     calendarInstance.current.changeView("month");
   };
 
+  // 오늘 날짜로 이동
   const goToday = () => {
     calendarInstance.current.today();
     setCurrentMonth(calendarInstance.current.getDate().getMonth() + 1);
     setCurrentYear(calendarInstance.current.getDate().getFullYear());
   };
 
+  // 버튼 스타일 정의
   const buttonStyle = {
     borderRadius: "25px",
     border: "2px solid #ddd",
@@ -313,8 +326,30 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
   // 모달에서 멤버 추가 후 핸들러
   const handleAddMembers = (newMembers) => {
     // 여기서 새로운 멤버를 처리하는 로직을 추가할 수 있습니다.
+    alert("멤버가 추가되었습니다."); // 멤버 추가 시 alert
     console.log("Added members:", newMembers);
     setIsModalOpen(false);
+  };
+
+  // 나가기 버튼 클릭 핸들러
+  const handleLeaveCalendar = async () => {
+    try {
+      const response = await axios.delete(`${RootUrl()}/calendarMembers/leave`, {
+        data: {
+          calendarId: selectedCalendar.calendarId,
+          stfNo: loginSlice.userId,
+        },
+      });
+
+      if (response.status === 200) {
+        alert("캘린더에서 나갔습니다."); // 나가기 시 alert
+        console.log("Successfully left the calendar");
+        // 필요한 경우 상위 컴포넌트에 알리기 위해 추가 로직을 작성할 수 있습니다.
+        window.location.reload(); // 화면 새로고침
+      }
+    } catch (err) {
+      console.error("캘린더에서 나가는 데 실패했습니다.", err);
+    }
   };
 
   return (
@@ -323,9 +358,14 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
         <div>{selectedCalendar.title}</div>
         <label htmlFor="" style={{ display: "flex" }}>
           {!selectedCalendar.title.startsWith('나의 캘린더') && (
-            <span onClick={handleAddMembersClick} style={{ cursor: 'pointer' }}>
-              <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
-            </span>
+            <>
+              <span onClick={handleAddMembersClick} style={{ cursor: 'pointer', marginRight: '10px' }}>
+                <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
+              </span>
+              <span onClick={handleLeaveCalendar} style={{ cursor: 'pointer' }}>
+                <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
+              </span>
+            </>
           )}
         </label>
       </div>

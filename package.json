@@ -8,11 +8,11 @@
 
   "dependencies": {
 
-    "@blocknote/core": "^0.14.0",
+    "@blocknote/core": "^0.14.1",
 
-    "@blocknote/mantine": "^0.14.0",
+    "@blocknote/mantine": "^0.14.1",
 
-    "@blocknote/react": "^0.14.0",
+    "@blocknote/react": "^0.14.1",
 
     "@editorjs/code": "^2.9.0",
 
@@ -119,6 +119,8 @@
     "react-router-dom": "^6.23.1",
 
     "react-scripts": "^5.0.1",
+
+    "sass": "^1.77.5",
 
     "socket.io-client": "^4.7.5",
 

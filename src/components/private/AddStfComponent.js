@@ -5,7 +5,9 @@ import GroupBodyComponent from '../common/private/GroupBodyComponent';
 import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
 
+
 const AddStfComponent = ({ onClose, findStf, id }) => {
+
     /* 
     각자 페이지에서 협업자 목록 
     삭제된 사람 stfNo 저장 하는 스테이트
@@ -111,6 +113,8 @@ const AddStfComponent = ({ onClose, findStf, id }) => {
     const handleClose = () => {
         onClose();
     };
+
+
 
     return (
         <>
