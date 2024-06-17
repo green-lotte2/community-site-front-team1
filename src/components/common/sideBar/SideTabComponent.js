@@ -19,7 +19,7 @@ const SideTabComponent = ({ sideTabCate, sideTabCateName, type }) => {
         <Link to={`/${sideTabCate}`} className="sideTab">
             <div>
                 {/* 관리자 */}
-                {sideTabCate === 'index' && (
+                {sideTabCate === 'admin' && (
                     <>
                         <FontAwesomeIcon icon={faGear} />
                         <p>관리자메인</p>

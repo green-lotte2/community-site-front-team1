@@ -29,6 +29,8 @@ import PlanOrderPage from '../pages/member/PlanOrderPage';
 import ToDoPage from '../pages/private/ToDoPage';
 import DocPage from '../pages/private/DocPage';
 import PrivateRoute from './PrivateRoute';
+import CsTermsPage from '../pages/cs/CsTermsPage';
+import AdminMain from '../pages/admin/AdminMain';
 
 const root = createBrowserRouter([
 
@@ -152,6 +154,13 @@ const root = createBrowserRouter([
         </PrivateRoute>
         ),
     },
+
+    { path: '/admin', element: (
+        <PrivateRoute allowedRoles={['ADMIN']}>
+            <AdminMain />
+        </PrivateRoute>
+        ),
+    },
         
         
     { path: '/articleModify', element: (
@@ -179,6 +188,13 @@ const root = createBrowserRouter([
     { path: '/csView', element: (
         <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
             <CsViewPage />
+        </PrivateRoute>
+        ),
+    },
+
+    { path: '/csTerms', element: (
+        <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <CsTermsPage />
         </PrivateRoute>
         ),
     },
