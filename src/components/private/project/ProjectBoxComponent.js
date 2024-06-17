@@ -11,9 +11,8 @@ import { deleteBoard, getKanbanDataById, postBoard } from '../../../api/KanbanAp
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 
-const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
-    console.log('여기', kanbanNo);
-    console.log('여기', kanbanName);
+const ProjectBoxComponent = ({ kanbanName, kanbanNo, kanbanStf }) => {
+    console.log('여기', kanbanNo, kanbanName, kanbanStf);
     const [data, setData] = useState([]);
 
     /** 칸반 아이디로 조회 */
@@ -160,7 +159,12 @@ const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="App2" data-theme={theme}>
-                <Navbar switchTheme={switchTheme} selectedKanbanName={kanbanName} kanbanNo={kanbanNo} />
+                <Navbar
+                    switchTheme={switchTheme}
+                    selectedKanbanName={kanbanName}
+                    kanbanNo={kanbanNo}
+                    kanbanStf={kanbanStf}
+                />
                 <div className="app_outer">
                     <div className="app_boards">
                         {data.map((item) => (

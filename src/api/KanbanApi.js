@@ -51,7 +51,18 @@ export const getKanbanDataById = async (kanbanId) => {
     return response.data;
 };
 
-export const getStfList = async(kanbanId) => {
+export const getStfList = async (kanbanId) => {
     const response = await axios.get(`${rootURL}/stfList/${kanbanId}`);
     return response.data;
-}
+};
+
+export const delKanban = async (kanbanId) => {
+    const response = await axios.delete(`${rootURL}/del/${kanbanId}`);
+    return response.data;
+};
+
+export const deleteStf = async (stfNo, kanbanNo) => {
+    console.log('여긴 API : ', stfNo, kanbanNo);
+    const response = await axios.delete(`${rootURL}/stf?kanbanNo=${kanbanNo}&stfNo=${stfNo}`);
+    return response.data;
+};

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDoorOpen, faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faDoorOpen, faGear, faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AddStfComponent from '../../AddStfComponent';
-import { getStfList, postKanbanMember } from '../../../../api/KanbanApi';
+import { delKanban, deleteStf, getStfList, postKanbanMember } from '../../../../api/KanbanApi';
+import LoginSlice from '../../../../slice/LoginSlice';
+import { useSelector } from 'react-redux';
 
-export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
+export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo, kanbanStf }) {
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
     const [inviteList, setInviteList] = useState([]);
 
@@ -52,49 +54,86 @@ export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
         }
     }, [showAddMemberModal, kanbanNo]);
 
+    // 설정 버튼
+    const deleteKanban = async () => {
+        const isRemove = window.confirm('칸반보드를 삭제하시겠습니까?');
+        if (isRemove) {
+            try {
+                const response = await delKanban(kanbanNo);
+                console.log(response);
+                window.location.reload();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
+    const userId = loginSlice.userId;
     // 나가기 버튼 클릭 핸들러
-    const handleLeaveCalendar = () => {};
+    const handleLeaveCalendar = async () => {
+        const isRemove = window.confirm('프로젝트에서 나가시겠습니까?');
+        if (isRemove) {
+            try {
+                const response = await deleteStf(userId, kanbanNo);
+                console.log(response);
+                window.location.reload();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
 
     return (
         <div className="navbar">
             <h2>{selectedKanbanName ? `${selectedKanbanName}` : 'Kanban Board'}</h2>
 
             <label htmlFor="" style={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1, marginRight: '30px' }}>
-                <span
-                    style={{
-                        display: 'flex',
-                        fontSize: '16px',
-                        margin: '0 10px',
-                        alignSelf: 'center',
-                        cursor: 'pointer',
-                    }}
-                    onClick={handleAddMemberClick}
-                >
-                    <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
-                </span>
-                <span
-                    style={{
-                        display: 'flex',
-                        fontSize: '16px',
-                        margin: '0 10px',
-                        alignSelf: 'center',
-                        cursor: 'pointer',
-                    }}
-                >
-                    <FontAwesomeIcon icon={faGear} /> &nbsp;설정
-                </span>
-                <span
-                    onClick={handleLeaveCalendar}
-                    style={{
-                        display: 'flex',
-                        fontSize: '16px',
-                        margin: '0 10px',
-                        alignSelf: 'center',
-                        cursor: 'pointer',
-                    }}
-                >
-                    <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
-                </span>
+                <>
+                    {kanbanStf === userId && (
+                        <>
+                            <span
+                                style={{
+                                    display: 'flex',
+                                    fontSize: '16px',
+                                    margin: '0 10px',
+                                    alignSelf: 'center',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={handleAddMemberClick}
+                            >
+                                <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
+                            </span>
+                            <span
+                                style={{
+                                    display: 'flex',
+                                    fontSize: '16px',
+                                    margin: '0 10px',
+                                    alignSelf: 'center',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={deleteKanban}
+                            >
+                                <FontAwesomeIcon icon={faTrash} /> &nbsp;삭제
+                            </span>
+                        </>
+                    )}
+                </>
+                <>
+                    {kanbanStf !== userId && (
+                        <span
+                            onClick={handleLeaveCalendar}
+                            style={{
+                                display: 'flex',
+                                fontSize: '16px',
+                                margin: '0 10px',
+                                alignSelf: 'center',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
+                        </span>
+                    )}
+                </>
             </label>
 
             <div>

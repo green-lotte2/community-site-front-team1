@@ -2850,7 +2850,6 @@ section {
     scrollbar-width: none;
 }
 
-
 .disabled {
     display: flex;
     padding: 0 10px 10px 40px;
@@ -2870,8 +2869,6 @@ section {
     height: 30px;
     width: 30px;
 }
-
-
 
 /* cs 이용약관 */
 .csTerms {
@@ -2916,7 +2913,6 @@ section {
     font-weight: bolder;
     margin-bottom: 20px;
 }
-.adminImg > a > img{
+.adminImg > a > img {
     width: 250px;
 }
-

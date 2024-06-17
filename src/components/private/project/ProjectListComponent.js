@@ -10,7 +10,30 @@ const ProjectListComponent = ({ kanbanList, onSelectKanban, kanbanData }) => {
     const [openCreateProject, setOpenCreateProject] = useState(false);
 
     const handelOpenModal = () => {
-        setOpenCreateProject(true);
+        console.log('kanbanList', kanbanList);
+        let docCount = 0;
+        let makeDoc = 0;
+        kanbanList.forEach((doc) => {
+            if (doc.kanbanStf === loginSlice.userId) {
+                docCount++;
+            }
+        });
+        console.log('docCount', docCount);
+
+        if (loginSlice.planState === 1) {
+            makeDoc = 5;
+        } else if (loginSlice.planState === 2) {
+            makeDoc = 10;
+        } else if (loginSlice.planState === 3) {
+            makeDoc = 1000;
+        }
+
+        if (docCount >= makeDoc) {
+            alert('더 이상 문서를 생성할 수 없습니다.');
+            return;
+        } else {
+            setOpenCreateProject(true);
+        }
     };
 
     const handelColseModal = () => {
@@ -39,7 +62,7 @@ const ProjectListComponent = ({ kanbanList, onSelectKanban, kanbanData }) => {
                 <div
                     key={kanban.kanbanId}
                     className="projectList"
-                    onClick={() => onSelectKanban(kanban.kanbanName, kanban.kanbanId)}
+                    onClick={() => onSelectKanban(kanban.kanbanName, kanban.kanbanId, kanban.kanbanStf)}
                 >
                     <FontAwesomeIcon icon={faClipboard} style={{ color: '#13a8ae' }} />
                     <div>
