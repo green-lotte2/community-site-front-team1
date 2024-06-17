@@ -54,6 +54,12 @@ export const selectMember = async (pno) =>{
     return response.data;
 }
 
+// 현재 문서의 공동 작업자 초대
+export const addDocMember = async (data) => {
+    const response = await axios.post(`${rootURL}/doc/addMember`, data);
+    return response.data;
+};
+
 // 현재 문서 삭제
 export const deleteDocApi = async (pno) =>{
     const response = await axios.get(`${rootURL}/doc/delete/${pno}`);

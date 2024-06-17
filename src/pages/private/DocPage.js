@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
 import DocListComponent from '../../components/private/doc/DocListComponent'
 import DocWriteComponent from '../../components/private/doc/DocWriteComponent'
-import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
-import { deleteDocApi, getDocList, saveDoc, selectMember, setNewDoc } from '../../api/DocApi';
+import { addDocMember, deleteDocApi, getDocList, saveDoc, selectMember, setNewDoc } from '../../api/DocApi';
 import AddStfComponent from '../../components/private/AddStfComponent';
 
 const DocPage = () => {
@@ -106,29 +105,47 @@ const DocPage = () => {
   }
 
   /** 문서 공동작업자 초대 */
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [docMember, setDocMember] = useState([]);
   
   const inviteUser = async (pno) => {
     try {
       const response = await selectMember(pno);
       console.log(response);
-      setDocMember((prev) => [...prev, response])
+      setDocMember(response);
       console.log(docMember);
     } catch (error) {
       console.log(error);
     }
   }
 
-  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
-
   const handleAddMemberClick = async (pno) => {
     await inviteUser(pno);
-    //setShowAddMemberModal(!showAddMemberModal);
+    setShowAddMemberModal(!showAddMemberModal);
   };
 
   const handleCloseModal = () => {
       setShowAddMemberModal(false);
   };
+
+  /** 초대된 회원 DB 등록 */
+  const handleAddMember = async (newInvite) => {
+    try {
+        newInvite.map((member) => {
+            const newMember = {
+                pno: eachDocView,
+                stfNo: member.stfNo,
+            };
+            console.log('newmember', newMember);
+            return addDocMember(newMember);
+        });
+        handleCloseModal();
+        alert('멤버 추가가 완료되었습니다.');
+    } catch (err) {
+        console.log(err);
+        alert('멤버 추가중 오류가 발생했습니다. 잠시후 다시 시도해주세요');
+    }
+};
 
   /** 문서 삭제 */
   const deleteDoc = async (pno) => {
@@ -163,7 +180,7 @@ const DocPage = () => {
               }
             </div>
         </div>
-        {showAddMemberModal && <AddStfComponent onClose={handleCloseModal} member={docMember}/>}
+        {showAddMemberModal && <AddStfComponent onClose={handleCloseModal} addStf={handleAddMember} inviteList={docMember}/>}
     </MainLayout>
   )
 }
