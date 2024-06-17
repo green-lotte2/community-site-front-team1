@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootUrl } from '../../../api/RootUrl';
 import axios from 'axios';
 
-const CalendarListComponent = ({ onSelectCalendar }) => {
+const CalendarListComponent = ({ onSelectCalendar, defaultCalendar }) => {
     const [createCalendarRoom, setCreateCalendarRoom] = useState(false);
     const [calendars, setCalendars] = useState([]);
 
@@ -20,10 +20,9 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
         try {
             const response = await axios.get(`${RootUrl()}/calendars/all/${stfNo}`, { params: { username: stfName } });
             const allCalendars = response.data;
-            console.log("Fetched Calendars:", allCalendars);
             setCalendars(allCalendars);
-            if (allCalendars.length > 0) {
-                onSelectCalendar(allCalendars[0]);
+            if (defaultCalendar) {
+                onSelectCalendar(allCalendars[0]); // 기본 캘린더를 선택된 상태로 설정
             }
         } catch (error) {
             console.error("There was an error fetching the calendars!", error);
@@ -38,11 +37,11 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
 
     const handelOpenModal = () => {
         setCreateCalendarRoom(true);
-    }
+    };
 
     const handelColseModal = () => {
         setCreateCalendarRoom(false);
-    }
+    };
 
     const handleCreate = (newCalendar) => {
         setCalendars((prevCalendars) => {
@@ -53,11 +52,11 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
             return prevCalendars;
         });
         onSelectCalendar(newCalendar);
-    }
+    };
 
     const handleSelectCalendar = (calendar) => {
         onSelectCalendar(calendar);
-    }
+    };
 
     return (
         <div className="contentBox boxStyle9">
@@ -87,7 +86,7 @@ const CalendarListComponent = ({ onSelectCalendar }) => {
 
             {createCalendarRoom && <CreateCalendarModal handelColseModal={handelColseModal} onCreate={handleCreate} />}
         </div>
-    )
+    );
 }
 
 export default CalendarListComponent;

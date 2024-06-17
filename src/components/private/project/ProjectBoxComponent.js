@@ -7,11 +7,12 @@ import { v4 as uuidv4 } from 'uuid';
 import Editable from './Editable/Editable';
 import useLocalStorage from 'use-local-storage';
 import '../../../bootstrap.css';
-import { getKanbanDataById, postBoard } from '../../../api/KanbanApi';
+import { deleteBoard, getKanbanDataById, postBoard } from '../../../api/KanbanApi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 
-const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
-    console.log('여기', kanbanNo);
-    console.log('여기', kanbanName);
+const ProjectBoxComponent = ({ kanbanName, kanbanNo, kanbanStf }) => {
+    console.log('여기', kanbanNo, kanbanName, kanbanStf);
     const [data, setData] = useState([]);
 
     /** 칸반 아이디로 조회 */
@@ -112,10 +113,12 @@ const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
     const removeBoard = async (bid) => {
         const tempData = [...data];
         const index = data.findIndex((item) => item.id === bid);
-        tempData.splice(index, 1);
-        setData(tempData);
-        await postBoard(tempData);
-        fetchKanbanData(kanbanNo);
+        if (index !== -1) {
+            tempData.splice(index, 1);
+            console.log('id?', bid);
+            setData(tempData);
+            await deleteBoard(bid);
+        }
     };
 
     const onDragEnd = async (result) => {
@@ -154,37 +157,40 @@ const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
     }, [data]);
 
     return (
-        <div className="contentBox boxStyle8">
-            <DragDropContext onDragEnd={onDragEnd}>
-                <div className="App2" data-theme={theme}>
-                    <Navbar switchTheme={switchTheme} selectedKanbanName={kanbanName} />
-                    <div className="app_outer">
-                        <div className="app_boards">
-                            {data.map((item) => (
-                                <Board
-                                    key={item.id}
-                                    id={item.id}
-                                    name={item.boardName}
-                                    card={item.card}
-                                    setName={setName}
-                                    addCard={addCard}
-                                    removeCard={removeCard}
-                                    removeBoard={removeBoard}
-                                    updateCard={updateCard}
-                                />
-                            ))}
-                            <Editable
-                                class={'add__board'}
-                                name={'Add Board'}
-                                btnName={'Add Board'}
-                                onSubmit={addBoard}
-                                placeholder={'Enter Board  Title'}
+        <DragDropContext onDragEnd={onDragEnd}>
+            <div className="App2" data-theme={theme}>
+                <Navbar
+                    switchTheme={switchTheme}
+                    selectedKanbanName={kanbanName}
+                    kanbanNo={kanbanNo}
+                    kanbanStf={kanbanStf}
+                />
+                <div className="app_outer">
+                    <div className="app_boards">
+                        {data.map((item) => (
+                            <Board
+                                key={item.id}
+                                id={item.id}
+                                name={item.boardName}
+                                card={item.card}
+                                setName={setName}
+                                addCard={addCard}
+                                removeCard={removeCard}
+                                removeBoard={removeBoard}
+                                updateCard={updateCard}
                             />
-                        </div>
+                        ))}
+                        <Editable
+                            class={'add__board'}
+                            name={'Add Board'}
+                            btnName={'Add Board'}
+                            onSubmit={addBoard}
+                            placeholder={'Enter Board  Title'}
+                        />
                     </div>
                 </div>
-            </DragDropContext>
-        </div>
+            </div>
+        </DragDropContext>
     );
 };
 

@@ -4,11 +4,13 @@ import ProjectListComponent from '../../components/private/project/ProjectListCo
 import ProjectBoxComponent from '../../components/private/project/ProjectBoxComponent';
 import { getKanban } from '../../api/KanbanApi';
 import { useSelector } from 'react-redux';
+import '../../index.scss';
 
 const ProjectPage = () => {
     const [kanbanList, setKanbanList] = useState([]);
     const [selectedKanbanName, setSelectedKanbanName] = useState('');
     const [selectedKanbanNo, setSelectedKanbanNo] = useState('');
+    const [selectedKanbanStf, setSelectedKanbanStf] = useState('');
     const loginSlice = useSelector((state) => state.loginSlice) || {};
     const userId = loginSlice.userId;
     const kanbanData = async () => {
@@ -20,11 +22,10 @@ const ProjectPage = () => {
             console.log(err);
         }
     };
-    const handleKanbanSelect = (kanbanName, kanbanId) => {
-        console.log(kanbanName);
-        console.log(kanbanId);
+    const handleKanbanSelect = (kanbanName, kanbanId, kanbanStf) => {
         setSelectedKanbanName(kanbanName);
         setSelectedKanbanNo(kanbanId);
+        setSelectedKanbanStf(kanbanStf);
     };
 
     useEffect(() => {
@@ -39,8 +40,17 @@ const ProjectPage = () => {
                     onSelectKanban={handleKanbanSelect}
                     kanbanData={kanbanData}
                 />
-
-                <ProjectBoxComponent kanbanName={selectedKanbanName} kanbanNo={selectedKanbanNo} />
+                <>
+                    {selectedKanbanNo && (
+                        <div className="contentBox boxStyle8">
+                            <ProjectBoxComponent
+                                kanbanName={selectedKanbanName}
+                                kanbanNo={selectedKanbanNo}
+                                kanbanStf={selectedKanbanStf}
+                            />
+                        </div>
+                    )}
+                </>
             </div>
         </MainLayout>
     );

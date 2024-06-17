@@ -24,8 +24,21 @@ export const postKanbanMember = async (data) => {
 };
 
 export const getKanban = async (data) => {
-    const response = await axios.get(`${rootURL}/list?kanbanStf=${data}`);
-    return response.data;
+    try {
+        const response = await axios.get(`${rootURL}/list?kanbanStf=${data}`);
+        return response.data;
+    } catch (err) {
+        console.log('fail to getKanban', err);
+    }
+};
+
+export const deleteBoard = async (id) => {
+    try {
+        const response = await axios.delete(`${rootURL}/${id}`);
+        return response.data;
+    } catch (err) {
+        console.log('fail to remove', err);
+    }
 };
 
 export const postBoard = async (data) => {
@@ -34,7 +47,22 @@ export const postBoard = async (data) => {
 };
 
 export const getKanbanDataById = async (kanbanId) => {
-    // Implement the API call to get kanban details by ID
     const response = await axios.get(`${rootURL}/${kanbanId}`);
+    return response.data;
+};
+
+export const getStfList = async (kanbanId) => {
+    const response = await axios.get(`${rootURL}/stfList/${kanbanId}`);
+    return response.data;
+};
+
+export const delKanban = async (kanbanId) => {
+    const response = await axios.delete(`${rootURL}/del/${kanbanId}`);
+    return response.data;
+};
+
+export const deleteStf = async (stfNo, kanbanNo) => {
+    console.log('여긴 API : ', stfNo, kanbanNo);
+    const response = await axios.delete(`${rootURL}/stf?kanbanNo=${kanbanNo}&stfNo=${stfNo}`);
     return response.data;
 };

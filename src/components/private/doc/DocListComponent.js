@@ -1,24 +1,13 @@
-import { faMessage, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
+import { faFile, faFileCircleExclamation, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { RootUrl } from '../../../api/RootUrl';
 
-const DocListComponent = ({docList, openDocument, loginSlice}) => {
-
-    /** 문서 생성 모달 관리 */
-    const [openCreateDoc, setOpenCreateDoc] = useState(false);
-
-    const handelOpenModal = () => {
-        setOpenCreateDoc(true);
-    }
-
-    const handelColseModal = () => {
-        setOpenCreateDoc(false);
-    }
+const DocListComponent = ({docList, openDocument, loginSlice, createDoc}) => {
 
   return (
     <div className="contentBox boxStyle9">
-        <div className="chatInfo">
+        <div className="chatInfo" onClick={createDoc}>
             <img src={`${RootUrl()}/images/${loginSlice.userImg}`} alt="pro" />
             <div>
                 <p>{loginSlice.username}</p>
@@ -26,7 +15,7 @@ const DocListComponent = ({docList, openDocument, loginSlice}) => {
             </div>
         </div>
 
-        <div className='docList' onClick={handelOpenModal}>
+        <div className='docList' onClick={createDoc}>
             <FontAwesomeIcon icon={faSquarePlus} />
             <div>
                 <p>문서 생성</p>
@@ -34,16 +23,22 @@ const DocListComponent = ({docList, openDocument, loginSlice}) => {
         </div>
 
         {docList && docList.map((doc, index) => (
-            <div className='docList' onClick={() => openDocument(doc.pno)}>
-                <FontAwesomeIcon icon={faMessage} style={{color: "#13a8ae",}} />
-                <div>
-                    <p>{doc.title}</p>
+            doc.owner === loginSlice.userId ? (
+                <div className='docList' key={index} onClick={(event) => openDocument(event, doc.pno, index)}>
+                    <FontAwesomeIcon icon={faFile} style={{color: "#13a8ae"}} />
+                    <div>
+                        <p>{doc.title}</p>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className='docList' key={index} onClick={(event) => openDocument(event, doc.pno, index)}>
+                    <FontAwesomeIcon icon={faFileCircleExclamation} style={{color: "#2d65f2"}} />
+                    <div>
+                        <p>{doc.title}</p>
+                    </div>
+                </div>
+            )
         ))}
-
-        {/**{openCreateChatRoom && <CreateChatRoomModal handelColseModal={handelColseModal}/>} */}
-
     </div>
   )
 }

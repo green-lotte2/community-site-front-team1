@@ -11,6 +11,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
     const [groupInfo, setGroupInfo] = useState([]); // 부서 및 직원 정보
     const [inviteList, setInviteList] = useState([]); // 초대된 직원 목록
     const [searchTerm, setSearchTerm] = useState(""); // 검색어
+    const [filteredMembers, setFilteredMembers] = useState([]); // 필터링된 멤버 목록
     const [calendarTitle, setCalendarTitle] = useState(""); // 캘린더 제목
     const [step, setStep] = useState(1); // 현재 단계 (1: 멤버 선택, 2: 캘린더 제목 입력)
 
@@ -19,7 +20,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
     const stfNo = loginSlice.userId || "";
     const stfName = loginSlice.username || "";
 
-     // 부서 및 직원 정보를 서버에서 불러오는 함수
+    // 부서 및 직원 정보를 서버에서 불러오는 함수
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -29,7 +30,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                 // 로그인한 사용자를 초대 목록에 자동으로 추가
                 setInviteList((prevInviteList) => {
                     if (!prevInviteList.some(invite => invite.stfNo === stfNo)) {
-                        return [...prevInviteList, { stfNo, stfName }];
+                        return [...prevInviteList, { stfNo, stfName, stfImg: loginSlice.userImg }];
                     }
                     return prevInviteList;
                 });
@@ -39,7 +40,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
             }
         };
         fetchData();
-    }, [stfNo, stfName]);
+    }, [stfNo, stfName, loginSlice.userImg]);
 
     // 멤버 클릭 시 초대 목록에 추가 또는 제거하는 함수
     const handleMemberClick = (member) => {
@@ -88,16 +89,17 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
 
     // 검색어 변경 처리
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        const term = event.target.value;
+        setSearchTerm(term);
+        if (term.trim() === '') {
+            setFilteredMembers([]);
+        } else {
+            const filtered = groupInfo
+                .flatMap((group) => group.member)
+                .filter((member) => member.stfName.toLowerCase().includes(term.toLowerCase()));
+            setFilteredMembers(filtered);
+        }
     };
-
-    // 검색어에 맞게 필터링된 그룹 정보
-    const filteredGroupInfo = groupInfo.map(group => ({
-        ...group,
-        member: group.member.filter(member => 
-            member.stfName.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    }));
 
     // 다음 단계로 이동
     const handleNext = () => {
@@ -125,7 +127,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                 handelColseModal(); // 모달 닫기
             })
             .catch(error => {
-                console.error("There was an error creating the calendar!", error);
+                console.error("캘린더 생성 중 오류가 발생했습니다!", error);
             });
     };
 
@@ -144,12 +146,41 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                         <div className="modalColumn">
                             <div className="modalRow">
                                 <div className="maR30">이름</div>
-                                <div>
+                                <div style={{ position: 'relative', width: '60%' }}>
                                     <input 
                                         type="text" 
                                         value={searchTerm} 
                                         onChange={handleSearchChange} 
+                                        placeholder="이름 검색"
                                     />
+                                    {filteredMembers.length > 0 && (
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '100%',
+                                            left: 0,
+                                            right: 0,
+                                            background: 'white',
+                                            border: '1px solid #ccc',
+                                            maxHeight: '200px',
+                                            overflowY: 'auto',
+                                            zIndex: 1000,
+                                            width: '100%',
+                                        }}>
+                                            {filteredMembers.map((member) => (
+                                                <div
+                                                    key={member.stfNo}
+                                                    onClick={() => handleMemberClick(member)}
+                                                    style={{
+                                                        padding: '10px',
+                                                        borderBottom: '1px solid #ddd',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                >
+                                                    {member.stfName} [{member.dptName} - ({member.rankNo})]
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -157,7 +188,7 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                         <div className="modalRow">
                             <div className="modalGroup" style={{ width: "60%", padding: "0" }}>
                                 <div className="groupHead" style={{ width: '100%' }}>
-                                    {filteredGroupInfo && filteredGroupInfo.map((group, index) => (
+                                    {groupInfo && groupInfo.map((group, index) => (
                                         <div key={index}>
                                             <p onClick={() => handleAccordion(index)}>
                                                 {(group.dptName === "인사지원부") &&
@@ -187,8 +218,14 @@ const CreateCalendarModal = ({ handelColseModal, onCreate }) => {
                                         <span
                                             key={index}
                                             onClick={() => handleRemoveInvite(member)}
-                                            style={{ cursor: 'pointer' }}
+                                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                                         >
+                                            <img
+                                                src={`${RootUrl()}/images/${member.stfImg}`}
+                                                alt="sft"
+                                                name="stfImg"
+                                                style={{ width: '30px', borderRadius: '50%', marginRight: '5px' }}
+                                            />
                                             {member.stfName || member.name}
                                         </span>
                                     ))}

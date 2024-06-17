@@ -1,32 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react';
 
-const CreateRankModal = ({handelColseModal}) => {
-  return (
-    <div className="modlaBack modalClose">
-        <div className="modalBox">
-            <div className="modalHeader">
-                <p>직책 생성</p>
-                <p className="modalClose" style={{ cursor: 'pointer' }} onClick={handelColseModal}>
-                    X
-                </p>
-            </div>
+const CreateRankModal = ({ handelCloseModal, setRankValue }) => {
+    const [newRankName, setNewRankName] = useState('');
 
-            <div className="modalColumn">
-                <div className="modalRow">
-                    <div className="maR30">이름</div>
-                    <div>
-                        <input type="text" />
+    const handleCreateRank = () => {
+        // 새로운 직책 정보를 생성합니다.
+        const newRank = {
+            rnkNo: null,
+            rnkName: newRankName,
+            index: null,
+        };
+
+        // 새로운 직책 정보를 RankValue에 추가합니다.
+        setRankValue((prevRankValue) => [...prevRankValue, newRank]);
+
+        // 모달을 닫습니다.
+        handelCloseModal();
+    };
+
+    return (
+        <div className="modlaBack modalClose">
+            <div className="modalBox">
+                <div className="modalHeader">
+                    <p>직책 생성</p>
+                    <p className="modalClose" style={{ cursor: 'pointer' }} onClick={handelCloseModal}>
+                        X
+                    </p>
+                </div>
+
+                <div className="modalColumn">
+                    <div className="modalRow">
+                        <div className="maR30">이름</div>
+                        <div>
+                            <input type="text" />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="modalRow">
-                <button className="modalClose" onClick={handelColseModal}>취소</button>
-                <input type="submit" value="생성"/>
+                <div className="modalRow">
+                    <button className="modalClose" onClick={handelCloseModal}>
+                        취소
+                    </button>
+                    <button onClick={handleCreateRank}>생성</button>
+                </div>
             </div>
         </div>
-    </div>
-  )
-}
+    );
+};
 
-export default CreateRankModal
+export default CreateRankModal;

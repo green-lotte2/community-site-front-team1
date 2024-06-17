@@ -16,7 +16,7 @@ const RegisterPage = () => {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const type = queryParams.get('type');
+    const type = queryParams.get('type');//일반 유저인지, 관리자인지
 
     const [preview, setPreview] = useState(null);
     const [file, setFile] = useState(null); // 파일을 상태로 관리onst [file, setFile] = useState(null);
@@ -242,7 +242,12 @@ const RegisterPage = () => {
             })
             .then((response) => {
                 console.log("결과물 이건 data : "+response.data.stfNo);
-                navigate("/complete", { state: { user: response.data.stfNo } });
+
+                if(type=="ADMIN"){
+                    navigate(`/groupPlan?stfNo=${response.data.stfNo}`);
+                }else{
+                    navigate("/complete", {state: { user: response.data.stfNo }});
+                }
             })
             .catch((err) => {
                 console.log(err);
