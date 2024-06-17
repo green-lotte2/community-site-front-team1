@@ -24,14 +24,14 @@ const DocListComponent = ({docList, openDocument, loginSlice, createDoc}) => {
 
         {docList && docList.map((doc, index) => (
             doc.owner === loginSlice.userId ? (
-                <div className='docList' key={index} onClick={() => openDocument(doc.pno)}>
+                <div className='docList' key={index} onClick={(event) => openDocument(event, doc.pno, index)}>
                     <FontAwesomeIcon icon={faFile} style={{color: "#13a8ae"}} />
                     <div>
                         <p>{doc.title}</p>
                     </div>
                 </div>
             ) : (
-                <div className='docList' key={index} onClick={() => openDocument(doc.pno)}>
+                <div className='docList' key={index} onClick={(event) => openDocument(event, doc.pno, index)}>
                     <FontAwesomeIcon icon={faFileCircleExclamation} style={{color: "#2d65f2"}} />
                     <div>
                         <p>{doc.title}</p>

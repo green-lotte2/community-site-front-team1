@@ -1,4 +1,4 @@
-import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faSquarePlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -7,10 +7,11 @@ import { WebrtcProvider } from 'y-webrtc';
 import * as Y from 'yjs';
 import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
-import { getDocContent, saveDoc } from '../../../api/DocApi';
-import { SoketUrl } from '../../../api/RootUrl';
+import { getDocContent, saveDocFile } from '../../../api/DocApi';
+import { RootUrl, SoketUrl } from '../../../api/RootUrl';
+import LoginSlice from '../../../slice/LoginSlice';
 
-const DocWriteComponent = ({ eachDocView, submitDoc }) => {
+const DocWriteComponent = ({ eachDocView, setDocList, eachDocIndex, submitDoc, handleAddMemberClick, deleteDoc, userId }) => {
     const doc = new Y.Doc();
     const provider = useRef(null);
 
@@ -45,7 +46,17 @@ const DocWriteComponent = ({ eachDocView, submitDoc }) => {
     /** 에디터 기본 설정 (collaboration) */
     const editor = useCreateBlockNote({
         defaultStyles: true,
-        uploadFile: (file) => Promise.resolve(''),
+        uploadFile: async (file) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('pno', pageRef.current.pno);
+    
+            const response = await saveDocFile(formData);
+    
+            console.log("이미지", response)
+
+            return RootUrl() + "/images" + response; // 서버에서 반환된 파일 URL
+        },
         collaboration: {
             provider: provider.current,
             fragment: doc.getXmlFragment('document-store'),
@@ -77,28 +88,40 @@ const DocWriteComponent = ({ eachDocView, submitDoc }) => {
         selectDoc();
     }, []);
 
+    /** 문서 제목 */
     const handleChange = (e) => {
         setDocTitle(e.target.value);
+        setDocList(prev => 
+            prev.map((doc, index) => 
+                index === eachDocIndex ? { ...doc, title: e.target.value } : doc
+            )
+        );
         pageRef.current.title = e.target.value;
     };
+
     /** 여기까지 */
 
     return (
         <>
-            <div className="chatInfo" style={{ justifyContent: 'space-between', padding: '20px 0' }}>
+            <div className="chatInfo" style={{ justifyContent: 'space-between', padding: '14px 0' }}>
+
                 <div>{loading && <input type="text" value={docTitle} onChange={handleChange} />}</div>
-                <label htmlFor="" style={{ display: 'flex' }}>
-                    <span>
+
+                <label htmlFor="" style={{ display: 'flex'}}>
+                    <span onClick={(e) => handleAddMemberClick(pageRef.current.pno)}>
                         <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
                     </span>
-                    <span>
-                        <FontAwesomeIcon icon={faGear} /> &nbsp;설정
-                    </span>
+                    
+                    {(pageRef.current.owner === userId) && 
+                        <span onClick={(e) => deleteDoc(pageRef.current.pno)}>
+                            <FontAwesomeIcon icon={faTrashCan} /> &nbsp;삭제
+                        </span>
+                    }
                 </label>
+
             </div>
 
             <div className="docEditor">
-                {/** 여기 */}
                 <div className="pageMain">{pageRef && <BlockNoteView editor={editor} />}</div>
             </div>
         </>
