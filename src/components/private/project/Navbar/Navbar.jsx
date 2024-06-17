@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faDoorOpen, faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import AddStfComponent from '../../AddStfComponent';
-import { getStfList } from '../../../../api/KanbanApi';
+import { getStfList, postKanbanMember } from '../../../../api/KanbanApi';
+
 export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+    const [inviteList, setInviteList] = useState([]);
 
     const handleAddMemberClick = () => {
         setShowAddMemberModal(!showAddMemberModal);
@@ -15,16 +17,43 @@ export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
         setShowAddMemberModal(false);
     };
 
-    const findStf = async() => {
-        console.log("실행되니", kanbanNo);
-        try{
+    const handleAddMember = async (newInvite) => {
+        try {
+            newInvite.map((member) => {
+                const newMember = {
+                    kanbanId: kanbanNo,
+                    stfNo: member.stfNo,
+                };
+                console.log('newmember', newMember);
+                return postKanbanMember(newMember);
+            });
+            handleCloseModal();
+            alert('멤버 추가가 완료되었습니다.');
+        } catch (err) {
+            console.log(err);
+            alert('멤버 추가중 오류가 발생했습니다. 잠시후 다시 시도해주세요');
+        }
+    };
+
+    const findStf = async () => {
+        console.log('실행되니', kanbanNo);
+        try {
             const stfList = await getStfList(kanbanNo);
             console.log(stfList);
-            return stfList;
-        }catch(err){
+            setInviteList(stfList);
+        } catch (err) {
             console.log(err);
         }
     };
+
+    useEffect(() => {
+        if (showAddMemberModal) {
+            findStf();
+        }
+    }, [showAddMemberModal, kanbanNo]);
+
+    // 나가기 버튼 클릭 핸들러
+    const handleLeaveCalendar = () => {};
 
     return (
         <div className="navbar">
@@ -54,6 +83,18 @@ export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
                 >
                     <FontAwesomeIcon icon={faGear} /> &nbsp;설정
                 </span>
+                <span
+                    onClick={handleLeaveCalendar}
+                    style={{
+                        display: 'flex',
+                        fontSize: '16px',
+                        margin: '0 10px',
+                        alignSelf: 'center',
+                        cursor: 'pointer',
+                    }}
+                >
+                    <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
+                </span>
             </label>
 
             <div>
@@ -71,7 +112,9 @@ export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
                 </label>
             </div>
             {/* <button>Switch theme</button> */}
-            {showAddMemberModal && <AddStfComponent onClose={handleCloseModal} findStf={findStf} id={kanbanNo}/>}
+            {showAddMemberModal && (
+                <AddStfComponent onClose={handleCloseModal} addStf={handleAddMember} inviteList={inviteList} />
+            )}
         </div>
     );
 }
