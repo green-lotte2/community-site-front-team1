@@ -4,7 +4,8 @@ import { faFaceSmile, faGear, faImage, faPaperPlane, faSquarePlus } from '@forta
 import EmojiBoxComponent from './EmojiBoxComponent';
 import { getCookie } from "../../../util/cookieUtil";
 import { RootUrl, SoketUrl } from '../../../api/RootUrl'; // SoketUrl 오타 수정
-import { findUser, saveUser, chatSave, getMessage, postLeaveRoom , getDeleteRoom} from '../../../api/ChatApi';
+import { findUser, saveUser, chatSave, getMessage, postLeaveRoom , getDeleteRoom,findUserList} from '../../../api/ChatApi';
+import AddChatMemberModal from '../../modal/AddChatMemberModal';
 
 const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
     const [chat, setChat] = useState([]);
@@ -16,6 +17,8 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
     const [emojiBoxOpen, setEmojiBoxOpen] = useState(false);
     const [chatMsg, setChatMsg] = useState("");
     const [settingsOpen, setSettingsOpen] = useState(false); // 설정 메뉴 상태 추가
+    const [modalOpen, setModalOpen] = useState(false); // 모달 열림/닫힘 상태 추가
+
 
     useEffect(() => {
         if (!roomId || !id) return;
@@ -142,12 +145,13 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
         const enterMessage1 = `${auth?.username}님이 퇴장하셨습니다.`;
 
         sendMessage(socket, "QUIT",enterMessage1);
+
+        await postLeaveRoom(data);
         
         window.location.reload();
 
-        alert("방에서 퇴장하셨습니다.")
-
-        await postLeaveRoom(data);
+        alert("방에서 퇴장하셨습니다.");
+        
     };
 
     const deleteRoom = async () => {
@@ -172,8 +176,55 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
         }else{
             alert("삭제에 실패하였습니다.");
         }
+        
+    };
+
+    const handleAddMembers = (newMembers) => {
+
+        console.log('새 멤버:', newMembers);//내가 추가 했던 멤버들이 여기로 들어오네
+
+        {newMembers.map((name)=>{
+
+            const Listname =`${name.stfName}`;
+            const ListId = `${name.stfNo}`;
+            const enterMessage = `${Listname}님이 입장하셨습니다.`;
+            const enterImg = `${name.stfImg}`;
+            
+            console.log("어떤 메시지를 보낼것인가",enterMessage);
+            console.log("어떤 이미지를 보낼것인가",enterImg);
+
+            const send = async(socket)=>{
+
+                const chatMessage = {
+                    roomId: roomId,
+                    sender: Listname,
+                    message: enterMessage,
+                    type: "ENTER",
+                    img:enterImg
+                };
+        
+                const saveMessage = {
+                    roomId: roomId,
+                    stfNo: ListId,
+                    stfName:Listname,
+                    message: enterMessage,
+                    img: enterImg
+                };
 
 
+                try {
+                    await chatSave(saveMessage);
+                    socket.send(JSON.stringify(chatMessage));
+                    setChatMsg('');
+                } catch (error) {
+                    console.error("메시지 전송 오류:", error);
+                }
+
+            }     
+            
+            send(socket);
+
+        })}   
         
     };
 
@@ -181,11 +232,11 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
         <div className="contentBox boxStyle8">
             <div className="chatInfo" style={{ justifyContent: "space-between", padding: "20px 0", position: "relative" }}>
                 <div>{roomname} 대화방</div>
-                <label htmlFor="" style={{ display: "flex", cursor: "pointer" }} onClick={toggleSettings}>
-                    <span>
+                <label htmlFor="" style={{ display: "flex", cursor: "pointer" }}>
+                    <span onClick={()=>setModalOpen(true)}>
                         <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
                     </span>
-                    <span>
+                    <span onClick={toggleSettings}>
                         <FontAwesomeIcon icon={faGear} /> &nbsp;설정
                     </span>
                     {settingsOpen && (
@@ -256,6 +307,13 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                     </span>
                 </div>
             </div>
+            {modalOpen && (
+                <AddChatMemberModal
+                    roomId={roomId}
+                    handelColseModal={() => setModalOpen(false)}
+                    onAddMembers={handleAddMembers}
+                />
+            )}
         </div>
     );
 };
