@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MemberLayout from '../../layout/MemberLayout';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { getPlan,getUserInfo,getCountUser,postPay} from '../../api/MemberApi'
+import { getPlan,getUserInfo,getCountUser,postPay,savePlan} from '../../api/MemberApi'
 import { getCookie} from "../../util/cookieUtil";
 
 
@@ -20,13 +20,14 @@ const PlanOrderPage = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const planType = queryParams.get('planType');
+    const user = queryParams.get('stfNo');
 
     const navigate = useNavigate();
 
 
 
     const [stf, setStf] = useState({
-        stfNo:'',
+        stfNo:user,
         stfName: '',
         stfEmail: '',
         stfPh: '',
@@ -61,21 +62,8 @@ const PlanOrderPage = () => {
                 }
             })
 
-            const cookieAuth = getCookie('auth');
-            setAuth(cookieAuth);
-
-            if (cookieAuth) {
-
-                console.log("아이디값 : ",cookieAuth.userId);
-                console.log("이름 : ",cookieAuth.username);
-
-                setStf({
-                stfNo: cookieAuth.userId || ''
-                });
-
-            }
-
-            const userInfo = await getUserInfo(cookieAuth.userId);
+ 
+            const userInfo = await getUserInfo(user);
 
             setStf({
                 stfName:userInfo.stfName,
@@ -185,12 +173,21 @@ const PlanOrderPage = () => {
         }else if(outputCheck===3){
 
             alert("결제가 완료되었습니다.")
-            console.log("이제됐다! 칸 : ",outputCheck);
-            
+            console.log("이제됐다! 칸 : ",outputCheck);    
 
-            await postPay(stf);
+            const planNo = await postPay(stf);
 
-            navigate('/');
+            console.log("플랜 프라이머리 키 : ",planNo);
+
+            const data={
+                user:user,
+                planNo : planNo
+            }
+
+            await savePlan(data);                     
+
+            navigate("/complete", {state: { user: user }});
+
 
         }
     }

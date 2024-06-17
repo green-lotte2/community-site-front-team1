@@ -6,8 +6,14 @@ import { getDptAndStfList } from '../../api/AdminApi';
 import axios from 'axios';
 import { RootUrl } from '../../api/RootUrl';
 import { useSelector } from 'react-redux';
+import { audioBlockConfig } from '@blocknote/core';
+import { getCount } from '../../api/ChatApi';
+import { getCookie } from "../../util/cookieUtil";
 
-const AddCalendarMemberModal = ({ calendarId, handelColseModal, onAddMembers }) => {
+
+
+
+const AddChatMemberModal = ({ roomId, handelColseModal, onAddMembers }) => {
     const [groupInfo, setGroupInfo] = useState([]); // 부서 및 직원 정보
     const [inviteList, setInviteList] = useState([]); // 초대된 직원 목록
     const [searchTerm, setSearchTerm] = useState(""); // 검색어
@@ -18,6 +24,7 @@ const AddCalendarMemberModal = ({ calendarId, handelColseModal, onAddMembers }) 
     const loginSlice = useSelector((state) => state.loginSlice) || {};
     const stfNo = loginSlice.userId || "";
     const stfName = loginSlice.username || "";
+    const auth = getCookie("auth");
 
     // 부서 및 직원 정보를 서버에서 불러오는 함수
     useEffect(() => {
@@ -34,16 +41,16 @@ const AddCalendarMemberModal = ({ calendarId, handelColseModal, onAddMembers }) 
     }, [stfNo, stfName]);
 
     useEffect(() => {
-        const fetchExistingMembers = async () => {
+        const fetchExistingMembers = async () => {//여기서 룸에 저장된 사용자를 조회
             try {
-                const response = await axios.get(`${RootUrl()}/calendarMembers/calendar/${calendarId}`);
+                const response = await axios.get(`${RootUrl()}/findUserList?roomId=${roomId}`);
                 setExistingMembers(response.data);
             } catch (err) {
                 console.log(err);
             }
         };
         fetchExistingMembers();
-    }, [calendarId]);
+    }, [roomId]);
 
     // 멤버 클릭 시 초대 목록에 추가 또는 제거하는 함수
     const handleMemberClick = (member) => {
@@ -108,18 +115,74 @@ const AddCalendarMemberModal = ({ calendarId, handelColseModal, onAddMembers }) 
 
     // 멤버 추가 함수
     const handleAddMembers = async () => {
-        try {
-            const newMembers = inviteList.map(member => ({
-                calendarId,
-                stfNo: member.stfNo
-            }));
 
-            const response = await axios.get(`${RootUrl()}/saveUser`, newMembers);
-            onAddMembers(response.data); // 추가된 멤버를 부모 컴포넌트에 전달
-            handelColseModal(); // 모달 닫기
-        } catch (error) {
-            console.error("멤버를 캘린더에 추가하는 중 오류가 발생했습니다!", error);
+        console.log("roomId 좀 확인",roomId);
+
+        const countUser = await getCount(roomId);//방에 있는 인원구하기
+
+        console.log("방에 있었던 인원 수 : ",countUser);
+
+        const addUser = inviteList.length//추가하는 인원구해서 더하기
+
+        console.log("추가하는 인원 수 : ",addUser);
+
+        const number = countUser + addUser;
+
+        const groupPlan = auth?.planState;
+
+        console.log("추가하는 인원수 + 바엥 있었떤 인원수  :",number);
+
+        console.log("구독하고 있는 플랜의 번호 : ",groupPlan);//그룹플랜이 어떤건지 구하기
+
+        let Limit = 0;
+
+
+
+        if(groupPlan==0){
+            //플랜 가입이 안되어 있으면
+            Limit = 5;
+            
+
+        }else if(groupPlan==1){
+            //플랜 1번 : 5명 제한
+            Limit = 5;
+
+
+        }else if(groupPlan==2){
+            //플랜 2번 : 10명 제한
+
+            Limit = 10;
+
+        }else if(groupPlan>=3){
+            Limit = 50000;
         }
+
+
+        const AlertNumber = Limit - countUser;
+
+        if(number<=Limit){//방을 만든자의 플랜을 확인하고 참여가능한 인원이면 추가
+
+            try {
+                const newMembers = inviteList.map(member => ({
+                    roomId:roomId,
+                    stfNo: member.stfNo
+                }));
+    
+                const response = await axios.post(`${RootUrl()}/saveUser`, newMembers);
+                console.log("이름 리스트",response.data);
+    
+                onAddMembers(response.data); // 추가된 멤버를 부모 컴포넌트에 전달
+                handelColseModal(); // 모달 닫기
+            } catch (error) {
+                console.error("멤버를 추가하는 중 오류가 발생했습니다!", error);
+            }
+
+        }else{//아니면 추가 할 수 있는 멤버보다 많다고 띄우기
+
+            alert("추가 할 수 있는 멤버수를 넘겼습니다. 추가 가능한 수 = "+AlertNumber);
+
+        }    
+       
     };
 
     return (
@@ -233,4 +296,4 @@ const AddCalendarMemberModal = ({ calendarId, handelColseModal, onAddMembers }) 
     );
 }
 
-export default AddCalendarMemberModal;
+export default AddChatMemberModal;

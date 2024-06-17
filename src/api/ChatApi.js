@@ -101,7 +101,7 @@ export const getMessage = async (data) => {
 //룸에서 나오기
 export const postLeaveRoom = async (data) => {
 
-    console.log('메시지 가져오기',data);
+    console.log('룸에서 나가기',data);
     
     const response = await axios.post(`${rootURL}/leaveRoom`,data);
 
@@ -114,7 +114,7 @@ export const postLeaveRoom = async (data) => {
 //룸 삭제하기
 export const getDeleteRoom = async (data) => {
 
-    console.log('메시지 가져오기',data);
+    console.log('룸 삭제',data);
     
     const response = await axios.get(`${rootURL}/deleteRoom?roomId=${data.roomId}&stfNo=${data.stfNo}`);
 
@@ -124,6 +124,17 @@ export const getDeleteRoom = async (data) => {
 };
 
 
+//룸에 있는 멤버가 몇명인지 확인
+export const getCount = async (data) => {
+
+    console.log('멤버 수 확인 : ',data);
+    
+    const response = await axios.get(`${rootURL}/getCount?roomId=${data}`);
+
+    console.log("지금 룸에 몇명이 있찌? : ",response.data);
+    
+    return response.data;
+};
 
 
 

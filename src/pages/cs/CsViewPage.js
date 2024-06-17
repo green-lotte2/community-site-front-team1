@@ -94,6 +94,7 @@ const CsViewPage = () => {
             const response = await postCsComment(newComment);
             console.log('Comment submitted successfully:', response);
 
+            {/*여기서 부터 수정 
             const updatedComment = {
                 ...newComment,
                 stfName: auth?.username, 
@@ -103,6 +104,14 @@ const CsViewPage = () => {
             setComment(prevComments => [...prevComments, updatedComment]);
 
             setCommentMessage('');
+             여기까지 */}
+
+                         
+                const url = "/csView?csNo=" + csNo;
+                window.location.href=url;
+                
+                
+                
         } catch (error) {
             console.error('Failed to submit comment:', error);
         }
