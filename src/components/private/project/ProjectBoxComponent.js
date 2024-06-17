@@ -160,7 +160,7 @@ const ProjectBoxComponent = ({ kanbanName, kanbanNo }) => {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="App2" data-theme={theme}>
-                <Navbar switchTheme={switchTheme} selectedKanbanName={kanbanName} />
+                <Navbar switchTheme={switchTheme} selectedKanbanName={kanbanName} kanbanNo={kanbanNo} />
                 <div className="app_outer">
                     <div className="app_boards">
                         {data.map((item) => (

@@ -3,7 +3,8 @@ import './Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import AddStfComponent from '../../AddStfComponent';
-export default function Navbar({ switchTheme, selectedKanbanName }) {
+import { getStfList } from '../../../../api/KanbanApi';
+export default function Navbar({ switchTheme, selectedKanbanName, kanbanNo }) {
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
 
     const handleAddMemberClick = () => {
@@ -13,6 +14,18 @@ export default function Navbar({ switchTheme, selectedKanbanName }) {
     const handleCloseModal = () => {
         setShowAddMemberModal(false);
     };
+
+    const findStf = async() => {
+        console.log("실행되니", kanbanNo);
+        try{
+            const stfList = await getStfList(kanbanNo);
+            console.log(stfList);
+            return stfList;
+        }catch(err){
+            console.log(err);
+        }
+    };
+
     return (
         <div className="navbar">
             <h2>{selectedKanbanName ? `${selectedKanbanName}` : 'Kanban Board'}</h2>
@@ -58,7 +71,7 @@ export default function Navbar({ switchTheme, selectedKanbanName }) {
                 </label>
             </div>
             {/* <button>Switch theme</button> */}
-            {showAddMemberModal && <AddStfComponent onClose={handleCloseModal} />}
+            {showAddMemberModal && <AddStfComponent onClose={handleCloseModal} findStf={findStf} id={kanbanNo}/>}
         </div>
     );
 }
