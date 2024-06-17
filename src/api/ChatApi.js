@@ -11,7 +11,7 @@ export const postCreateRoom = async (data) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: data
+        body: JSON.stringify(data)
     });
 
     return response.json();
@@ -19,10 +19,12 @@ export const postCreateRoom = async (data) => {
 
 
 //리스트 목록 
-export const getRoomList = async () => {
+export const getRoomList = async (data) => {
 
     console.log('리스트 목록 띄우기');
-    const response = await axios.get(`${rootURL}/chat`);
+    const response = await axios.get(`${rootURL}/chat?stfNo=${data}`);
+
+    console.log("룸 리스트 : ",response.data);
 
     return response.data;
 };
@@ -46,7 +48,7 @@ export const findUser = async (data) => {
     console.log("룸에 있던 유저 결과값 : ",responseData);
 
     if(responseData>=1){
-        type="TALK"
+        type="NOMAL"
     }else{
         type="ENTER";
     }
@@ -64,6 +66,7 @@ export const saveUser = async (data) => {
     console.log("유저 아이디",data.stfNo);
     const response = await axios.get(`${rootURL}/saveUser?id=${data.stfNo}&roomId=${data.roomId}`);
     console.log(response)
+
     return response.data;
 };
 
@@ -71,12 +74,13 @@ export const saveUser = async (data) => {
 export const chatSave = async (data) => {
 
     console.log('메시지 세이브',data);
-    
-    const response = await axios.post(`${rootURL}/chatSave`,data);
 
-    console.log(response)
-    
-    return response.data;
+    if (data.message != null && data.message !== '') {
+
+        console.log("메시지 내용이 있으면 들어오는 곳");
+
+        await axios.post(`${rootURL}/chatSave`, data);
+    }
 };
 
 
@@ -88,7 +92,33 @@ export const getMessage = async (data) => {
     
     const response = await axios.get(`${rootURL}/getMessage?roomId=${data}`);
 
-    console.log(response)
+    console.log(response.data);
+    
+    return response.data;
+};
+
+
+//룸에서 나오기
+export const postLeaveRoom = async (data) => {
+
+    console.log('메시지 가져오기',data);
+    
+    const response = await axios.post(`${rootURL}/leaveRoom`,data);
+
+    console.log(response.data);
+    
+    return response.data;
+};
+
+
+//룸 삭제하기
+export const getDeleteRoom = async (data) => {
+
+    console.log('메시지 가져오기',data);
+    
+    const response = await axios.get(`${rootURL}/deleteRoom?roomId=${data.roomId}&stfNo=${data.stfNo}`);
+
+    console.log(response.data);
     
     return response.data;
 };

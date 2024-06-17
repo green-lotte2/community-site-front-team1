@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Moment from 'moment';
 import "moment/locale/ko";
-
+import { getCookie } from "../../util/cookieUtil";
 
 
 const CsListComponent = ({serverData}) => {
+
+  const auth = getCookie("auth"); 
 
   return (
     <>
@@ -14,7 +16,7 @@ const CsListComponent = ({serverData}) => {
           <div>{serverData.startNo-index}</div>{/*키값이 아닌 일반 순번 출력 */}
           <div>{item.stfName}</div>
           <div>
-            <Link to={`/csView?csNo=${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>
+            {item.secret === "전체공개" || item.stfNo === auth.userId ? (<Link to={`/csView?csNo=${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>):(<p style={{fontSize:"15px"}}>비밀글 입니다</p>)} 
           </div>
           <div style={{width: "150px"}}>    
                     {Moment(item.csRdate).format('YYYY-MM-DD')}
