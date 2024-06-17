@@ -81,3 +81,8 @@ export const updateDpt = async (data) => {
     const response = await axios.put(`${rootURL}/updateDpt`, data);
     return response.data;
 };
+
+export const updateRank = async (data) => {
+    const response = await axios.post(`${rootURL}/updateRank`, data);
+    return response.data;
+};

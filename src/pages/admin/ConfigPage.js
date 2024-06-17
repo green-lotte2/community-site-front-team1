@@ -26,6 +26,10 @@ const ConfigPage = () => {
         setRankValue(newValue);
     };
 
+    const addNewRank = (newRank) => {
+        setDptValue((prevState) => [...prevState, newRank]);
+    };
+
     const fetchData = async () => {
         try {
             const rnkResponse = await getRnkList();
@@ -53,7 +57,13 @@ const ConfigPage = () => {
                     fetchData={fetchData}
                 />
 
-                <RankConfigComponent handleChangeRank={handleChangeRank} rankValue={rankValue} />
+                <RankConfigComponent
+                    handleChangeRank={handleChangeRank}
+                    rankValue={rankValue}
+                    setRankValue={setRankValue}
+                    addNewRank={addNewRank}
+                    fetchData={fetchData}
+                />
             </div>
         </MainLayout>
     );
