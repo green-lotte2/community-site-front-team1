@@ -610,7 +610,7 @@ section {
 }
 /*가로:무한 세로:900px - 스크롤 넣어야함*/
 .boxStyle8 {
-    width: 1600px;
+    width: 1580px;
     height: auto;
     margin: 10px;
     padding: 20px;
@@ -644,6 +644,14 @@ section {
 .boxStyle12 {
     width: 513px;
     height: 380px;
+    margin: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.mainSEtting {
+    display: flex;
+    width: 1160px;
+    height: 780px;
     margin: 10px;
     padding: 20px;
     box-sizing: border-box;
@@ -727,6 +735,12 @@ section {
     display: flex;
     width: 100%;
     padding: 10px 0;
+    justify-content: center;
+    flex-direction: column;
+}
+.profileRow > p {
+    font-size: 18px;
+    padding: 0 0 20px 20px;
 }
 
 .contentImg {
@@ -735,11 +749,15 @@ section {
     height: 100px;
 }
 .profileContent {
-    padding: 10px 0 10px 10px;
+    padding: 10px 0 10px 30px;
 }
 .profileContent > p {
     font-size: 18px;
-    padding: 5px 0;
+    padding: 10px 0;
+}
+.profileContent > p:nth-child(1) {
+    font-size: 20px;
+    font-weight: bolder;
 }
 .hidden {
     display: block !important;
@@ -2048,6 +2066,11 @@ section {
 .commentRow > div {
     display: flex;
     justify-content: space-between;
+}
+.commentRow > div > div > img {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
 }
 .commentRow > div > img {
     width: 100px;
