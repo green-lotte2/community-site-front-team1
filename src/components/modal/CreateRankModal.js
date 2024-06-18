@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
+import { insertRank } from '../../api/AdminApi';
 
-const CreateRankModal = ({ handelCloseModal, setRankValue }) => {
+const CreateRankModal = ({ handelCloseModal, setRankValue, rankValue }) => {
     const [newRankName, setNewRankName] = useState('');
 
-    const handleCreateRank = () => {
+    const handleCreateRank = async () => {
         // 새로운 직책 정보를 생성합니다.
         const newRank = {
-            rnkNo: null,
             rnkName: newRankName,
-            index: null,
+            rnkIndex: rankValue.length + 1,
         };
 
-        // 새로운 직책 정보를 RankValue에 추가합니다.
-        setRankValue((prevRankValue) => [...prevRankValue, newRank]);
+        try {
+            const response = await insertRank(newRank);
+            // 새로운 직책 정보를 RankValue에 추가합니다.
+            setRankValue((prevRankValue) => [...prevRankValue, response]);
+        } catch (err) {
+            console.log(err);
+        }
 
         // 모달을 닫습니다.
         handelCloseModal();
@@ -32,7 +37,7 @@ const CreateRankModal = ({ handelCloseModal, setRankValue }) => {
                     <div className="modalRow">
                         <div className="maR30">이름</div>
                         <div>
-                            <input type="text" />
+                            <input type="text" value={newRankName} onChange={(e) => setNewRankName(e.target.value)} />
                         </div>
                     </div>
                 </div>
