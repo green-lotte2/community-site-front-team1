@@ -12,7 +12,7 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
     const [beforeChat, setBeforeChat] = useState([]); // 이전 채팅 불러오기
     const [socket, setSocket] = useState(null); // WebSocket 객체 상태 추가
     const auth = getCookie("auth");
-
+    const chatEndRef = useRef(null); // 메세지 추적
     const textareaRef = useRef(null);
     const [emojiBoxOpen, setEmojiBoxOpen] = useState(false);
     const [chatMsg, setChatMsg] = useState("");
@@ -52,8 +52,6 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
             newSocket.onmessage = (event) => {
                 const receivedMessage = JSON.parse(event.data);
                 console.log("받은 메시지", receivedMessage);
-
-
                 
                 setChat(prevChat => [...prevChat, receivedMessage]);
             };
@@ -68,6 +66,12 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
             }
         };
     }, [roomId, id, auth?.userId]);
+
+    useEffect(() => {
+        if (chatEndRef.current) {
+            chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [chat]);
 
     const fetch = async (socket) => {
         const data = {
@@ -240,8 +244,8 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                         <FontAwesomeIcon icon={faGear} /> &nbsp;설정
                     </span>
                     {settingsOpen && (
-                        <div className="settingsMenu" style={{ position: "absolute", top: "100%", right: 0, background: "#fff", border: "1px solid #ccc", zIndex: 1 }}>
-                            {createUser==auth?.userId?(<div onClick={deleteRoom} style={{ padding: "10px", cursor: "pointer" }}>방 삭제</div>):(<div onClick={leaveRoom} style={{ padding: "10px", cursor: "pointer" }}>방 나가기</div>)}
+                        <div className="settingsMenu" style={{ position: "absolute", top: "60px", right: 0, background: "#fff", border: "2px solid #ccc", zIndex: 1 }}>
+                            {createUser===auth?.userId?(<div onClick={deleteRoom} style={{ padding: "10px 20px", cursor: "pointer" }}>방 삭제</div>):(<div onClick={leaveRoom} style={{ padding: "10px 20px", cursor: "pointer" }}>방 나가기</div>)}
                         </div>
                     )}
                 </label>
@@ -266,7 +270,7 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                 ))}
 
                 {chat.map((msg, index) => (
-                    msg.roomId === roomId && msg.message!=''&& (
+                    msg.roomId === roomId && msg.message!==''&& (
                         <div className='chat' key={index}>
                             {msg.img ? (
                                 <img src={`${RootUrl()}/images/${msg.img}`} alt='이미지' />
@@ -280,6 +284,7 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                         </div>
                     )
                 ))}
+                <div ref={chatEndRef} />
             </div>
 
             <div className='inputChatBox'>
@@ -298,7 +303,14 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
 
                     <textarea name="" id="" value={chatMsg}
                         ref={textareaRef}
-                        onChange={updateMsg}></textarea>
+                        onChange={updateMsg}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                sendMessage(socket, 'TALK', chatMsg);
+                            }
+                        }}
+                        ></textarea>
 
                     <span style={{ alignSelf: "center" }}>
                         <FontAwesomeIcon icon={faPaperPlane}

@@ -37,17 +37,17 @@ const UserListPage = () => {
         department: null,
         size: 10,
     });
+    const fetchData = async () => {
+        try {
+            const response = await postUserList(pageRequest);
+            console.log(response);
+            setUserList(response);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await postUserList(pageRequest);
-                console.log(response);
-                setUserList(response);
-            } catch (err) {
-                console.log(err);
-            }
-        };
         fetchData();
     }, [pageRequest]);
 

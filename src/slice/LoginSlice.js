@@ -5,7 +5,6 @@ const loadStateFromCookie = () => {
   //console.log("loginSlice...2");
   const auth = getCookie("auth");
 
-  //console.log("loginSlice...3 : " + JSON.stringify(auth));
   const username = auth?.username; // 옵셔널 체이닝 연산자를 이용해 안전하게 username 참조
   const userId = auth?.userId;
   const userImg = auth?.userImg;
@@ -36,11 +35,11 @@ const loginSlice = createSlice({
   initialState: loadStateFromCookie() || initState, //쿠키가 없다면 초깃값 사용
   reducers: {
     login: (state, action) => {
-      //console.log("login.....1 : " + JSON.stringify(state));
-      //console.log("login.....2 : " + JSON.stringify(action));
+      console.log("login.....1 : " + JSON.stringify(state));
+      console.log("login.....2 : " + JSON.stringify(action));
 
       const data = action.payload;
-      //console.log("login.....3 : " + JSON.stringify(data));
+      console.log("login.....3 : " + JSON.stringify(data));
 
       // 상태 업데이트
       state.username = data.username;

@@ -86,3 +86,13 @@ export const updateRank = async (data) => {
     const response = await axios.post(`${rootURL}/updateRank`, data);
     return response.data;
 };
+
+export const insertRank = async (data) => {
+    const response = await axios.post(`${rootURL}/insertRank`, data);
+    return response.data;
+};
+
+export const deleteRank = async (data) => {
+    const response = await axios.delete(`${rootURL}/deleteRank?rnkNo=${data}`);
+    return response.data;
+};

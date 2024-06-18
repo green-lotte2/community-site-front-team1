@@ -102,7 +102,7 @@ const DocPage = () => {
       } catch (error) {
         console.log(error)
       }
-  }
+  } 
 
   /** 문서 공동작업자 초대 */
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);

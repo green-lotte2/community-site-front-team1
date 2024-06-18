@@ -7,6 +7,14 @@ import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CreateCateModal from '../../components/modal/CreateCateModal';
+import { useSelector } from 'react-redux';
+
+const roleView = {
+    ADMIN: 3,
+    MANAGER: 2,
+    USER: 1,
+};
+const getRoleValue = (role) => roleView[role] || 0;
 
 const ListPage = () => {
     // URL에서 파라미터값 추출
@@ -17,6 +25,13 @@ const ListPage = () => {
     // 게시판 제목 상태 저장을 위한 스테이트
     const [articleCateName, setArticleCateName] = useState(null);
     const [articleOutPut, setArticleOutPut] = useState(null);
+    const [articleCateWRole, setArticleCateWRole] = useState(null);
+    const [articleCateCoRole, setArticleCateCoRole] = useState(null);
+    const [articleStatus, setArticleStatus] = useState(null);
+
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
+    const role = loginSlice.userRole;
+    const userRoleValue = getRoleValue(role);
 
     const navigate = useNavigate();
 
@@ -27,6 +42,9 @@ const ListPage = () => {
                 const response = await getArticleCate(articleCateNo);
                 setArticleCateName(response.articleCateName);
                 setArticleOutPut(response.articleCateOutput);
+                setArticleCateWRole(response.articleCateWRole);
+                setArticleCateCoRole(response.articleCateCoRole);
+                setArticleStatus(response.articleStatus);
                 setPageRequest((prev) => ({ ...prev, articleCateNo: articleCateNo }));
             } catch (error) {
                 console.error('Failed to fetch article category:', error);
@@ -123,7 +141,11 @@ const ListPage = () => {
                         <div>날짜</div>
                     </div>
 
-                    <TableListComponent articleList={articleList} articleRowClassName={articleRowClassName} />
+                    <TableListComponent
+                        articleList={articleList}
+                        articleRowClassName={articleRowClassName}
+                        articleCateCoRole={articleCateCoRole}
+                    />
                 </div>
 
                 <PagingComponent articleList={articleList} changePage={changePage}></PagingComponent>
@@ -131,9 +153,11 @@ const ListPage = () => {
                     <Link className="btn" to="/">
                         뒤로
                     </Link>
-                    <Link className="btn" to={`/write?articleCateNo=${articleCateNo}&pg=${pageRequest.pg}`}>
-                        글쓰기
-                    </Link>
+                    {getRoleValue(articleCateWRole) <= userRoleValue && (
+                        <Link className="btn" to={`/write?articleCateNo=${articleCateNo}&pg=${pageRequest.pg}`}>
+                            글쓰기
+                        </Link>
+                    )}
                 </div>
             </div>
         </MainLayout>
