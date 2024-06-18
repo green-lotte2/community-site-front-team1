@@ -10,13 +10,16 @@ import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 
 
 const rootURL = RootUrl();
-
 const initState = {
     uid: "",
     pass: "",
   };
 
 const LoginPage = () => {
+
+  const Rest_api_key='3227ae68356a2d41ac3d1a0a451d3676' //REST API KEY
+  const redirect_uri = 'http://localhost:3000/auth' //Redirect URI
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
 
 
     const navigate = useNavigate();
@@ -26,8 +29,11 @@ const LoginPage = () => {
     const [lockState, setLockState] = useState(false);
     //const [isCheck,setIsCheck] = useState(true)
     //const [isCheck1,setIsCheck1] = useState(true);
-  
 
+    const handleLogin = ()=>{
+      window.location.href = kakaoURL
+  }
+  
     const changeHandler = (e) => {
         console.log("여기 일단 들어와?");
       //loginParam[e.target.name] = e.target.value;
@@ -109,7 +115,7 @@ const LoginPage = () => {
             <div>
                 <Link to="#" className="socialLogin">
                     <img src="/images/googleIcon.png" alt=""/>
-                    <span style={{color:"white"}}>구글 계정으로 로그인</span>
+                    <span style={{color:"white"}} onClick={handleLogin}>카카오 계정으로 로그인</span>
                 </Link>
             </div>
 
