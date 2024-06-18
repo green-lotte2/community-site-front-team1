@@ -31,6 +31,7 @@ import DocPage from '../pages/private/DocPage';
 import PrivateRoute from './PrivateRoute';
 import CsTermsPage from '../pages/cs/CsTermsPage';
 import AdminMain from '../pages/admin/AdminMain';
+import SocialKakao from '../components/auth/SocialKakao';
 
 const root = createBrowserRouter([
 
@@ -45,6 +46,11 @@ const root = createBrowserRouter([
     { path: '/updatePw', element: <UpdatePwPage /> },
     { path: '/groupPlan', element: <GroupPlanPage /> },
     { path: '/planOrder', element: <PlanOrderPage /> },
+
+    //auth Test
+    { path: '/auth', element:<SocialKakao/>},
+
+
 
     // main
     { path: '/', element: (
