@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import Moment from "moment";
 import "moment/locale/ko";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePlus, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus, faDoorOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FaCalendarAlt, FaCalendarWeek } from "react-icons/fa";
 import { MdNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
@@ -331,26 +331,52 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
     setIsModalOpen(false);
   };
 
-  // 나가기 버튼 클릭 핸들러
-  const handleLeaveCalendar = async () => {
-    try {
-      const response = await axios.delete(`${RootUrl()}/calendarMembers/leave`, {
-        data: {
-          calendarId: selectedCalendar.calendarId,
-          stfNo: loginSlice.userId,
-        },
-      });
-
-      if (response.status === 200) {
-        alert("캘린더에서 나갔습니다."); // 나가기 시 alert
-        console.log("Successfully left the calendar");
-        // 필요한 경우 상위 컴포넌트에 알리기 위해 추가 로직을 작성할 수 있습니다.
-        window.location.reload(); // 화면 새로고침
+// 나가기 또는 삭제 버튼 클릭 핸들러
+const handleLeaveOrDeleteCalendar = async () => {
+  if (selectedCalendar.ownerStfNo === loginSlice.userId) {
+    // 방 삭제
+    const confirmDelete = window.confirm("정말로 이 캘린더를 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`${RootUrl()}/calendars/${selectedCalendar.calendarId}`);
+        if (response.status === 200 || response.status === 204) { // 성공 시 status code 204일 수도 있습니다.
+          alert("캘린더가 삭제되었습니다."); // 삭제 시 alert
+          console.log("Successfully deleted the calendar");
+          window.location.reload(); // 화면 새로고침
+        } else {
+          throw new Error("Failed to delete the calendar"); // 상태 코드가 200 또는 204가 아닌 경우 오류 처리
+        }
+      } catch (err) {
+        console.error("캘린더를 삭제하는 데 실패했습니다.", err);
+        alert("캘린더를 삭제하는 데 실패했습니다."); // 삭제 실패 시 alert
       }
-    } catch (err) {
-      console.error("캘린더에서 나가는 데 실패했습니다.", err);
     }
-  };
+  } else {
+    // 방 나가기
+    const confirmLeave = window.confirm("정말로 이 캘린더에서 나가시겠습니까?");
+    if (confirmLeave) {
+      try {
+        const response = await axios.delete(`${RootUrl()}/calendarMembers/leave`, {
+          data: {
+            calendarId: selectedCalendar.calendarId,
+            stfNo: loginSlice.userId,
+          },
+        });
+
+        if (response.status === 200) {
+          alert("캘린더에서 나갔습니다."); // 나가기 시 alert
+          console.log("Successfully left the calendar");
+          window.location.reload(); // 화면 새로고침
+        } else {
+          throw new Error("Failed to leave the calendar"); // 상태 코드가 200이 아닌 경우 오류 처리
+        }
+      } catch (err) {
+        console.error("캘린더에서 나가는 데 실패했습니다.", err);
+        alert("캘린더에서 나가는 데 실패했습니다."); // 나가기 실패 시 alert
+      }
+    }
+  }
+};
 
   return (
     <div className="contentBox boxStyle8">
@@ -362,8 +388,8 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
               <span onClick={handleAddMembersClick} style={{ cursor: 'pointer', marginRight: '10px' }}>
                 <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
               </span>
-              <span onClick={handleLeaveCalendar} style={{ cursor: 'pointer' }}>
-                <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
+              <span onClick={handleLeaveOrDeleteCalendar} style={{ cursor: 'pointer' }}>
+                <FontAwesomeIcon icon={selectedCalendar.ownerStfNo === loginSlice.userId ? faTrash : faDoorOpen} /> &nbsp;{selectedCalendar.ownerStfNo === loginSlice.userId ? '삭제하기' : '나가기'}
               </span>
             </>
           )}

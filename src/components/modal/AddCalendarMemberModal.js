@@ -113,14 +113,15 @@ const AddCalendarMemberModal = ({ calendarId, handelColseModal, onAddMembers }) 
                 calendarId,
                 stfNo: member.stfNo
             }));
-
-            const response = await axios.get(`${RootUrl()}/saveUser`, newMembers);
+    
+            const response = await axios.post(`${RootUrl()}/calendarMembers`, newMembers);
             onAddMembers(response.data); // 추가된 멤버를 부모 컴포넌트에 전달
             handelColseModal(); // 모달 닫기
         } catch (error) {
             console.error("멤버를 캘린더에 추가하는 중 오류가 발생했습니다!", error);
         }
     };
+    
 
     return (
         <div className="modalBack modalClose">
