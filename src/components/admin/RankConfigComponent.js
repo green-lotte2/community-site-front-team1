@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CreateRankModal from '../modal/CreateRankModal';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { updateRank } from '../../api/AdminApi';
+import { deleteRank, updateRank } from '../../api/AdminApi';
 
 const RankConfigComponent = ({ rankValue, setRankValue, handleChangeRank }) => {
     /** 부서 생서 모달 */
@@ -30,6 +30,16 @@ const RankConfigComponent = ({ rankValue, setRankValue, handleChangeRank }) => {
 
     const handleRnkDelete = async (index) => {
         console.log(rankValue[index]);
+        const confirm = window.confirm('직책을 제거하시겠습니까?');
+        if (confirm) {
+            try {
+                const response = await deleteRank(rankValue[index].rnkNo);
+                console.log(response);
+                setRankValue((prevRankValue) => prevRankValue.filter((_, i) => i !== index));
+            } catch (err) {
+                console.log(err);
+            }
+        }
     };
 
     const handleUpdate = async (rankValue) => {
@@ -91,7 +101,13 @@ const RankConfigComponent = ({ rankValue, setRankValue, handleChangeRank }) => {
                 <button onClick={() => handleUpdate(rankValue)}>저장</button>
             </div>
 
-            {createRank && <CreateRankModal handelCloseModal={handelCloseModal} setRankValue={setRankValue} />}
+            {createRank && (
+                <CreateRankModal
+                    handelCloseModal={handelCloseModal}
+                    rankValue={rankValue}
+                    setRankValue={setRankValue}
+                />
+            )}
         </div>
     );
 };
