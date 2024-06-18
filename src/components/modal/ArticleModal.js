@@ -10,7 +10,6 @@ const ArticleModal = ({ cateData, handleModalClose }) => {
         articleCateWRole: cateData.articleCateWRole,
         articleCateCoRole: cateData.articleCateCoRole,
     });
-
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevData) => ({

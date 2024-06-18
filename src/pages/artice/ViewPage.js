@@ -19,8 +19,20 @@ import { RootUrl } from '../../api/RootUrl';
 import { getCookie } from '../../util/cookieUtil';
 import moment from 'moment';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+
+const roleView = {
+    ADMIN: 3,
+    MANAGER: 2,
+    USER: 1,
+};
+const getRoleValue = (role) => roleView[role] || 0;
 
 const ViewPage = () => {
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
+    const role = loginSlice.userRole;
+    const userRoleValue = getRoleValue(role);
+
     const navigate = useNavigate();
 
     const modifyHandler = () => {
@@ -50,6 +62,7 @@ const ViewPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
     const articleNo = queryParams.get('articleNo');
+    const commentRole = queryParams.get('role');
 
     let pg = queryParams.get('pg');
     if (pg === null) {
@@ -283,21 +296,23 @@ const ViewPage = () => {
                 <div className="commentColumn">
                     <p>답변 </p>
                     {/* 댓글 작성 */}
-                    <div className="commentRow commentColumn">
-                        <div>
-                            <img src="../images/iconSample3.png" alt="" />
-                            <textarea
-                                name="commentCnt"
-                                id="commentCnt"
-                                placeholder="답글입력"
-                                value={commentMessage.commentCnt || ''}
-                                onChange={commentChange}
-                            ></textarea>
+                    {getRoleValue(commentRole) <= userRoleValue && (
+                        <div className="commentRow commentColumn">
+                            <div>
+                                <img src="../images/iconSample3.png" alt="" />
+                                <textarea
+                                    name="commentCnt"
+                                    id="commentCnt"
+                                    placeholder="답글입력"
+                                    value={commentMessage.commentCnt || ''}
+                                    onChange={commentChange}
+                                ></textarea>
+                            </div>
+                            <div style={{ alignSelf: 'self-end' }}>
+                                <button onClick={submitHandler}>답글등록</button>
+                            </div>
                         </div>
-                        <div style={{ alignSelf: 'self-end' }}>
-                            <button onClick={submitHandler}>답글등록</button>
-                        </div>
-                    </div>
+                    )}
 
                     {/* 댓글 목록 */}
                     {comment ? (
@@ -315,11 +330,11 @@ const ViewPage = () => {
                                                 {moment(each.commentRdate).format('YYYY-MM-DD HH:MM:DD')}
                                             </p>
                                         </div>
-                                        <textarea 
-                                            readOnly={!each.isEditing} 
-                                            name="" 
-                                            id="" 
-                                            value={each.isEditing ? each.editedCommentCnt : each.commentCnt} 
+                                        <textarea
+                                            readOnly={!each.isEditing}
+                                            name=""
+                                            id=""
+                                            value={each.isEditing ? each.editedCommentCnt : each.commentCnt}
                                             onChange={(e) => handleCommentChange(e, index)}
                                         ></textarea>
                                     </div>
@@ -333,11 +348,12 @@ const ViewPage = () => {
                                                     저장
                                                 </button>
                                             ) : (
-                                                <button onClick={() => toggleEditComment(index)}>
-                                                    수정
-                                                </button>
+                                                <button onClick={() => toggleEditComment(index)}>수정</button>
                                             )}
-                                            <button data-id={each.commentNo} onClick={() => deleteCommentHandler(each.commentNo)}>
+                                            <button
+                                                data-id={each.commentNo}
+                                                onClick={() => deleteCommentHandler(each.commentNo)}
+                                            >
                                                 삭제
                                             </button>
                                         </>

@@ -12,7 +12,7 @@ const UserSearchComponent = ({ onSearch }) => {
         endDate: '',
         type: '',
         keyword: '',
-        size: '',
+        size: '10',
     });
 
     useEffect(() => {
