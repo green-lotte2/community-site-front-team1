@@ -14,6 +14,8 @@ import { MdNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
 import { RootUrl } from '../../../api/RootUrl';
 import AddCalendarMemberModal from '../../modal/AddCalendarMemberModal'; // 모달 컴포넌트 임포트
+import { boxSizing, height, width } from "@mui/system";
+import { h } from "@fullcalendar/core/preact.js";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -280,30 +282,40 @@ const CalendarViewComponent = ({ selectedCalendar }) => {
 
   // 버튼 스타일 정의
   const buttonStyle = {
-    borderRadius: "25px",
+    height:"30px",
+    width:"90px",
+    borderRadius: "10px",
     border: "2px solid #ddd",
     fontSize: "15px",
     color: "#333",
     marginRight: "5px",
+    boxSizing:"border-box",
+    cursor:"pointer",
   };
 
   const btnToday = {
-    borderRadius: "25px",
+    height: "30px",
+    borderRadius: "10px",
     border: "2px solid #ddd",
     padding: "0 16px",
-    lineHeight: "30px",
     fontWeight: "700",
     fontSize: "15px",
     color: "#333",
     marginRight: "5px",
+    boxSizing:"border-box",
+    cursor:"pointer",
   };
 
   const btnMoveStyle = {
-    border: "1px solid #ddd",
+    height:"28px",
+    width:"16px",
+    border: "2px solid #ddd",
     borderRadius: "25px",
     fontSize: "15px",
     color: "#333",
     marginRight: "5px",
+    boxSizing:"border-box",
+    cursor:"pointer",
   };
 
   const dateSpan = {

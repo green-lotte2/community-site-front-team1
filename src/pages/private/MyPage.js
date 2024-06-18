@@ -29,6 +29,18 @@ const MyPage = () => {
 
     /** 수정 완료 */
     const handleSave = () => {
+
+        if(!hpRed) {
+            alert("연락처가 유효하지 않습니다.");
+            return;
+        }else if (!emailRed) {
+            alert("이메일이 유효하지 않습니다.");
+            return;
+        }
+
+
+
+        // input태그 스타일
         const updateInput = document.getElementsByClassName("update");
         setInputState(false);
         Array.from(updateInput).forEach(each => {
@@ -113,12 +125,14 @@ const MyPage = () => {
 
     /** 이메일 인증번호 발송 */
     const [emailState, setEmailState] = useState(false);
+    const [savedCode, setSavedCode] = useState("");
+    const [emailCode, setEmailCode] = useState("");
     const emailCheck = async () => {
         if (!emailRed) {
             setEmailState(!emailState);
             try {
                 const response = await sendEmailCodeApi(stfInfo.stfEmail);
-                console.log(response);
+                setSavedCode(response.data.savedCode)
                 setEmailmsg("인증코드가 전송되었습니다.");
             } catch (error) {
                 console.log(error);
@@ -128,13 +142,15 @@ const MyPage = () => {
 
     /** 이메일 인증번호 코드 확인 */
     const codeCheck = () => {
-        try {
-            const response = "gotoApi_checkCode";
-            console.log(response);
+        let checkCode = ((parseInt(emailCode) + parseInt(emailCode)) * parseInt(emailCode)) - 1 
+
+        if (parseInt(savedCode) === parseInt(checkCode)) {
             setEmailState(!emailState);
+            setEmailRed(false);
             setEmailmsg("이메일이 인증되었습니다.");
-        } catch (error) {
-            console.log(error);
+        }else {
+            setEmailRed(true);
+            setEmailmsg("인증번호가 일치하지 않습니다.");
         }
     }
 
@@ -158,7 +174,10 @@ const MyPage = () => {
             <div className="contentBox boxStyle7">
                 <div className='myPage'>
                     <div style={{borderBottom:"1px solid #dddddd"}}>
-                        <img src={`${RootUrl()}/images/${stfInfo.stfImg}`} alt="" />
+                        <label htmlFor="" style={{flexDirection:"column"}}>
+                            <img src={`${RootUrl()}/images/${stfInfo.stfImg}`} alt="" />
+                            {inputState && <input type="file" name="" id="" style={{width:"210px"}}/>}
+                        </label>
                         <div className='myInfo'>
                             <p>{stfInfo.stfName}</p>
                             <p>직책 : {stfInfo.strRnkNo}</p>
@@ -191,7 +210,7 @@ const MyPage = () => {
                                 </label>
                                 {emailState && 
                                     <label htmlFor="" style={{alignItems:"center"}}>
-                                        <input className='update' type='text' name='code' style={{width:"220px", border:"1px solid #b0b0b0"}}/>
+                                        <input className='update' type='text' name='code' onChange={(e)=>setEmailCode(e.target.value)} style={{width:"220px", border:"1px solid #b0b0b0"}}/>
                                         {inputState && <button className='sBtn' onClick={codeCheck}>확인</button>}
                                     </label>
                                 }
