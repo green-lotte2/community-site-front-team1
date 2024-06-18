@@ -6,9 +6,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
 
 import { RootUrl } from '../../api/RootUrl.js';
+import { getPlanStatusNo } from '../../api/MemberApi.js';
 const rootURL = RootUrl();
 
-//import { getEmail,getFindPostion,getFindRnk, getVeriftyCode } from '../../api/MemberApi';
 
 
 
@@ -54,6 +54,7 @@ const RegisterPage = () => {
         dptNo: "",
         rnkNo: "",
         thumbFile: null,
+        planStatusNo:"",//최고 관리자가 선택한 요금제를 따라가기
     });
 
     const [loading, setLoading] = useState(true);
@@ -117,8 +118,21 @@ const RegisterPage = () => {
                 console.log(err);
             });
 
+            findPlanStatusNo();
+
         
     }, []);
+
+
+        //최고 관리자의 요금제 구하기
+        const findPlanStatusNo = async () =>{        
+        
+            const result = await getPlanStatusNo();
+            
+            setStf(prevStf => ({ ...prevStf, planStatusNo: result }));
+            
+            console.log("요금제 : ",result);
+        }
 
 
 
@@ -144,7 +158,7 @@ const RegisterPage = () => {
 
 
 
-
+    //이메일 보내기
     const handleSendEmail = (e) => {
 
         e.preventDefault();
@@ -180,6 +194,12 @@ const RegisterPage = () => {
                 console.log(err);
             });
     };
+
+
+
+
+
+    //확인 코드 보내기
     const handleVerifyCode = (e) => {
 
         console.log("savedCode : "+savedCode);
@@ -192,7 +212,7 @@ const RegisterPage = () => {
             code: verificationCode,
             scode: savedCode
           },
-          withCredentials: true // 세션 쿠키 포함(사용안함:세션사용안함)
+          //withCredentials: true // 세션 쿠키 포함(사용안함:세션사용안함)
         })
           .then((response) => {
             const result = response.data.result;
@@ -213,9 +233,10 @@ const RegisterPage = () => {
 
 
 
-    //회원가입버튼을 누르면 post전송
+    //회원가입버튼 클릭(post전송)
     const submitHandler = (e) => {
         e.preventDefault();
+
         alert("회원가입이 완료되었습니다");
 
         const formData = new FormData();

@@ -83,3 +83,12 @@ export const freePlan= async (data)=>{
     const response = await axios.get(`${rootURL}/freePlan?stfNo=${data}`);
     return response.data;
 }
+
+
+//최고관리자가 결제한 요금제 들고 오기
+export const getPlanStatusNo= async ()=>{
+
+    console.log("최고 관리자의 요금제 들고오기 : ");
+    const response = await axios.get(`${rootURL}/getPlanStatusNo`);
+    return response.data;
+}

@@ -37,7 +37,7 @@ const GroupPlanPage = () => {
    }, []);
 
 
-   const submitOrder = async (type,planNo)=> async (e)=>{
+   const submitOrder = (type,planNo)=> async (e)=>{
 
     e.preventDefault();
 
