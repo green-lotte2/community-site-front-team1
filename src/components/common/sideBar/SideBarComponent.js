@@ -2,8 +2,12 @@ import React from 'react';
 import SideBoxComponent from './SideBoxComponent';
 import { Link } from 'react-router-dom';
 import { ArticleListProvider } from './SideListProvider';
+import { useSelector } from 'react-redux';
 
 const SideBarComponent = () => {
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
+    const role = loginSlice.userRole;
+
     return (
         <ArticleListProvider>
             <section id="sideBar">
@@ -16,7 +20,7 @@ const SideBarComponent = () => {
 
                 <SideBoxComponent sideBarCate={'private'}></SideBoxComponent>
                 <SideBoxComponent sideBarCate={'article'}></SideBoxComponent>
-                <SideBoxComponent sideBarCate={'admin'}></SideBoxComponent>
+                {role === 'ADMIN' && <SideBoxComponent sideBarCate={'admin'} />}
                 <SideBoxComponent sideBarCate={'cs'}></SideBoxComponent>
             </section>
         </ArticleListProvider>

@@ -92,3 +92,15 @@ export const getPlanStatusNo= async ()=>{
     const response = await axios.get(`${rootURL}/getPlanStatusNo`);
     return response.data;
 }
+
+
+// 전화번호 중복 검사
+export const stfHpCheckApi = async (stfPh) => {
+    const response = await axios.post(`${RootUrl()}/checkPh`, {stfPh}, {
+        headers : {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response.data;
+};
+

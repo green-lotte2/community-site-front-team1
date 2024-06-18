@@ -3,8 +3,20 @@ import SideTabComponent from './SideTabComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faPhoneVolume, faUnlockKeyhole, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { ArticleListContext } from './SideListProvider';
+import { useSelector } from 'react-redux';
+
+const roleView = {
+    ADMIN: 3,
+    MANAGER: 2,
+    USER: 1,
+};
+const getRoleValue = (role) => roleView[role] || 0;
 
 const SideBoxComponent = ({ sideBarCate }) => {
+    const loginSlice = useSelector((state) => state.loginSlice) || {};
+    const role = loginSlice.userRole;
+
+    const userRoleValue = getRoleValue(role);
     const articleCateList = useContext(ArticleListContext);
     const [accordion, setAccordion] = useState(true);
 
@@ -91,14 +103,18 @@ const SideBoxComponent = ({ sideBarCate }) => {
 
                     {sideBarCate === 'article' && (
                         <>
-                            {articleCateList.map((articleCate, index) => (
-                                <SideTabComponent
-                                    key={index}
-                                    sideTabCate={`list?articleCateNo=${articleCate.articleCateNo}&pg=1`}
-                                    sideTabCateName={articleCate.articleCateName}
-                                    type={1}
-                                />
-                            ))}
+                            {articleCateList.map(
+                                (articleCate, index) =>
+                                    articleCate.articleCateStatus === 1 &&
+                                    getRoleValue(articleCate.articleCateVRole) <= userRoleValue && (
+                                        <SideTabComponent
+                                            key={index}
+                                            sideTabCate={`list?articleCateNo=${articleCate.articleCateNo}&pg=1`}
+                                            sideTabCateName={articleCate.articleCateName}
+                                            type={1}
+                                        />
+                                    )
+                            )}
                         </>
                     )}
 

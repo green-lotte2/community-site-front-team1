@@ -1864,6 +1864,8 @@ section {
     flex-direction: column;
     width: 100%;
     height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .scrollRow {
     display: flex;
@@ -2523,7 +2525,6 @@ section {
 
 /* 마이페이지 */
 .myPage {
-    width: 800px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -2554,28 +2555,37 @@ section {
 }
 .myPage img {
     width: 200px;
+    margin: 20px;
 }
 
 .myPage input {
     border: 0;
     width: 280px;
-    height: 30px;
     font-size: 16px;
+    padding: 10px;
+    margin: 4px;
 }
+
 .myContent {
-    height: 50px;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #dddddd;
 }
+.myContent > div {
+    height: 100%;
+    padding: 10px 0;
+    align-items: center;
+}
 .myContent > div > p {
-    width: 100px;
-    height: 30px;
+    width: 80px;
     font-size: 16px;
     font-weight: bolder;
     align-items: center;
     padding-left: 10px;
+}
+.myContent label {
+    align-items: center;
 }
 .myPage button {
     font-size: 16px;
@@ -2597,6 +2607,20 @@ section {
     text-align: center;
     align-content: center;
     cursor: pointer;
+}
+.sBtn {
+    display: flex;
+    width: 60px!important;
+    height: 44px!important;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    font-size: 16px!important;
+    text-align: center!important;
+    align-content: center!important;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 .myPageRow {
     display: flex;
