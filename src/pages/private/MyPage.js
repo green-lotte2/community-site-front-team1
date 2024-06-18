@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
 import { useSelector } from 'react-redux';
-import { selectStfInfoApi } from '../../api/MainApi';
+import { selectStfInfoApi, sendEmailCodeApi } from '../../api/MainApi';
 import { RootUrl } from '../../api/RootUrl';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { stfHpCheckApi } from '../../api/MemberApi';
@@ -113,14 +113,16 @@ const MyPage = () => {
 
     /** 이메일 인증번호 발송 */
     const [emailState, setEmailState] = useState(false);
-    const emailCheck = () => {
-        setEmailState(!emailState);
-        try {
-            const response = "gotoApi_sendEmail";
-            console.log(response);
-            setEmailmsg("인증코드가 전송되었습니다.");
-        } catch (error) {
-            console.log(error);
+    const emailCheck = async () => {
+        if (!emailRed) {
+            setEmailState(!emailState);
+            try {
+                const response = await sendEmailCodeApi(stfInfo.stfEmail);
+                console.log(response);
+                setEmailmsg("인증코드가 전송되었습니다.");
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 

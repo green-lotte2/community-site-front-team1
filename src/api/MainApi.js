@@ -19,6 +19,11 @@ export const selectStfInfoApi = async (userId) => {
             'Content-Type': 'application/json'
         }
     });
-
     return response.data;
+};
+
+// 마이페이지 이메일 인증번호
+export const sendEmailCodeApi = async (data) => {
+    const response = await axios.get(`${RootUrl()}/sendEmail?email=${data}`);
+    return response;
 };
