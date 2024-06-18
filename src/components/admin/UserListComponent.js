@@ -28,13 +28,7 @@ const UserListComponent = ({ userList, setUserList }) => {
     // 모달창 닫는 핸들러
     const handleModalClose = (index, modifiedData) => {
         setModalOpen((prev) => ({ ...prev, [index]: false }));
-        console.log('modifiedData : ', modifiedData);
-
-        setUserList((prevList) => {
-            const newList = [...prevList.dtoList];
-            newList[index] = modifiedData;
-            return { ...prevList, dtoList: newList };
-        });
+        window.location.reload();
     };
 
     return (

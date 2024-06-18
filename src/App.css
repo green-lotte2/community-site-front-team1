@@ -2610,13 +2610,13 @@ section {
 }
 .sBtn {
     display: flex;
-    width: 60px!important;
-    height: 44px!important;
+    width: 60px !important;
+    height: 44px !important;
     border: 1px solid #808080;
     border-radius: 4px;
-    font-size: 16px!important;
-    text-align: center!important;
-    align-content: center!important;
+    font-size: 16px !important;
+    text-align: center !important;
+    align-content: center !important;
     justify-content: center;
     align-items: center;
     cursor: pointer;

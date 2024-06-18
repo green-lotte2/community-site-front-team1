@@ -51,7 +51,7 @@ const UserModifyModal = ({ userData, rnkList, dptList, handleModalClose }) => {
                                 <img src={`${RootUrl()}/images/${userData.stfImg}`} alt="sft" name="stfImg" />
                             )}
                         </div>
-                        <div className="modalColumn" style={{border:"0"}}>
+                        <div className="modalColumn" style={{ border: '0' }}>
                             <div className="modalDouble" name="stfName">
                                 이름 : {userData.stfName}
                             </div>
@@ -64,7 +64,7 @@ const UserModifyModal = ({ userData, rnkList, dptList, handleModalClose }) => {
                     <div className="modalRow">
                         <div className="maR30">직책</div>
                         <div>
-                            <select name="rnkNo" value={modalData.strRnkNo} onChange={handleChange}>
+                            <select name="rnkNo" value={modalData.rnkNo} onChange={handleChange}>
                                 {rnkList.map((rnk) => (
                                     <option key={rnk.rnkNo} value={rnk.rnkNo}>
                                         {rnk.rnkName}
