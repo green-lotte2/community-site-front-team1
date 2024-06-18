@@ -32,6 +32,7 @@ import PrivateRoute from './PrivateRoute';
 import CsTermsPage from '../pages/cs/CsTermsPage';
 import AdminMain from '../pages/admin/AdminMain';
 import SocialKakao from '../components/auth/SocialKakao';
+import KakaoRedirect from '../components/auth/KakaoRedirect';
 
 const root = createBrowserRouter([
 
@@ -48,7 +49,8 @@ const root = createBrowserRouter([
     { path: '/planOrder', element: <PlanOrderPage /> },
 
     //auth Test
-    { path: '/auth', element:<SocialKakao/>},
+    { path: '/auth', element:<KakaoRedirect/>},
+    { path: '/test', element:<SocialKakao/>},
 
 
 
