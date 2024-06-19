@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { RootUrl } from '../../api/RootUrl';
+import { BEc2 } from '../../api/RootUrl';
 
 import { login } from '../../slice/LoginSlice';
 
@@ -10,7 +10,7 @@ const KakaoLoginApi = (code) => {
     return function (dispatch) {
         axios({
             method: 'GET',
-            url: `${RootUrl()}/auth?code=${code}`,
+            url: `${BEc2}/auth?code=${code}`,
             withCredentials: true,
         })
             .then((res) => {
