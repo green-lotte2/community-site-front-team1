@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../layout/MainLayout'
 import { useSelector } from 'react-redux';
-import { selectStfInfoApi, sendEmailCodeApi } from '../../api/MainApi';
+import { saveStfAddrApi, saveStfEmailApi, saveStfPhApi, selectStfInfoApi, sendEmailCodeApi, updateProfileApi, updateStfApi } from '../../api/MainApi';
 import { RootUrl } from '../../api/RootUrl';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { stfHpCheckApi } from '../../api/MemberApi';
@@ -12,44 +12,59 @@ const MyPage = () => {
     const userId = loginSlice.userId;
 
     /** 수정 상태 관리 */
-    const [inputState, setInputState] = useState(false);
+    const [updateFile, setUpdateFile] = useState(false);
+
+    const [modifyPh, setModifyPh] = useState(false);
+    const [modifyEmail, setModifyEmail] = useState(false);
+    const [modifyAddr, setModifyAddr] = useState(false);
     const handleModify = (event) => {
-        setInputState(true);
-        const updateInput = document.getElementsByClassName("update");
+        const input = event.target;
 
-        Array.from(updateInput).forEach(each => {
-            each.readOnly = false;
-            each.style.border = "1px solid #b0b0b0"
-            if (each.type === "email") {
-                each.style.width = "220px";
-            }
-        });
+        if(input.value === "stfPh") {
+            setModifyPh(true);
+            const inputStfPh = document.getElementsByClassName('inputStfPh')[0];
+            inputStfPh.readOnly = false;
+            inputStfPh.style.border = "1px solid #b0b0b0"
 
+        }else if (input.value === "stfEmail") {
+            setModifyEmail(true);
+            const inputStfEmail = document.getElementsByClassName('inputStfEmail')[0];
+            inputStfEmail.readOnly = false;
+            inputStfEmail.style.border = "1px solid #b0b0b0"
+
+        }else if (input.value === "stfAddr") {
+            const inputStfAddr = document.getElementsByClassName('inputStfAddr');
+            Array.from(inputStfAddr).forEach(each => {
+                each.readOnly = false;
+                each.style.border = "1px solid #b0b0b0"
+            })
+            setModifyAddr(true);
+        }
     }
 
     /** 수정 완료 */
-    const handleSave = () => {
+    const handleSave = async (input) => {
+        console.log("11111", input)
+        if(input === "stfPh") {
+            setModifyPh(false);
+            const inputStfPh = document.getElementsByClassName('inputStfPh')[0];
+            inputStfPh.readOnly = true;
+            inputStfPh.style.border = "0"
 
-        if(!hpRed) {
-            alert("연락처가 유효하지 않습니다.");
-            return;
-        }else if (!emailRed) {
-            alert("이메일이 유효하지 않습니다.");
-            return;
+        }else if (input === "stfEmail") {
+            setModifyEmail(false);
+            const inputStfEmail = document.getElementsByClassName('inputStfEmail')[0];
+            inputStfEmail.readOnly = true;
+            inputStfEmail.style.border = "0"
+
+        }else if (input === "stfAddr") {
+            const inputStfAddr = document.getElementsByClassName('inputStfAddr');
+            Array.from(inputStfAddr).forEach(each => {
+                each.readOnly = true;
+                each.style.border = "0"
+            })
+            setModifyAddr(false);
         }
-
-
-
-        // input태그 스타일
-        const updateInput = document.getElementsByClassName("update");
-        setInputState(false);
-        Array.from(updateInput).forEach(each => {
-            each.readOnly = true;
-            each.style.border = "0"
-            if (each.type === "email") {
-                each.style.width = "280px";
-            }
-        });
     }
 
     // 페이지 로드시 회원 정보 조회
@@ -60,13 +75,12 @@ const MyPage = () => {
                 const response = await selectStfInfoApi(userId);
                 console.log("res",response);
                 setStfInfo(response);
-                
             } catch (error) {
                 console.log(error);
             }
         }
         selectStfInfo();
-    }, [])
+    }, [updateFile])
 
     /** 연락처 알림 */
     const [hpmsg, setHpmsg] = useState("");
@@ -99,6 +113,28 @@ const MyPage = () => {
                 }
             }
             checkHpUse();
+        }
+    }
+
+    /** 연락처 저장 */
+    const saveStfPh = async () => {
+
+        if (!setHpRed) {
+            alert("연락처가 유효하지 않습니다.");
+            return;
+        }
+        
+        try {
+            const response = await saveStfPhApi(stfInfo.stfPh, stfInfo.stfNo);
+            console.log(response);
+
+            if(response > 0) {
+                alert("연락처가 수정되었습니다.");
+                handleSave("stfPh")
+            }
+
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -148,9 +184,32 @@ const MyPage = () => {
             setEmailState(!emailState);
             setEmailRed(false);
             setEmailmsg("이메일이 인증되었습니다.");
+            saveStfEmail();
         }else {
             setEmailRed(true);
             setEmailmsg("인증번호가 일치하지 않습니다.");
+        }
+    }
+
+     /** 이메일 저장 */
+    const saveStfEmail = async () => {
+
+        if (!setEmailRed) {
+            alert("이메일이 유효하지 않습니다.");
+            return;
+        }
+        
+        try {
+            const response = await saveStfEmailApi(stfInfo.stfEmail, stfInfo.stfNo);
+            console.log(response);
+
+            if(response > 0) {
+                alert("이메일이 수정되었습니다.");
+                handleSave("stfEmail")
+            }
+
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -166,7 +225,58 @@ const MyPage = () => {
         });
     };
 
-    /** 이메일 코드 인증 중복 검사 주소 덮어쓰기 가입일 덮어쓰기 최종 DB 저장하기 남음 */
+    /** 주소 저장 */
+    const handleSaveAddr = async () => {
+
+        const inputStfAddr = document.getElementsByClassName("inputStfAddr");
+        Array.from(inputStfAddr).forEach(each => {
+            if (each.value === null) {
+                alert("주소를 모두 입력해주세요.");
+                return;
+            }
+        })
+
+        const saveAddr = {
+            stfNo : stfInfo.stfNo,
+            stfZip : stfInfo.stfZip,
+            stfAddr1 : stfInfo.stfAddr1,
+            stfAddr2 : stfInfo.stfAddr2,
+        }
+        
+        try {
+            const response = await saveStfAddrApi(saveAddr);
+            console.log(response);
+
+            if(response > 0) {
+                alert("주소정보가 수정되었습니다.");
+                handleSave("stfAddr")
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    /** 프로필 사진 저장 */
+    const updateProfile = async (event) => {
+
+        const formData = new FormData();
+        formData.append('file', event.target.files[0]);
+        formData.append('stfNo', stfInfo.stfNo);
+
+        try {
+            const response = await updateProfileApi(formData);
+            console.log(response)
+            if(response > 0) {
+                alert("프로필 사진이 변경되었습니다.");
+                setUpdateFile(false);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
 
   return (
     <MainLayout>
@@ -176,7 +286,8 @@ const MyPage = () => {
                     <div style={{borderBottom:"1px solid #dddddd"}}>
                         <label htmlFor="" style={{flexDirection:"column"}}>
                             <img src={`${RootUrl()}/images/${stfInfo.stfImg}`} alt="" />
-                            {inputState && <input type="file" name="" id="" style={{width:"210px"}}/>}
+                                {updateFile && <input type="file" name="" id="" onChange={(e) => updateProfile(e)} style={{width:"210px", border:"1px solid rgb(176, 176, 176)"}}/>}
+                                {!updateFile && <button onClick={() => setUpdateFile(true)} style={{marginBottom:"10px", justifyContent:"center"}}>프로필 사진 변경</button>}
                         </label>
                         <div className='myInfo'>
                             <p>{stfInfo.stfName}</p>
@@ -189,32 +300,36 @@ const MyPage = () => {
                         <div>
                             <p>연락처</p>
                             <label htmlFor="" style={{alignItems:"center", flexDirection:"column"}}>
-                                <input className='update' type='text' name='stfPh' 
+                                <input className='inputStfPh' type='text' name='stfPh' readOnly
                                     value={stfInfo.stfPh} 
                                     onChange={(e) => hpUseCheck(e)}
-                                    style={{ border: hpRed ? '2px solid red' : '1px solid green' }}
+                                    style={{ width:"220px"}}
                                     />
-                                {inputState && <span style={{ color: hpRed ? 'red' : 'green' }} >{hpmsg}</span>}
+                                {modifyPh && <span style={{ color: hpRed ? 'red' : 'green' }} >{hpmsg}</span>}
                             </label>
+                            {!modifyPh && <button value="stfPh" className='sBtn' onClick={(e) => handleModify(e)}>수정</button>}
+                            {modifyPh && <button value="stfPh" className='sBtn' onClick={saveStfPh}>완료</button>}
                         </div>
+
                         <div>
                             <p>이메일</p> 
                             <div style={{alignItems:"center", flexDirection:"column"}}>
                                 <label htmlFor="" style={{alignItems:"center"}}>
-                                    <input className='update' type='email' name='stfEmail'
+                                    <input className='inputStfEmail' type='email' name='stfEmail' readOnly
                                         value={stfInfo.stfEmail}
                                         onChange={(e) => emailUseCheck(e)}
-                                        style={{ border: hpRed ? '2px solid red' : '1px solid green' }}
+                                        style={{ width:"220px"}}
                                         />
-                                    {inputState && <button className='sBtn' onClick={emailCheck}>인증</button>}
+                                    {!modifyEmail && <button value="stfEmail" className='sBtn' onClick={(e) => handleModify(e)}>수정</button>}
+                                    {modifyEmail && <button value="stfEmail" className='sBtn' onClick={emailCheck}>인증</button>}
                                 </label>
                                 {emailState && 
                                     <label htmlFor="" style={{alignItems:"center"}}>
                                         <input className='update' type='text' name='code' onChange={(e)=>setEmailCode(e.target.value)} style={{width:"220px", border:"1px solid #b0b0b0"}}/>
-                                        {inputState && <button className='sBtn' onClick={codeCheck}>확인</button>}
+                                        {modifyEmail && <button className='sBtn' onClick={codeCheck}>확인</button>}
                                     </label>
                                 }
-                                {inputState && <span style={{ color: emailRed ? 'red' : 'green' }}>{emailmsg}</span>}
+                                {modifyEmail && <span style={{ color: emailRed ? 'red' : 'green' }}>{emailmsg}</span>}
                             </div>
                         </div>
                     </div>
@@ -224,13 +339,15 @@ const MyPage = () => {
                             <p>주소</p> 
                             <div style={{flexDirection:"column"}}>
                                 <label htmlFor="">
-                                    <input className='update' type='text' name='stfZip' value={stfInfo.stfZip}/>
-                                    {inputState && <button className='sBtn' onClick={handlePostcode}>검색</button>}
+                                    <input className='inputStfAddr' type='text' name='stfZip' value={stfInfo.stfZip} style={{ width:"220px"}}/>
+                                    {!modifyAddr && <button value="stfAddr" className='sBtn' onClick={(e) => handleModify(e)}>수정</button>}
+                                    {modifyAddr && <button value="stfAddr" className='sBtn' onClick={handlePostcode}>검색</button>}
+                                    {modifyAddr && <button value="stfAddr" className='sBtn' onClick={handleSaveAddr} >저장</button>}
                                     
                                 </label>
                                 <label htmlFor="">
-                                    <input className='update' type='text' name='stfAddr1' value={stfInfo.stfAddr1}/>
-                                    <input className='update' type='text' name='stfAddr2' value={stfInfo.stfAddr2}/>
+                                    <input className='inputStfAddr' type='text' name='stfAddr1' value={stfInfo.stfAddr1}/>
+                                    <input className='inputStfAddr' type='text' name='stfAddr2' value={stfInfo.stfAddr2} onChange={(e)=>setStfInfo(prev => ({...prev, stfAddr2:e.target.value}))}/>
                                 </label>
                             </div>
                         </div>
@@ -239,7 +356,7 @@ const MyPage = () => {
                     <div className='myContent'>
                         <div>
                             <p>가입일</p> 
-                            <input className='update' type='date' name='stfEnt' value={stfInfo.stfEnt}/></div>
+                            <input type='date' name='stfEnt' value={stfInfo.stfEnt}/></div>
                         <div>
                             <p>상태</p>
                             {stfInfo.stfStatus === "Active" && <input type="text" name='stfStatus' value="재직중"/>}
@@ -259,12 +376,6 @@ const MyPage = () => {
                             {stfInfo.planNo === 2 && <input type="text" name='planStatusNo' value="STANDARD"/>}
                             {stfInfo.planNo === 3 && <input type="text" name='planStatusNo' value="PREMIUM"/>}
                         </div>
-                    </div>
-
-                    <div style={{justifyContent:"end"}}>
-                        {!inputState && <button onClick={handleModify} style={{marginTop:"10px"}}>수정</button>}
-                        {inputState && <button onClick={handleSave} style={{marginTop:"10px"}}>완료</button>}
-                        
                     </div>
                 </div>
             </div>
