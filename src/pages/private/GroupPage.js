@@ -3,6 +3,9 @@ import MainLayout from '../../layout/MainLayout';
 import GroupHeadComponent from '../../components/common/private/GroupHeadComponent';
 import { getDptAndStfList, getDptList, getUserInfo, getUserList } from '../../api/AdminApi';
 import { RootUrl } from '../../api/RootUrl';
+import { useNavigate } from 'react-router-dom';
+import { postCreateRoom } from '../../api/ChatApi';
+import { getCookie } from '../../util/cookieUtil';
 
 const GroupPage = () => {
     const [groupInfo, setGroupInfo] = useState([]);
@@ -32,6 +35,31 @@ const GroupPage = () => {
         }
     };
 
+    const navigate = useNavigate();
+    const auth = getCookie('auth');
+
+    const [titleInfo, setTitleInfo] = useState({
+        name: '',
+        stfNo: auth?.userId,
+    });
+    const navigateToChatPage = async (userInfo) => {
+        console.log(userInfo);
+        const roomName = `${userInfo.stfName}님의 대화방`;
+        setTitleInfo((prevState) => ({
+            ...prevState,
+            name: roomName,
+        }));
+
+        try {
+            console.log('titleInfo', titleInfo);
+            const response = await postCreateRoom(titleInfo);
+            console.log('response', response);
+            // navigate('/chat');
+        } catch (error) {
+            console.error('Error creating chat room:', error);
+        }
+    };
+
     return (
         <MainLayout>
             <div className="chatBox">
@@ -57,7 +85,9 @@ const GroupPage = () => {
                                 </div>
                             </div>
                             <div className="groupRow">
-                                <div className='memberBtn'>채팅하기</div>
+                                <div className="memberBtn" onClick={() => navigateToChatPage(userInfo)}>
+                                    채팅하기
+                                </div>
                             </div>
                         </div>
                     </div>
