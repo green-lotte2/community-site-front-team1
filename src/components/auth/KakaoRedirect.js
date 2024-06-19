@@ -2,15 +2,14 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { kakaoLoginAction } from './KakaoLoginApi';
 
-
 const KakaoRedirect = () => {
     const dispatch = useDispatch();
+    console.log('dispatch!!!', dispatch);
 
     // 인가 코드
     let code = new URL(window.location.href).searchParams.get('code');
     console.log('code11111', code);
     React.useEffect(() => {
-        
         const fetchData = async () => {
             await dispatch(kakaoLoginAction(code));
         };
