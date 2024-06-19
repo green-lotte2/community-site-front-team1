@@ -2942,7 +2942,8 @@ section {
     display: flex;
     margin: 0 30px;
 }
-.adminMain > img {
+.adminMain > img,
+.adminMain > a > img {
     width: 200px;
 }
 .adminMain > p {
@@ -2966,6 +2967,7 @@ section {
     width: 250px;
 }
 
+
 /* todo */
 .todoBtn {
     display: flex;
@@ -2988,3 +2990,4 @@ section {
     cursor: pointer;
     align-items: center;
 }
+

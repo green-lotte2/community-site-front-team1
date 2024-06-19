@@ -16,7 +16,7 @@ const CsListComponent = ({serverData}) => {
           <div>{serverData.startNo-index}</div>{/*키값이 아닌 일반 순번 출력 */}
           <div>{item.stfName}</div>
           <div>
-            {item.secret === "전체공개" || item.stfNo === auth.userId ? (<Link to={`/csView?csNo=${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>):(<p style={{fontSize:"15px"}}>비밀글 입니다</p>)} 
+            {item.secret === "전체공개" || item.stfNo === auth.userId || auth.userRole==="ADMIN" || auth.userRole==="MANAGER"? (<Link to={`/csView?csNo=${item.csNo}`}>[{item.csCate}]   {item.csTitle}</Link>):(<p style={{fontSize:"15px"}}>비밀글 입니다</p>)} 
           </div>
           <div style={{width: "150px"}}>    
                     {Moment(item.csRdate).format('YYYY-MM-DD')}

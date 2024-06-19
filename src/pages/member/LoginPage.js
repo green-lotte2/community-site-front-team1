@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import MemberLayout from '../../layout/MemberLayout';
 import { Link, useNavigate } from 'react-router-dom';
-import { RootUrl } from '../../api/RootUrl.js';
+import { FEc2, RootUrl } from '../../api/RootUrl.js';
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login } from "../../slice/LoginSlice"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
+
 
 
 const rootURL = RootUrl();
@@ -18,7 +19,7 @@ const initState = {
 const LoginPage = () => {
 
   const Rest_api_key='3227ae68356a2d41ac3d1a0a451d3676' //REST API KEY
-  const redirect_uri = 'http://localhost:3000/auth' //Redirect URI
+  const redirect_uri = `${FEc2}/auth` //Redirect URI
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
 
 
@@ -105,16 +106,14 @@ const LoginPage = () => {
                 
                 </label>
 
-                <label htmlFor="myInput" className="labelSvae">
-                    <input type="checkbox"/> 아이디 저장
-                </label>
+
 
                 <input type="submit" value="로그인" className='btnLogin'/>
             </form>
 
             <div>
                 <Link to="#" className="socialLogin">
-                    <img src="/images/googleIcon.png" alt=""/>
+                    <img src="/images/kakao.png" alt=""/>
                     <span style={{color:"white"}} onClick={handleLogin}>카카오 계정으로 로그인</span>
                 </Link>
             </div>
