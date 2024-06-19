@@ -6,7 +6,7 @@ import CalendarListComponent from '../../components/private/calendar/CalendarLis
 import CalendarViewComponent from '../../components/private/calendar/CalendarViewComponent';
 import axios from 'axios';
 import { RootUrl } from '../../api/RootUrl';
-import { mainInfoApi } from '../../api/MainApi';
+import { createTodoApi, mainInfoApi, todoCompleteApi } from '../../api/MainApi';
 import Moment from 'moment';
 
 
@@ -36,6 +36,7 @@ const MainPage = () => {
 
   /** 메인페이지 정보 출력 */
   const [infoData, setInfoData] = useState("");
+  const [todoRender, setTodoRender] = useState(1);
 
   useEffect(()=>{
     console.log("Aa", loginSlice.userId)
@@ -50,26 +51,76 @@ const MainPage = () => {
     }
     mainInfo();
 
-  },[])
+  },[todoRender])
 
+  /** todo 완료 */
+  const todoComplete = async (todoNo) => {
+    try {
+      const response = await todoCompleteApi(todoNo); 
+      console.log(response)
+
+      if (response > 0) {
+        setTodoRender(todoRender + 1);
+      }else {
+        alert("todo 변경에 실패했습니다.");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /** todo 생성 */
+  const [todoCreate, setTodoCreate] = useState(false);
+  const [newTodo, setNewTodo] = useState({
+    content : "",
+    date : "",
+  });
+  const createTodo = async () => {
+
+    const data = {
+      todoContent : newTodo.content,
+      todoDate : newTodo.date,
+      stfNo : loginSlice.userId,
+      todoStatus : "Y"
+    }
+
+    try {
+      const response = await createTodoApi(data);
+      console.log(response);
+      if (response > 0) {
+        setTodoRender(todoRender + 1);
+        setTodoCreate(false);
+      } else {
+        setTodoCreate(false);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <MainLayout>
-      <div className="contentBox boxStyle1">
-        <div className="contentTitle">결재</div>
+      <div className="contentBox boxStyle1" style={{overflow:"scroll", scrollbarWidth:"none"}}>
+        <div className="contentTitle">ToDo</div>
         <div className="contentColumn">
-          <Link to="#" className="contentRow">
-              <p>[24.05.22] 연차 신청</p>
-              <p>승인대기</p>
-          </Link>
-          <Link to="#" className="contentRow">
-              <p>[24.05.23] 연차 신청</p>
-              <p>승인대기</p>
-          </Link>
-          <Link to="#" className="contentRow">
-              <p>[24.05.20] 비품구매 결재건</p>
-              <p>승인대기</p>
-          </Link>
+          {infoData.todoDTO && infoData.todoDTO.map((todo, index)=>(
+            <span key={index} className="contentRow">
+              <p>[{Moment(todo.todoDate).format('YY-MM-DD')}] {todo.todoContent}</p>
+              <p><button className='ssBtn' onClick={() => todoComplete(todo.todoNo)}>완료</button></p>
+            </span>
+          ))}
+          {todoCreate && 
+            <span className="contentRow" >
+              <input type="date" onChange={(e) => setNewTodo(prev => ({ ...prev, date: e.target.value }))}/>
+              <input type="text" name="" id="" placeholder='할일'
+                onChange={(e) => setNewTodo(prev => ({ ...prev, content: e.target.value }))}
+                style={{width:"170px", padding:"4px"}}/>
+              <button className='ssBtn' onClick={createTodo}>생성</button>
+            </span>
+          }
+          <span className="contentRow" style={{justifyContent:"center"}}>
+            <button className='todoBtn' onClick={()=>setTodoCreate(true)}>+</button>
+          </span>
         </div>
       </div>
 
