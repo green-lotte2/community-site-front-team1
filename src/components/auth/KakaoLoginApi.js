@@ -1,22 +1,23 @@
 import axios from 'axios';
 
-import { RootUrl } from '../../api/RootUrl';
+import { BEc2 } from '../../api/RootUrl';
 
 import { login } from '../../slice/LoginSlice';
-
-
 
 const KakaoLoginApi = (code) => {
     return function (dispatch) {
         axios({
             method: 'GET',
-            url: `${RootUrl()}/auth?code=${code}`,
+            url: `${BEc2}/auth?code=${code}`,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
             withCredentials: true,
         })
             .then((res) => {
                 console.log('token 들어오나?', JSON.stringify(res));
 
-                const ACCESS_TOKEN = res.data.accessToken;                
+                const ACCESS_TOKEN = res.data.accessToken;
 
                 console.log('accessToken:', ACCESS_TOKEN);
                 localStorage.setItem('token', ACCESS_TOKEN);
@@ -36,6 +37,7 @@ const KakaoLoginApi = (code) => {
 
 export const kakaoLoginAction = (code) => {
     return async (dispatch, getState) => {
+        console.log('kakaoLoginAction', code);
         await dispatch(KakaoLoginApi(code));
     };
 };
