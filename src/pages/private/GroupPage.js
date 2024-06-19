@@ -6,6 +6,7 @@ import { RootUrl } from '../../api/RootUrl';
 import { useNavigate } from 'react-router-dom';
 import { postCreateRoom } from '../../api/ChatApi';
 import { getCookie } from '../../util/cookieUtil';
+import axios from 'axios';
 
 const GroupPage = () => {
     const [groupInfo, setGroupInfo] = useState([]);
@@ -45,16 +46,27 @@ const GroupPage = () => {
     const navigateToChatPage = async (userInfo) => {
         console.log(userInfo);
         const roomName = `${userInfo.stfName}님의 대화방`;
-        setTitleInfo((prevState) => ({
-            ...prevState,
+        const roomInfo = {
             name: roomName,
-        }));
-
+            stfNo: auth?.userId,
+        };
+        setTitleInfo(roomInfo);
         try {
-            console.log('titleInfo', titleInfo);
-            const response = await postCreateRoom(titleInfo);
-            console.log('response', response);
-            // navigate('/chat');
+            console.log('titleInfo', roomInfo);
+
+            const createRoomResponse = await postCreateRoom(roomInfo);
+            console.log('response', createRoomResponse.roomId);
+
+            const newMember = [
+                {
+                    roomId: createRoomResponse.roomId,
+                    stfNo: userInfo.stfNo,
+                },
+            ];
+            console.log('newMember', newMember);
+            const saveUserResponse = await axios.post(`${RootUrl()}/saveUser`, newMember);
+            console.log('saveUserResponse', saveUserResponse);
+            navigate('/chat');
         } catch (error) {
             console.error('Error creating chat room:', error);
         }
