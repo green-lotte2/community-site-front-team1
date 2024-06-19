@@ -2966,3 +2966,25 @@ section {
     width: 250px;
 }
 
+/* todo */
+.todoBtn {
+    display: flex;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 0;
+    background-color: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    align-items: center;
+}
+.ssBtn {
+    display: flex;
+    padding: 0 4px;
+    font-size: 14px;
+    border: 1px solid #959595;
+    background-color: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    align-items: center;
+}

@@ -71,11 +71,14 @@ const MainPage = () => {
 
   /** todo 생성 */
   const [todoCreate, setTodoCreate] = useState(false);
-  const [newTodo, setNewTodo] = useState("");
+  const [newTodo, setNewTodo] = useState({
+    content : "",
+    date : "",
+  });
   const createTodo = async () => {
 
     const data = {
-      todocontent : newTodo.content,
+      todoContent : newTodo.content,
       todoDate : newTodo.date,
       stfNo : loginSlice.userId,
       todoStatus : "Y"
@@ -103,7 +106,7 @@ const MainPage = () => {
           {infoData.todoDTO && infoData.todoDTO.map((todo, index)=>(
             <span key={index} className="contentRow">
               <p>[{Moment(todo.todoDate).format('YY-MM-DD')}] {todo.todoContent}</p>
-              <p><button onClick={() => todoComplete(todo.todoNo)}>완료</button></p>
+              <p><button className='ssBtn' onClick={() => todoComplete(todo.todoNo)}>완료</button></p>
             </span>
           ))}
           {todoCreate && 
@@ -112,11 +115,11 @@ const MainPage = () => {
               <input type="text" name="" id="" placeholder='할일'
                 onChange={(e) => setNewTodo(prev => ({ ...prev, content: e.target.value }))}
                 style={{width:"170px", padding:"4px"}}/>
-              <button onClick={createTodo}>생성</button>
+              <button className='ssBtn' onClick={createTodo}>생성</button>
             </span>
           }
           <span className="contentRow" style={{justifyContent:"center"}}>
-            <button onClick={()=>setTodoCreate(true)}>+</button>
+            <button className='todoBtn' onClick={()=>setTodoCreate(true)}>+</button>
           </span>
         </div>
       </div>
