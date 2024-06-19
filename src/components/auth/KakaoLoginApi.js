@@ -24,8 +24,8 @@ const KakaoLoginApi = (code) => {
                 console.log('local스토리지 체크111', localStorage.getItem('token'));
                 alert('로그인 성공');
                 dispatch(login(res.data));
-                // 토큰 받고 로그인 성공 시 이동
-                window.location.replace('/');
+                // 토큰 받고 로그인 성공 시 이동(마이페이지로 이동해서 내 정보 수정)
+                window.location.replace('/mypage');
             })
             .catch((err) => {
                 console.error('소셜로그인 에러', err);

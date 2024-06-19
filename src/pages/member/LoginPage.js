@@ -106,16 +106,14 @@ const LoginPage = () => {
                 
                 </label>
 
-                <label htmlFor="myInput" className="labelSvae">
-                    <input type="checkbox"/> 아이디 저장
-                </label>
+
 
                 <input type="submit" value="로그인" className='btnLogin'/>
             </form>
 
             <div>
                 <Link to="#" className="socialLogin">
-                    <img src="/images/googleIcon.png" alt=""/>
+                    <img src="/images/kakao.png" alt=""/>
                     <span style={{color:"white"}} onClick={handleLogin}>카카오 계정으로 로그인</span>
                 </Link>
             </div>
