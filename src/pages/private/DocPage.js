@@ -3,7 +3,7 @@ import MainLayout from '../../layout/MainLayout'
 import DocListComponent from '../../components/private/doc/DocListComponent'
 import DocWriteComponent from '../../components/private/doc/DocWriteComponent'
 import { useSelector } from 'react-redux';
-import { addDocMember, deleteDocApi, getDocList, saveDoc, selectMember, setNewDoc } from '../../api/DocApi';
+import { addDocMember, deleteDocApi, exitDocApi, getDocList, saveDoc, selectMember, setNewDoc } from '../../api/DocApi';
 import AddStfComponent from '../../components/private/AddStfComponent';
 
 const DocPage = () => {
@@ -158,6 +158,22 @@ const DocPage = () => {
     }
   }
 
+  /** 문서 나가기 */
+  const exitDoc = async (pno) => {
+    const data = {
+      pno : pno,
+      userId : userId,
+    }
+    try {
+      const response = await exitDocApi(data);
+      if (response > 0 ) {
+        window.location.href = "/doc";
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <MainLayout>
         <div className='chatBox'>
@@ -175,6 +191,7 @@ const DocPage = () => {
                   submitDoc={submitDoc} 
                   handleAddMemberClick={handleAddMemberClick}
                   deleteDoc={deleteDoc}
+                  exitDoc={exitDoc}
                   userId={userId}
                 />
               }

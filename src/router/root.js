@@ -26,7 +26,6 @@ import ProjectPage from '../pages/private/ProjectPage';
 import CalendarPage from '../pages/private/CalendarPage';
 import MyPage from '../pages/private/MyPage';
 import PlanOrderPage from '../pages/member/PlanOrderPage';
-import ToDoPage from '../pages/private/ToDoPage';
 import DocPage from '../pages/private/DocPage';
 import PrivateRoute from './PrivateRoute';
 import CsTermsPage from '../pages/cs/CsTermsPage';
@@ -103,15 +102,6 @@ const root = createBrowserRouter([
         element: (
             <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
                 <MyPage />
-            </PrivateRoute>
-        ),
-    },
-
-    {
-        path: '/toDo',
-        element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
-                <ToDoPage />
             </PrivateRoute>
         ),
     },

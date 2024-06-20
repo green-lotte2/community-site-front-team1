@@ -65,3 +65,13 @@ export const deleteDocApi = async (pno) =>{
     const response = await axios.get(`${rootURL}/doc/delete/${pno}`);
     return response.data;
 }
+
+// 현재 문서 나가기
+export const exitDocApi = async (data) =>{
+    const response = await axios.post(`${rootURL}/doc/exit`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.data;
+}

@@ -290,10 +290,6 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
             <div className='inputChatBox'>
                 <div className='inputChat'>
                     <span>
-                        <FontAwesomeIcon icon={faImage}
-                            className="chatIcon"
-                            style={{ color: "rgb(19, 168, 174)" }} />
-
                         <FontAwesomeIcon icon={faFaceSmile}
                             className="chatIcon"
                             style={{ color: "#ff9100" }}
