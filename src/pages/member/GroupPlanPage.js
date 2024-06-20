@@ -50,8 +50,7 @@ const GroupPlanPage = () => {
 
 
       if(type==="BASIC"){
-        //수정해야함
-
+        
         await freePlan(stfNo);
         
         navigate("/complete", {state: { user: stfNo }});//결제 할거 없으면 그냥 완성 페이지로 이동

@@ -41,10 +41,7 @@ const KakaoRedirect = () => {
                     border: '1px solid #333', // darker border
                 }}
             >
-                <h2 style={{ color: '#FFA500' }}>Kakao 로그인 중입니다....</h2>
-                <p style={{ marginBottom: '20px', color: '#fff', fontSize: '18px' }}>
-                    초기 비밀번호는 'kakao'입니다
-                </p>
+                <h2 style={{ color: '#fff' }}>Kakao 로그인 중입니다....</h2>
             </div>
         </div>
     );

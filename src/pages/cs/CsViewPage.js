@@ -8,6 +8,8 @@ import { getCsView } from '../../api/CsApi';
 import { getCookie } from "../../util/cookieUtil";
 import { postCsComment,getcsComment,getDeleteCsView } from '../../api/CsApi';
 import axios from 'axios';
+import { RootUrl } from '../../api/RootUrl';
+
 
 
 
@@ -179,7 +181,7 @@ const CsViewPage = () => {
                 {/* 댓글 작성 */}
                 {auth?.userRole=="MANAGER" || auth?.userRole=="ADMIN"?(<div className='commentRow commentColumn'>
                     <div>
-                        <img src="../images/iconSample3.png" alt="" />
+                        {auth?.userImg?(<img src={`${RootUrl()}/images/${auth?.userImg}`}/>):(<img src="../images/iconSample3.png" alt="" />)}
                         <textarea name="csComContnet" id="csComContnet" placeholder='답글입력' value={comment.commentCnt} onChange={commentChange}></textarea>
                     </div>
                     <div style={{alignSelf:"self-end"}}>
