@@ -54,7 +54,7 @@ const AdminMain = () => {
     return (
         <MainLayout>
             <div className="contentBox boxStyle11" style={{ flexDirection: "row", alignItems: "center" }}>
-                <Link to={"/groupPlan"}>
+                <Link to={`/groupPlan?stfNo=${stfNo}`}>
                     <div className='adminMain'>
                         <img src="/images/icon/users-between-lines-solid.svg" alt="회원 현황" />
                     </div>
