@@ -233,7 +233,7 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
     };
 
     return (
-        <div className="contentBox boxStyle8">
+        <>
             <div className="chatInfo" style={{ justifyContent: "space-between", padding: "20px 0", position: "relative" }}>
                 <div>{roomname} 대화방</div>
                 <label htmlFor="" style={{ display: "flex", cursor: "pointer" }}>
@@ -315,14 +315,8 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                     </span>
                 </div>
             </div>
-            {modalOpen && (
-                <AddChatMemberModal
-                    roomId={roomId}
-                    handelColseModal={() => setModalOpen(false)}
-                    onAddMembers={handleAddMembers}
-                />
-            )}
-        </div>
+            </>
+           
     );
 };
 

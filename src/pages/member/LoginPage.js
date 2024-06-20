@@ -89,13 +89,20 @@ const LoginPage = () => {
                 <img className="loginImg" src="../images/zeroPie2.png" alt=""/>
             </div>
 
-            <form onSubmit={submitHandler}>
+            <div className="loginEtc" style={{flexDirection:"column", textAlign:"center"}}>
+              <p>테스트 계정</p>
+              <p>관리자 : SDD2107 / abcd1234!</p>
+              <p>일반회원 : SDD2108 / abcd1234!</p>
+            </div>
+
+            <form onSubmit={submitHandler} style={{alignItems: "center"}}>
                 <label htmlFor="">
                 <input type="text" name = "uid" placeholder='아이디입력' value={loginParam.uid} onChange={changeHandler}/>
                 </label>
 
                 <label htmlFor="">
-                <input type={showPswd ? "text" : "password"} name="pass" placeholder='비밀번호입력' value={loginParam.pass} onChange={changeHandler}/>
+                <input type={showPswd ? "text" : "password"} name="pass" placeholder='비밀번호입력' value={loginParam.pass} onChange={changeHandler}
+                  style={{position: "relative", right: "-15px"}}/>
                 
                 {lockState ? (
                   <button type ="button" onClick={changePassStatus}><FontAwesomeIcon icon={faLockOpen} /></button>                
@@ -112,7 +119,7 @@ const LoginPage = () => {
             </form>
 
             <div>
-                <Link to="#" className="socialLogin">
+                <Link to="#" className="socialLogin" style={{justifyContent:"center"}}>
                     <img src="/images/kakao.png" alt=""/>
                     <span style={{color:"white"}} onClick={handleLogin}>카카오 계정으로 로그인</span>
                 </Link>
