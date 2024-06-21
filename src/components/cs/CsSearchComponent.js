@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const CsSearchComponent = ({onSearch}) => {
 
   const navigate = useNavigate();
+ 
 
   const [isChecked1,setIsChecked1] = useState(false);
   const [isChecked2,setIsChecked2] = useState(false);
+
 
   //받아야하는것 :  시작일, 끝일, 카테고리, 답변상태, 검색타입, 키워드
   const [searchParams, setSearchParams] = useState({
