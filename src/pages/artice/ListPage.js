@@ -6,7 +6,6 @@ import PagingComponent from '../../components/common/PagingComponent';
 import { getArticleCate, ArticleList } from '../../api/ArticleApi';
 import TableListComponent from '../../components/article/TableListComponent';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import CreateCateModal from '../../components/modal/CreateCateModal';
 import { useSelector } from 'react-redux';
 
 const roleView = {
@@ -17,25 +16,22 @@ const roleView = {
 const getRoleValue = (role) => roleView[role] || 0;
 
 const ListPage = () => {
-    // URL에서 파라미터값 추출
     const location = useLocation();
+    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const articleCateNo = queryParams.get('articleCateNo');
 
-    // 게시판 제목 상태 저장을 위한 스테이트
     const [articleCateName, setArticleCateName] = useState(null);
     const [articleOutPut, setArticleOutPut] = useState(null);
     const [articleCateWRole, setArticleCateWRole] = useState(null);
     const [articleCateCoRole, setArticleCateCoRole] = useState(null);
     const [articleStatus, setArticleStatus] = useState(null);
+    const [resetSearch, setResetSearch] = useState(false);
 
     const loginSlice = useSelector((state) => state.loginSlice) || {};
     const role = loginSlice.userRole;
     const userRoleValue = getRoleValue(role);
 
-    const navigate = useNavigate();
-
-    // 페이지 랜더링 될 때 호출
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -45,7 +41,17 @@ const ListPage = () => {
                 setArticleCateWRole(response.articleCateWRole);
                 setArticleCateCoRole(response.articleCateCoRole);
                 setArticleStatus(response.articleStatus);
-                setPageRequest((prev) => ({ ...prev, articleCateNo: articleCateNo }));
+                setPageRequest((prev) => ({
+                    ...prev,
+                    articleCateNo: articleCateNo,
+                    type: null,
+                    keyword: null,
+                    startDate: null,
+                    endDate: null,
+                    sort: 'default'
+                }));
+                setResetSearch(true); // Reset the search component
+                setTimeout(() => setResetSearch(false), 0); // Reset the flag after a short delay
             } catch (error) {
                 console.error('Failed to fetch article category:', error);
             }
@@ -58,7 +64,6 @@ const ListPage = () => {
         pg = 1;
     }
 
-    // 서버에 전달할 페이지 정보를 저장하는 useState
     const [pageRequest, setPageRequest] = useState({
         pg: pg,
         articleCateNo: articleCateNo,
@@ -69,11 +74,8 @@ const ListPage = () => {
         sort: 'default',
     });
 
-    // 서버에서 받아온 articleList 정보 저장하는 useState
     const [articleList, setArticleList] = useState(null);
 
-    // 서버에서 게시글 목록 데이터를 가져오는 useEffect
-    // useEffect 의존성배열에 pageRequest가 있어 pageRequest의 내용이 바뀔때마다 수행
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -86,9 +88,6 @@ const ListPage = () => {
         fetchData();
     }, [pageRequest]);
 
-    console.log(articleList);
-
-    // pg변경 함수 (페이징 버튼 클릭시)
     const changePage = (newPg) => {
         setPageRequest((prevPageRequest) => {
             const updatedRequest = { ...prevPageRequest, pg: newPg };
@@ -122,7 +121,7 @@ const ListPage = () => {
             <div className="contentBox boxStyle7">
                 <div className="contentTitle font30 alignL">{articleCateName} 게시판</div>
 
-                <SearchComponent onSearch={handleSearch} />
+                <SearchComponent onSearch={handleSearch} reset={resetSearch} />
 
                 <div className="contentColumn">
                     <div className="listType">
