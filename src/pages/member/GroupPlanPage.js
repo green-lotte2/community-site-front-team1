@@ -96,7 +96,7 @@ const GroupPlanPage = () => {
       {secondPlan && (
         <div className="planBox">
           <p className='colorB'>{secondPlan && secondPlan.planName}</p>
-          <h3 className='colorB'><span>멤버당</span>{secondPlan && secondPlan.planCost}<span>원/월</span></h3>
+          <h3 className='colorB'><span>멤버당</span>{secondPlan && secondPlan.planCost.toLocaleString()}<span>원/월</span></h3>
           <button type="button" onClick={submitOrder("STANDARD",secondPlan.planNo)} className='BcolorB'>가입하기</button>
           <div className='planDetail'>
             <p>{secondPlan && secondPlan.planInfo}</p>
@@ -111,7 +111,7 @@ const GroupPlanPage = () => {
       {thirdPlan && (
         <div className="planBox">
           <p className='colorR'>{thirdPlan && thirdPlan.planName}</p>
-          <h3 className='colorR'><span>멤버당</span>{thirdPlan && thirdPlan.planCost}<span>원/월</span></h3>
+          <h3 className='colorR'><span>멤버당</span>{thirdPlan && thirdPlan.planCost.toLocaleString()}<span>원/월</span></h3>
           <button type="button" onClick={submitOrder("PREMIUM",thirdPlan.planNo)} className='BcolorR'>가입하기</button>
           <div className='planDetail'>
             <p>{thirdPlan && thirdPlan.planInfo}</p>

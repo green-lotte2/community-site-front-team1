@@ -270,8 +270,8 @@ const PlanOrderPage = () => {
                 <p>가격 <span>{beforecost}</span>원/월</p>
                 <div>
                     <p>예상 청구 비용</p>
-                    <p>{beforecost} 원 x <span>{count}</span>명</p>
-                    <p>= 월 {stf.cost}</p>
+                    <p>{beforecost.toLocaleString()} 원 x <span>{count}</span>명</p>
+                    <p>= 월 {stf.cost.toLocaleString()}</p>
                 </div>
 
                 <button type='button' onClick={submitOrder}>결제하기</button>

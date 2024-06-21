@@ -30,6 +30,9 @@ const FindPwPage = () => {
     const [idMessage,setIdMessage] = useState("");
     const [codeMessage, setCodeMessage] = useState("");
 
+    //이메일 스피너
+    const [isSendingEmail,setIsSendingEmail] = useState(false);
+
 
     //이메일 유효성 검사
     const onChangeEmail = (e) => {
@@ -66,6 +69,7 @@ const FindPwPage = () => {
 
         e.preventDefault();
 
+        setIsSendingEmail(true);
 
         if (!stf.stfEmail) {
             alert('이메일을 입력하세요.');
@@ -73,13 +77,15 @@ const FindPwPage = () => {
         }
 
         axios
-            .get(`${rootURL}/findIdAndSendEmail?email=${stf.stfEmail}`)
+            .get(`${rootURL}/findPassAndSendEmail?email=${stf.stfEmail}&id=${stf.stfNo}`)
             .then((response) => {
                 const result = response.data.result;
                 const receivedCode = response.data.savedCode;
                 console.log("이게 결과값?" + result);
                 setEmailMessage(result); // 서버에서 받은 결과를 상태로 관리
                 setsavedCode(receivedCode);
+
+                setIsSendingEmail(false);
 
                 if (result === '성공') { // 인증 코드 입력 필드 표시
                     alert('이메일을 성공적으로 보냈습니다');
@@ -168,7 +174,9 @@ const FindPwPage = () => {
                 <div>이메일</div>
                 <div>
                     <input type="email" required value={stf.stfEmail} onChange={onChangeEmail}/>
-                    <button onClick={handleSendEmail}>인증</button>
+                    <button onClick={handleSendEmail} disabled={isSendingEmail}>
+                      {isSendingEmail ? <div className="spinner"></div> : '인증'}          
+                    </button>
                 </div>
             </div>
 

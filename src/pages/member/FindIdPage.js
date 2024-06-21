@@ -25,6 +25,12 @@ const FindIdPage = () => {
     
     //찾은 아이디값
     const [findId, setFindId] = useState("");
+        
+    //이메일 스피너
+    const [isSendingEmail,setIsSendingEmail] = useState(false);
+
+
+
 
     const changeHandler = (e) => {
         setStf({ ...stf, [e.target.name]: e.target.value });
@@ -51,6 +57,12 @@ const FindIdPage = () => {
 
         e.preventDefault();
 
+        setIsSendingEmail(true);
+
+        const name = stf.stfName;
+
+        console.log("name을 출력해보자!!! : "+name);
+
 
         if (!stf.stfEmail) {
             alert('이메일을 입력하세요.');
@@ -58,13 +70,15 @@ const FindIdPage = () => {
         }
 
         axios
-            .get(`${rootURL}/findIdAndSendEmail?email=${stf.stfEmail}`)
+            .get(`${rootURL}/findIdAndSendEmail?email=${stf.stfEmail}&name=${name}`)
             .then((response) => {
                 const result = response.data.result;
                 const receivedCode = response.data.savedCode;
                 console.log("이게 결과값?" + result);
                 setEmailMessage(result); // 서버에서 받은 결과를 상태로 관리
                 setsavedCode(receivedCode);
+
+                setIsSendingEmail(false);
 
                 if (result === '성공') { // 인증 코드 입력 필드 표시
                     alert('이메일을 성공적으로 보냈습니다');
@@ -85,6 +99,9 @@ const FindIdPage = () => {
         e.preventDefault();
 
         //여기는 인증번호 확인하는 곳
+
+       
+
         axios.get(`${rootURL}/verifyCode`, {
           params: {
             email: stf.stfEmail,
@@ -156,7 +173,10 @@ const FindIdPage = () => {
                 <div>이메일</div>
                 <div>
                     <input type="email" name="stfEmail" value={stf.stfEmail} onChange={onChangeEmail} required/>
-                    <button onClick={handleSendEmail}>인증</button>
+
+                    <button onClick={handleSendEmail} disabled={isSendingEmail}>
+                      {isSendingEmail ? <div className="spinner"></div> : '인증'}          
+                    </button>
                 </div>
             </div>
 

@@ -60,10 +60,7 @@ const handleChange2 = () => {
 };
 
 
-
-
 const handleInputChange = (e) => {
-
 
   const { name, value } = e.target;
 
@@ -86,7 +83,7 @@ const handleInputChange = (e) => {
 
         <select style={{marginRight: "10px"}} name="csCate" value={searchParams.csCate} onChange={handleInputChange}>
             <option value="">카테고리</option>
-            <option value="결제관련">결재관련</option>
+            <option value="결재관련">결재관련</option>
             <option value="일정관련">일정관련</option>
             <option value="기타">기타</option>
         </select>
