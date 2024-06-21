@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-const SearchComponent = ({ onSearch }) => {
-  const [isCheckedDefault, setIsCheckedDefault] = useState(false);
+const SearchComponent = ({ onSearch, reset }) => {
+  const [isCheckedDefault, setIsCheckedDefault] = useState(true);
   const [isCheckedLatest, setIsCheckedLatest] = useState(false);
   const [isCheckedHit, setIsCheckedHit] = useState(false);
 
@@ -20,6 +20,21 @@ const SearchComponent = ({ onSearch }) => {
   useEffect(() => {
     handleSearch();
   }, [searchParams.sort]);
+
+  useEffect(() => {
+    if (reset) {
+      setSearchParams({
+        startDate: '',
+        endDate: '',
+        sort: 'default',
+        type: 'title',
+        keyword: ''
+      });
+      setIsCheckedDefault(true);
+      setIsCheckedLatest(false);
+      setIsCheckedHit(false);
+    }
+  }, [reset]);
 
   const handleChangeDefault = () => {
     setSearchParams((prevParams) => ({
