@@ -315,6 +315,13 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                     </span>
                 </div>
             </div>
+            {modalOpen && (
+                <AddChatMemberModal
+                    roomId={roomId}
+                    handelColseModal={() => setModalOpen(false)}
+                    onAddMembers={handleAddMembers}
+                />
+            )}
             </>
            
     );

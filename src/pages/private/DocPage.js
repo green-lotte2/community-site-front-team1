@@ -149,28 +149,34 @@ const DocPage = () => {
 
   /** 문서 삭제 */
   const deleteDoc = async (pno) => {
-    try {
-      const response = await deleteDocApi(pno);
-      console.log(response);
-      window.location.href = "/doc";
-    } catch (error) {
-      console.log(error);
+    const result = window.confirm("문서를 삭제하시겠습니까?");
+    if (result) {
+      try {
+        const response = await deleteDocApi(pno);
+        console.log(response);
+        window.location.href = "/doc";
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
   /** 문서 나가기 */
   const exitDoc = async (pno) => {
-    const data = {
-      pno : pno,
-      userId : userId,
-    }
-    try {
-      const response = await exitDocApi(data);
-      if (response > 0 ) {
-        window.location.href = "/doc";
+    const result = window.confirm("문서를 떠나시겠습니까?");
+    if (result) {
+      const data = {
+        pno : pno,
+        userId : userId,
       }
-    } catch (error) {
-      console.log(error);
+      try {
+        const response = await exitDocApi(data);
+        if (response > 0 ) {
+          window.location.href = "/doc";
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 

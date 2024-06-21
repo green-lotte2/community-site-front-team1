@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
-
+import { useCookies } from 'react-cookie';
 import { RootUrl } from '../../api/RootUrl.js';
 import { getPlanStatusNo } from '../../api/MemberApi.js';
 const rootURL = RootUrl();
@@ -91,12 +91,17 @@ const RegisterPage = () => {
 
 
 
-
+    const [cookies, setCookie, removeCookie] = useCookies(['Terms']);
 
     // 컴포넌트가 렌더링될 때(마운트)
     useEffect(() => {
         console.log("컴포넌트가 렌더링될 때(마운트)");
 
+        if (!cookies.Terms) {
+            alert("유효하지 않은 접근입니다.");
+            navigate('/login');
+            return
+        }
         /*
         const data = ['사원','대리','과장','차장','부장']
         setPositions(data);    
@@ -120,7 +125,10 @@ const RegisterPage = () => {
 
             findPlanStatusNo();
 
-        
+        return () => {
+            removeCookie('Terms', { path: '/' });
+        }
+
     }, []);
 
 
@@ -572,7 +580,7 @@ const RegisterPage = () => {
                     </div>
                     
                     <div className='memberRow'>
-                        <Link className='registerBtn' to="/">취소</Link>
+                        <Link className='registerBtn' to="/login">취소</Link>
                         <input className='registerBtn' type="submit" value="회원가입" disabled={!isFormValid} />
                     </div>
                 </form>

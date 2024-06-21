@@ -293,8 +293,8 @@ const ViewPage = () => {
                 </div>
 
                 {/* 댓글 */}
-                <div className="commentColumn">
-                    <p>답변 </p>
+                <div className="commentColumn" style={{borderTop:"1px solid #dadde6"}}>
+                    <p style={{fontSize:"20px", margin:"20px 0"}}>답변 </p>
                     {/* 댓글 작성 */}
                     {getRoleValue(commentRole) <= userRoleValue && (
                         <div className="commentRow commentColumn">

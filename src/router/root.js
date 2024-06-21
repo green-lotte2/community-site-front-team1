@@ -54,7 +54,7 @@ const root = createBrowserRouter([
     {
         path: '/',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <MainPage />
             </PrivateRoute>
         ),
@@ -64,7 +64,7 @@ const root = createBrowserRouter([
     {
         path: '/group',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <GroupPage />
             </PrivateRoute>
         ),
@@ -73,7 +73,7 @@ const root = createBrowserRouter([
     {
         path: '/chat',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <ChatPage />
             </PrivateRoute>
         ),
@@ -82,7 +82,7 @@ const root = createBrowserRouter([
     {
         path: '/project',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <ProjectPage />
             </PrivateRoute>
         ),
@@ -91,7 +91,7 @@ const root = createBrowserRouter([
     {
         path: '/calendar',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <CalendarPage />
             </PrivateRoute>
         ),
@@ -100,7 +100,7 @@ const root = createBrowserRouter([
     {
         path: '/mypage',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <MyPage />
             </PrivateRoute>
         ),
@@ -109,7 +109,7 @@ const root = createBrowserRouter([
     {
         path: '/doc',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <DocPage />
             </PrivateRoute>
         ),
@@ -119,7 +119,7 @@ const root = createBrowserRouter([
     {
         path: '/list',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <ListPage />
             </PrivateRoute>
         ),
@@ -128,7 +128,7 @@ const root = createBrowserRouter([
     {
         path: '/write',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <WritePage />
             </PrivateRoute>
         ),
@@ -137,7 +137,7 @@ const root = createBrowserRouter([
     {
         path: '/view',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <ViewPage />
             </PrivateRoute>
         ),
@@ -146,7 +146,7 @@ const root = createBrowserRouter([
     {
         path: '/modify',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <ModifyPage />
             </PrivateRoute>
         ),
@@ -156,7 +156,7 @@ const root = createBrowserRouter([
     {
         path: '/config',
         element: (
-            <PrivateRoute allowedRoles={['ADMIN']}>
+            <PrivateRoute allowedRoles={['ADMIN', 'MANAGER']}>
                 <ConfigPage />
             </PrivateRoute>
         ),
@@ -165,7 +165,7 @@ const root = createBrowserRouter([
     {
         path: '/userList',
         element: (
-            <PrivateRoute allowedRoles={['ADMIN']}>
+            <PrivateRoute allowedRoles={['ADMIN', 'MANAGER']}>
                 <UserListPage />
             </PrivateRoute>
         ),
@@ -174,7 +174,7 @@ const root = createBrowserRouter([
     {
         path: '/articleList',
         element: (
-            <PrivateRoute allowedRoles={['ADMIN']}>
+            <PrivateRoute allowedRoles={['ADMIN', 'MANAGER']}>
                 <ArticleListPage />
             </PrivateRoute>
         ),
@@ -183,7 +183,7 @@ const root = createBrowserRouter([
     {
         path: '/admin',
         element: (
-            <PrivateRoute allowedRoles={['ADMIN']}>
+            <PrivateRoute allowedRoles={['ADMIN', 'MANAGER']}>
                 <AdminMain />
             </PrivateRoute>
         ),
@@ -192,7 +192,7 @@ const root = createBrowserRouter([
     {
         path: '/articleModify',
         element: (
-            <PrivateRoute allowedRoles={['ADMIN']}>
+            <PrivateRoute allowedRoles={['ADMIN', 'MANAGER']}>
                 <ArticleModifyPage />
             </PrivateRoute>
         ),
@@ -202,7 +202,7 @@ const root = createBrowserRouter([
     {
         path: '/csList',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <CsListPage />
             </PrivateRoute>
         ),
@@ -211,7 +211,7 @@ const root = createBrowserRouter([
     {
         path: '/csWrite',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <CsWritePage />
             </PrivateRoute>
         ),
@@ -220,7 +220,7 @@ const root = createBrowserRouter([
     {
         path: '/csView',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <CsViewPage />
             </PrivateRoute>
         ),
@@ -229,7 +229,7 @@ const root = createBrowserRouter([
     {
         path: '/csTerms',
         element: (
-            <PrivateRoute allowedRoles={['USER', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'ADMIN', 'MANAGER']}>
                 <CsTermsPage />
             </PrivateRoute>
         ),
