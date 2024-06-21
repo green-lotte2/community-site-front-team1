@@ -9,6 +9,13 @@ const CsListComponent = ({serverData}) => {
 
   const auth = getCookie("auth"); 
 
+
+  if (!serverData || !serverData.dtoList || serverData.dtoList.length === 0) {
+    return <div style={{fontSize:"15px",display: "flex",
+      justifyContent: "center",
+      alignItems: "center"}}>자료가 없습니다.</div>;
+  }
+  
   return (
     <>
     {serverData.dtoList.map((item, index) => (

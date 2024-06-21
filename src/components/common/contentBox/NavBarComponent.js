@@ -21,10 +21,6 @@ console.log(loginSlice)
 
   return (
     <div id="navbar">
-        <label className="searchBar" htmlFor="">
-            <input type="text" placeholder="검색어를 입력해주세요."/>
-            <span className="searchIcon"></span>
-        </label>
         <div id="userBox">
           {!loginSlice.username ? (
             <Link to={"/login"}>로그인</Link>

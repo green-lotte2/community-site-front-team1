@@ -3,7 +3,7 @@ import MainLayout from '../../layout/MainLayout'
 import DocListComponent from '../../components/private/doc/DocListComponent'
 import DocWriteComponent from '../../components/private/doc/DocWriteComponent'
 import { useSelector } from 'react-redux';
-import { addDocMember, deleteDocApi, getDocList, saveDoc, selectMember, setNewDoc } from '../../api/DocApi';
+import { addDocMember, deleteDocApi, exitDocApi, getDocList, saveDoc, selectMember, setNewDoc } from '../../api/DocApi';
 import AddStfComponent from '../../components/private/AddStfComponent';
 
 const DocPage = () => {
@@ -149,12 +149,34 @@ const DocPage = () => {
 
   /** 문서 삭제 */
   const deleteDoc = async (pno) => {
-    try {
-      const response = await deleteDocApi(pno);
-      console.log(response);
-      window.location.href = "/doc";
-    } catch (error) {
-      console.log(error);
+    const result = window.confirm("문서를 삭제하시겠습니까?");
+    if (result) {
+      try {
+        const response = await deleteDocApi(pno);
+        console.log(response);
+        window.location.href = "/doc";
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  /** 문서 나가기 */
+  const exitDoc = async (pno) => {
+    const result = window.confirm("문서를 떠나시겠습니까?");
+    if (result) {
+      const data = {
+        pno : pno,
+        userId : userId,
+      }
+      try {
+        const response = await exitDocApi(data);
+        if (response > 0 ) {
+          window.location.href = "/doc";
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -175,6 +197,7 @@ const DocPage = () => {
                   submitDoc={submitDoc} 
                   handleAddMemberClick={handleAddMemberClick}
                   deleteDoc={deleteDoc}
+                  exitDoc={exitDoc}
                   userId={userId}
                 />
               }

@@ -51,7 +51,10 @@ const ChatPage = () => {
               <ChatListComponent onRoomSelect={handleRoomSelect} ></ChatListComponent>
   
               {/** 채팅방 - 제일처음 들어갔을 땐 이 페이지가 없어야함... */}
+              <div className="contentBox boxStyle8">
               {isChatting?(<ChatRoomComponent roomId={selectedRoomId} roomname={selectedRoomName} id={userId} createUser={createUser} ></ChatRoomComponent>):(<p>채팅방을 선택해주세요...</p>)}{/*beforeMessage={chat} */}      
+              </div>
+
           </div>
           
       </MainLayout>

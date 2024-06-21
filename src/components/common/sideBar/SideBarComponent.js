@@ -20,7 +20,7 @@ const SideBarComponent = () => {
 
                 <SideBoxComponent sideBarCate={'private'}></SideBoxComponent>
                 <SideBoxComponent sideBarCate={'article'}></SideBoxComponent>
-                {role === 'ADMIN' && <SideBoxComponent sideBarCate={'admin'} />}
+                {(role === 'MANAGER' || role === 'ADMIN') && <SideBoxComponent sideBarCate={'admin'} />}
                 <SideBoxComponent sideBarCate={'cs'}></SideBoxComponent>
             </section>
         </ArticleListProvider>

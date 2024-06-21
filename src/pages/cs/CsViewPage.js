@@ -176,8 +176,8 @@ const CsViewPage = () => {
             </div>
 
             {/* 댓글 */}
-            <div className='commentColumn'>
-                <p style={{fontSize:"20px"}}>답변 {comment.length}</p>
+            <div className='commentColumn' style={{borderTop:"1px solid #dadde6"}}>
+                <p style={{fontSize:"20px", margin:"20px 0"}}>답변 {comment.length}</p>
                 {/* 댓글 작성 */}
                 {auth?.userRole=="MANAGER" || auth?.userRole=="ADMIN"?(<div className='commentRow commentColumn'>
                     <div>

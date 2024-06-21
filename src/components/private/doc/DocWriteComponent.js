@@ -1,4 +1,4 @@
-import { faGear, faSquarePlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faDoorOpen, faGear, faSquarePlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -11,7 +11,7 @@ import { getDocContent, saveDocFile } from '../../../api/DocApi';
 import { RootUrl, SoketUrl } from '../../../api/RootUrl';
 import LoginSlice from '../../../slice/LoginSlice';
 
-const DocWriteComponent = ({ eachDocView, setDocList, eachDocIndex, submitDoc, handleAddMemberClick, deleteDoc, userId }) => {
+const DocWriteComponent = ({ eachDocView, setDocList, eachDocIndex, submitDoc, handleAddMemberClick, deleteDoc, userId, exitDoc }) => {
     const doc = new Y.Doc();
     const provider = useRef(null);
 
@@ -108,15 +108,25 @@ const DocWriteComponent = ({ eachDocView, setDocList, eachDocIndex, submitDoc, h
                 <div>{loading && <input type="text" value={docTitle} onChange={handleChange} />}</div>
 
                 <label htmlFor="" style={{ display: 'flex'}}>
-                    <span onClick={(e) => handleAddMemberClick(pageRef.current.pno)}>
-                        <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
-                    </span>
+
+                    {(pageRef.current.owner === userId) && 
+                        <span onClick={(e) => handleAddMemberClick(pageRef.current.pno)}>
+                            <FontAwesomeIcon icon={faSquarePlus} /> &nbsp;멤버 추가
+                        </span>
+                    }
                     
                     {(pageRef.current.owner === userId) && 
                         <span onClick={(e) => deleteDoc(pageRef.current.pno)}>
                             <FontAwesomeIcon icon={faTrashCan} /> &nbsp;삭제
                         </span>
                     }
+
+                    {(pageRef.current.owner !== userId) && 
+                        <span onClick={(e) => exitDoc(pageRef.current.pno)}>
+                            <FontAwesomeIcon icon={faDoorOpen} /> &nbsp;나가기
+                        </span>
+                    }
+
                 </label>
 
             </div>

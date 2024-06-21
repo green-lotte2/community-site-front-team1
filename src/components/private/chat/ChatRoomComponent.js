@@ -233,7 +233,7 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
     };
 
     return (
-        <div className="contentBox boxStyle8">
+        <>
             <div className="chatInfo" style={{ justifyContent: "space-between", padding: "20px 0", position: "relative" }}>
                 <div>{roomname} 대화방</div>
                 <label htmlFor="" style={{ display: "flex", cursor: "pointer" }}>
@@ -290,10 +290,6 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
             <div className='inputChatBox'>
                 <div className='inputChat'>
                     <span>
-                        <FontAwesomeIcon icon={faImage}
-                            className="chatIcon"
-                            style={{ color: "rgb(19, 168, 174)" }} />
-
                         <FontAwesomeIcon icon={faFaceSmile}
                             className="chatIcon"
                             style={{ color: "#ff9100" }}
@@ -326,7 +322,8 @@ const ChatRoomComponent = ({ roomId, roomname, id, createUser }) => {
                     onAddMembers={handleAddMembers}
                 />
             )}
-        </div>
+            </>
+           
     );
 };
 
