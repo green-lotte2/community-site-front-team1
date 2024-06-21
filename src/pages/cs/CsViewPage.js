@@ -170,7 +170,9 @@ const CsViewPage = () => {
 
             <div className='writeRow'>
                 <div className='wrtieBtnBox'>
-                    <input type='submit' onClick={deleteCsView} value={"삭제"}/>
+         
+                    {auth?.userId===csView.stfNo || auth?.userRole==="MANAGER" ||auth?.userRole==="ADMIN"?(<input type='submit' onClick={deleteCsView} value={"삭제"}/>):('')}
+                    
                     <input type='button' onClick={back} value={"목록"}/>
                 </div>
             </div>

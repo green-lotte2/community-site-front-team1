@@ -3,8 +3,13 @@ import { getCommentDelete } from '../../../api/CsApi';
 import { RootUrl } from '../../../api/RootUrl';
 import Moment from 'moment';
 import "moment/locale/ko";
+import { getCookie } from '../../../util/cookieUtil';
+
+
 
 const CommentListComponent = ({ comment,name,csNo }) => {
+
+    const auth = getCookie("auth");
 
     const deleteHandler = async (e)=>{
 
@@ -44,7 +49,9 @@ const CommentListComponent = ({ comment,name,csNo }) => {
                 </div>
 
                 <div style={{alignSelf:"self-end"}}>
-                    <button data-id={each.csComNo} onClick={deleteHandler}>삭제</button>
+                {auth?.userId === each.stfNo || auth?.userRole==="MANAGER" ||auth?.userRole==="ADMIN"? (
+                            <button data-id={each.csComNo} onClick={deleteHandler}>삭제</button>
+                        ) : ('')}
                 </div>
             </div>
         )) : (
