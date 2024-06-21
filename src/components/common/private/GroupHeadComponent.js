@@ -11,6 +11,11 @@ const GroupHeadComponent = ({ groupInfo, handleMemberClick }) => {
         setAccordions((prevState) => {
             const newState = [...prevState];
             newState[index] = !newState[index];
+            for (let i = 0; i < newState.length; i++) {
+                if (i !== index) {
+                    newState[i] = false;
+                }
+            }
             return newState;
         });
     };

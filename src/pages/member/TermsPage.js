@@ -3,6 +3,8 @@ import MemberLayout from '../../layout/MemberLayout';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { RootUrl } from '../../api/RootUrl.js';
+import { useCookies } from 'react-cookie';
+
 const rootURL = RootUrl();
 
 const TermsPage = () => {
@@ -36,11 +38,14 @@ const TermsPage = () => {
     };
 
     const ChageCheckBox2 = () => {
-        setIsChecked2(!isChecked2);
+        setIsChecked2(!isChecked2); 
     };
+
+    const [cookies, setCookie] = useCookies(['Terms']);
 
     const signUpHandler = () => {
         if (isChecked1 && isChecked2) {
+            setCookie('Terms', 'true', { path: '/', expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) });
             alert('회원가입을 진행합니다.');
             navigate('/signup');
         } else {

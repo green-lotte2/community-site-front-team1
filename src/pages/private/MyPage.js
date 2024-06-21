@@ -366,7 +366,7 @@ const MyPage = () => {
                         </div>
                     </div>
 
-                    <div className='myContent'>
+                    <div className='myContent' style={{borderBottom:"0"}}>
                         <div>
                             <p>권한</p> 
                             <input type='text' name='stfRole' value={stfInfo.stfRole}/></div>
