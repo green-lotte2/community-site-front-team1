@@ -49,7 +49,7 @@ const CommentListComponent = ({ comment,name,csNo }) => {
                 </div>
 
                 <div style={{alignSelf:"self-end"}}>
-                {auth?.userId === each.stfNo || auth?.userRole==="MANAGER" ||auth?.userRole==="ADMIN"? (
+                {auth?.userRole==="MANAGER" ||auth?.userRole==="ADMIN"? (
                             <button data-id={each.csComNo} onClick={deleteHandler}>삭제</button>
                         ) : ('')}
                 </div>

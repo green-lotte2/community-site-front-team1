@@ -17,6 +17,24 @@ export const postCsList = async (data) => {
 };
 
 
+
+
+// 게시글 검색 목록 출력  - search////////////////추가////////////////
+export const postCsSearch = async (data) => {
+
+    data.startDate = formatDate(data.startDate);
+    data.endDate = formatDate(data.endDate);
+
+    console.log('검색 글 목록', data);
+    const response = await axios.post(`${rootURL}/search`,data);
+
+    return response.data;
+};
+
+
+
+
+
 // Date 객체를 ISO 8601 형식의 문자열로 변환하는 함수
 const formatDate = (dateString) => {
     if (!dateString) return ''; // 날짜 값이 없을 경우 빈 문자열 반환

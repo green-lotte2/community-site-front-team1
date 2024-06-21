@@ -26,7 +26,12 @@ const CsSearchComponent = ({onSearch}) => {
 
 
 const handleSearch = () => {
-  onSearch(searchParams);
+
+  if(searchParams.type!='' && searchParams.keyword==''){
+    alert("검색어를 입력해주세요!");
+  }else{
+    onSearch(searchParams);
+  }
 };
 
 useEffect(() => {
@@ -107,6 +112,7 @@ const handleInputChange = (e) => {
 
       <div className="searchRow">
         <select name ="type" value={searchParams.type} onChange={handleInputChange}>
+            <option value="">검색선택</option>
             <option value="title">제목</option>
             <option value="content">내용</option>
             <option value="title+content">제목+내용</option>
