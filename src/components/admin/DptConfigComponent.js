@@ -16,6 +16,7 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt, fetchData })
         setCreateDpt(false);
         if (newDpt) {
             addNewDpt(newDpt);
+            window.location.reload();
         }
     };
 
@@ -28,9 +29,9 @@ const DptConfigComponent = ({ dptValue, handleChangeDpt, addNewDpt, fetchData })
         }
         const confirmDel = window.confirm('삭제하시겠습니까?');
         if (confirmDel) {
-            deleteDpt(dptValue[index].dptNo);
+            await deleteDpt(dptValue[index].dptNo);
+            fetchData();
         }
-        fetchData();
     };
 
     const handelUpdate = async (index) => {
