@@ -1806,7 +1806,7 @@ section {
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(6) {
-    width: 10%;
+    width: 20%;
     justify-content: center;
 }
 .ModArticleRow > div:nth-child(7) {
@@ -1849,7 +1849,7 @@ section {
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(6) {
-    width: 10%;
+    width: 20%;
     justify-content: center;
 }
 .ModArticleRowTitle > div:nth-child(7) {
@@ -2968,7 +2968,6 @@ section {
     width: 250px;
 }
 
-
 /* todo */
 .todoBtn {
     display: flex;
@@ -2991,4 +2990,3 @@ section {
     cursor: pointer;
     align-items: center;
 }
-

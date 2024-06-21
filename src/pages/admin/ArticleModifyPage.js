@@ -149,7 +149,7 @@ const ArticleModifyPage = () => {
                         <div>작성자</div>
                         <div>제목</div>
                         <div>날짜</div>
-                        <div>상태</div>
+
                         <div>관리</div>
                     </div>
 
