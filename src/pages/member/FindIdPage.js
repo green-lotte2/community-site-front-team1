@@ -204,7 +204,7 @@ const FindIdPage = () => {
 
             <div className='findPack'>
                 <div>
-                    홍길동 님의 아이디는 <span>{findId}</span> 입니다.
+                    {stf.stfName} 님의 아이디는 <span>{findId}</span> 입니다.
                 </div>
             </div>
 

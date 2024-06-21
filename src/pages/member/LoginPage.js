@@ -38,7 +38,7 @@ const LoginPage = () => {
     const changeHandler = (e) => {
         console.log("여기 일단 들어와?");
       //loginParam[e.target.name] = e.target.value;
-      setLoginParam({ ...loginParam, [e.target.name]: e.target.value });
+      setLoginParam({ ...loginParam, [e.target.name]: e.target.value.trim() });//공백제거
     };
 
 

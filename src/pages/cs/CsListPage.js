@@ -4,9 +4,10 @@ import CsListComponent from '../../components/cs/CsListComponent'
 import PagingComponent from '../../components/common/PagingComponent'
 import CsSearchComponent from '../../components/cs/CsSearchComponent'
 import axios from 'axios';
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { postCsList } from '../../api/CsApi'
+import { Link, useLocation, useNavigate} from 'react-router-dom'
+import { postCsList,postCsSearch } from '../../api/CsApi'
 import { useSelector } from 'react-redux'
+import { getCookie } from '../../util/cookieUtil'
 
 
 const initState = {
@@ -22,6 +23,8 @@ const initState = {
   next: false,
 };
 
+const auth = getCookie("auth");
+
 
 
 const CsListPage = () => {
@@ -35,6 +38,8 @@ const CsListPage = () => {
     }
 
     const navigate = useNavigate();
+
+    const [isCheck,setIsCheck] = useState(false);
 
     const [serverData, setServerData] = useState(initState); 
    
@@ -50,7 +55,9 @@ const CsListPage = () => {
         "startDate":'',
         "endDate":'',
         "latest":'',
-        "hit":''
+        "hit":'',
+        "stfNo":auth?.userId,
+        "stfRole":auth?.userRole
       });
 
     // pg변경 함수 (페이징 버튼 클릭시)
@@ -69,14 +76,27 @@ const CsListPage = () => {
         const fetchCsList = async () =>{
           console.log("cs페이지 호출될때, 여기에 들어오지?");   
           
-          try{
-            //console.log("보낼 값에 뭐가 들어있는지는 보자 : "+pageRequest.csCate);//잘나오거든?
-            const response = await postCsList(pageRequest);
-            setServerData(response);
-            console.log("이거는 출력되고 있는 거지?"+response);
 
-          }catch(err){
-              console.log(err);
+          if(!isCheck){//제일 처음 list출력
+              try{
+                //console.log("보낼 값에 뭐가 들어있는지는 보자 : "+pageRequest.csCate);//잘나오거든?
+                const response = await postCsList(pageRequest);
+                setServerData(response);
+                console.log("전체 리스트 출력 : "+response);
+
+              }catch(err){
+                  console.log(err);
+              }
+          }else{//검색 list 출력
+              try{
+                const response = await postCsSearch(pageRequest);
+                setServerData(response);
+                console.log("검색 리스트 출력 : "+response);
+
+              }catch(err){
+                console.log(err);
+              }
+
           }
         }
         fetchCsList();
@@ -85,13 +105,12 @@ const CsListPage = () => {
       const handleSearch = (searchParams) => {
 
         console.log('handleSearch!');
-       // const newPageNation = { ...pageNation, ...searchParams, pg: 1 };
-       // setPageNation(newPageNation);
-       setPageRequest(prevPageRequest => ({ ...prevPageRequest, ...searchParams, pg: 1 }));
+
+        setIsCheck(true);
+
+        setPageRequest(prevPageRequest => ({ ...prevPageRequest, ...searchParams, pg: 1 }));
     };
   
-
-
 
   return (
     <MainLayout>
