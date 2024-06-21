@@ -324,11 +324,11 @@ const RegisterPage = () => {
     };
 
 
-    //핸드폰 유효성
+    //핸드폰 유효성(정규표현식 수정완료)
     const onChangePhone = (e) => {
         const currentPhone = e.target.value;
         setStf({ ...stf, stfPh: currentPhone });
-        const phoneRegExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+        const phoneRegExp = /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
 
         if (!phoneRegExp.test(currentPhone)) {
             setPhoneMessage(false);

@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const CsSearchComponent = ({onSearch}) => {
 
   const navigate = useNavigate();
+ 
 
   const [isChecked1,setIsChecked1] = useState(false);
   const [isChecked2,setIsChecked2] = useState(false);
+
 
   //받아야하는것 :  시작일, 끝일, 카테고리, 답변상태, 검색타입, 키워드
   const [searchParams, setSearchParams] = useState({
@@ -60,10 +62,7 @@ const handleChange2 = () => {
 };
 
 
-
-
 const handleInputChange = (e) => {
-
 
   const { name, value } = e.target;
 
@@ -86,7 +85,7 @@ const handleInputChange = (e) => {
 
         <select style={{marginRight: "10px"}} name="csCate" value={searchParams.csCate} onChange={handleInputChange}>
             <option value="">카테고리</option>
-            <option value="결제관련">결재관련</option>
+            <option value="결재관련">결재관련</option>
             <option value="일정관련">일정관련</option>
             <option value="기타">기타</option>
         </select>

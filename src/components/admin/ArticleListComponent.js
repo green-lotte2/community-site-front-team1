@@ -35,6 +35,7 @@ const ArticleListComponent = (articleList) => {
                 await delArticleCateList(articleCateList[index].articleCateNo);
                 const newList = articleCateList.filter((item, i) => i !== index);
                 setArticleCateList(newList);
+                window.location.reload();
             } catch (err) {
                 console.log('게시판 삭제 실패', err);
             }
