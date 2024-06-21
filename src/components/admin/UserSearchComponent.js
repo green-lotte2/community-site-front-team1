@@ -8,8 +8,8 @@ const UserSearchComponent = ({ onSearch }) => {
         stfStatus: null,
         rnkNo: '',
         dptNo: '',
-        startDate: '',
-        endDate: '',
+        startDate2: '',
+        endDate2: '',
         type: '',
         keyword: '',
         size: '10',
@@ -114,8 +114,8 @@ const UserSearchComponent = ({ onSearch }) => {
 
                 <div className="searchRow">
                     <span className="searchTitle">입사일</span>
-                    <input type="date" name="startDate" onChange={handleInputChange} /> ~
-                    <input type="date" name="endDate" onChange={handleInputChange} />
+                    <input type="date" name="startDate2" onChange={handleInputChange} /> ~
+                    <input type="date" name="endDate2" onChange={handleInputChange} />
                     <span className="space330"></span>
                     <select name="type" id="" onChange={handleInputChange}>
                         <option value="">검색조건 선택</option>

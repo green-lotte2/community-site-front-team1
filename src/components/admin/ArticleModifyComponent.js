@@ -63,15 +63,8 @@ const ArticleModifyComponent = ({ articleList, setArticleList, selectedArticles,
                             </Link>
                         </div>
                         <div>{Moment(article.articleRdate).format('YY-MM-DD')}</div>
-                        <div>{article.articleStatus === 'view' ? '활성화' : '비활성화'}</div>
+
                         <div>
-                            <button
-                                className="nomalBtn"
-                                style={{ fontSize: '14px' }}
-                                onClick={() => handleModalOpen(index)}
-                            >
-                                숨김
-                            </button>
                             <button
                                 className="nomalBtn"
                                 style={{ fontSize: '14px' }}
