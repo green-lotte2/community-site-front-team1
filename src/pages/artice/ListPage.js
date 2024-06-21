@@ -132,14 +132,16 @@ const ListPage = () => {
                 </div>
 
                 <div className={contentClassName}>
-                    <div className="articleRow">
-                        <div>NO</div>
-                        <div>이미지</div>
-                        <div>제목</div>
-                        <div>조회수</div>
-                        <div>작성자</div>
-                        <div>날짜</div>
-                    </div>
+                    {articleRowClassName === "articleRow" && 
+                        <div className="articleRow">
+                            <div>NO</div>
+                            <div>이미지</div>
+                            <div>제목</div>
+                            <div>조회수</div>
+                            <div>작성자</div>
+                            <div>날짜</div>
+                        </div>
+                    }
 
                     <TableListComponent
                         articleList={articleList}
