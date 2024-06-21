@@ -139,10 +139,10 @@ const MainPage = () => {
       <div className="contentBox boxStyle1">
         <div className="contentTitle">공지사항</div>
         <div className="contentColumn">
-          {infoData.csDTO && infoData.csDTO.map((cs, index)=>(
-            <Link key={index} to={`/csView?csNo=${cs.csNo}`} className="contentRow">
-              <p className="hidden">[{cs.csCate}] {cs.csTitle}</p>
-              <p>{Moment(cs.csRdate).format('YY-MM-DD')}</p>
+          {infoData.noticeDTO && infoData.noticeDTO.map((notice, index)=>(
+            <Link key={index} to={`/view?articleNo=${notice.articleNo}`} className="contentRow">
+              <p className="hidden">{notice.articleTitle}</p>
+              <p>{Moment(notice.articleRdate).format('YY-MM-DD')}</p>
             </Link>
           ))}
         </div>
