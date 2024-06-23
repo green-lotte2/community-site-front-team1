@@ -92,7 +92,7 @@ const CreateDtpModal = ({ handelCloseModal, dptValue }) => {
                 <div className="modalColumn">
                     <div className="modalRow">
                         <div className="maR30">아이콘</div>
-                        <div className="custSelect" onClick={openOption}>
+                        <div className="custSelect" onClick={openOption} style={{width:"201px", margin:"0 50px"}}>
                             <span>{selectedOption ? selectedOption : '아이콘 선택'}</span>
                             <span>▼</span>
                             {optionState && <DptIconOptionComponent selectOption={selectOption} />}
