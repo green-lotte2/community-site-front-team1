@@ -13,9 +13,6 @@ const CsTermsPage = () => {
             .then((data) => {
                 setPrivacy(data.data.result1);
                 setTerms(data.data.result2);
-
-                console.log(data.data.result1);
-                console.log(data.data.result2);
             })
             .catch((err) => {
                 console.log(err);
